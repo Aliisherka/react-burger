@@ -1,0 +1,41 @@
+.burgerConstructor {
+    height: 912px;
+    width: 600px;
+}
+
+.BurgerComponents {
+    display: flex; 
+    flex-direction: column;
+    gap: 16px; 
+    padding: 100px 16px 40px 16px;
+    height: 656px;
+}
+
+.burgerBun {
+    padding-left: 32px;
+}
+
+.burgerMainSause {
+    overflow: scroll;
+    display: flex; 
+    flex-direction: column; 
+    gap: 16px;
+}
+
+.burgerItems {
+    display: flex; 
+    align-items: center; 
+    gap: 8px;
+}
+
+.burgerInfo {
+    display: flex; 
+    justify-content: flex-end; 
+}
+
+.burgerPrice {
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    padding-right: 40px
+}
