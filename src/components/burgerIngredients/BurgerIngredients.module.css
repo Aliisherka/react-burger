@@ -3,6 +3,16 @@
     margin: 0;
 }
 
+.tab {
+    display: flex;
+}
+
+.burgers {
+    overflow: scroll; 
+    max-height: 715px; 
+    max-width: 600px;
+}
+
 .cards {
     display: flex;
     justify-content: center;

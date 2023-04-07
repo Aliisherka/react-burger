@@ -9,7 +9,7 @@ export const BurgerIngredients = (props) => {
         return (
             <section>
                 <h1 className={styles.title + ' text text_type_main-large'}>Соберите бургер</h1>
-                <div className='pt-5' style={{ display: 'flex' }}>
+                <div className={styles.tab + ' pt-5'}>
                     <Tab value="one" active={current === 'one'} onClick={setCurrent}>
                         Булки
                     </Tab>
@@ -20,7 +20,7 @@ export const BurgerIngredients = (props) => {
                         Начинки
                     </Tab>
                 </div>
-                <div style={{overflow: 'scroll', maxHeight: '715px', maxWidth: '600px'}}>
+                <div className={styles.burgers}>
                     <h2 className={styles.title + ' text text_type_main-medium'}>Булки</h2>
                     <div className={styles.cards}>
                         {props.data.map((item)=>(
@@ -70,5 +70,5 @@ export const BurgerIngredients = (props) => {
 }
 
 BurgerIngredients.propTypes = {
-    data: PropTypes.array
+    data: PropTypes.array.isRequired
 }

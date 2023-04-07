@@ -5,13 +5,12 @@ import { Logo } from '@ya.praktikum/react-developer-burger-ui-components'
 import { BurgerIcon, ListIcon, ProfileIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 
 
-class Header extends React.Component {
-    render() {
+export const Header = () => {
         return (
             <header className={styles.header}>
                 <nav className={styles.content + ' pb-4 pt-4'}>
                     <div className={styles.icons}>
-                        <a href='#' className={styles.icon + ' pl-5'} style={{color: 'white'}}>
+                        <a href='#' className={styles.icon + ' pl-5'}>
                             <BurgerIcon type="primary"/>
                             <p className='text text_type_main-default pl-2 pr-5'>Конструктор</p>
                         </a>
@@ -28,7 +27,4 @@ class Header extends React.Component {
                 </nav>
             </header>
         )
-    }
 }
-
-export default Header;

@@ -20,7 +20,7 @@ export const BurgerConstructor = (props) => {
                 <div className={styles.burgerMainSause}>
                     {props.data.map((item)=>(
                         item.type !== 'bun' &&
-                            <div key={item._id} style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                            <div className={styles.burgerSauceItem} key={item._id}>
                                 <DragIcon type="primary" />
                                 <ConstructorElement
                                 text={item.name}
@@ -54,5 +54,5 @@ export const BurgerConstructor = (props) => {
 }
 
 BurgerConstructor.propTypes = {
-    data: PropTypes.array
+    data: PropTypes.array.isRequired
 }
