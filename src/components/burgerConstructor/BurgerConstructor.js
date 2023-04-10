@@ -3,8 +3,35 @@ import PropTypes from 'prop-types';
 import styles from './BurgerConstructor.module.css'
 
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { OrderDetails } from '../OrderDetails/OrderDetails';
 
 export const BurgerConstructor = (props) => {
+    const [state, setState] = React.useState({
+        visible: false
+    })
+
+    const openPopup = () => {
+        setState({visible: true})
+    }
+
+    const closePopup = () => {
+        setState({visible: false})
+
+    }
+
+    const closeByEsc = (event) => {
+        if (event.key === 'Escape') {
+            setState({visible: false})
+        }
+    }
+
+    React.useEffect(() => {
+        document.addEventListener("keydown", closeByEsc);
+        return () => {
+          document.removeEventListener("keydown", closeByEsc);
+        };
+      }, []);
+
     return (
         <section className={styles.burgerConstructor}>
            <div className={styles.BurgerComponents}>
@@ -45,9 +72,12 @@ export const BurgerConstructor = (props) => {
                     <p className="text text_type_digits-medium">610</p>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button htmlType="button" type="primary" size="large">
+                <Button onClick={openPopup} htmlType="button" type="primary" size="large">
                     Нажми на меня
                 </Button>
+                {state.visible && 
+                <OrderDetails closePopup={closePopup} closeByEsc={closeByEsc}/>
+                }
             </div>
         </section>
     )
