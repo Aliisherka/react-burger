@@ -8,9 +8,9 @@
 }
 
 .burgers {
-    overflow: scroll; 
-    max-height: 715px; 
-    max-width: 600px;
+    overflow-y: scroll; 
+    height: 715px; 
+    width: 600px;
 }
 
 .cards {

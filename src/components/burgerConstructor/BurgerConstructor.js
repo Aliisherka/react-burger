@@ -4,6 +4,7 @@ import styles from './BurgerConstructor.module.css'
 
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { OrderDetails } from '../OrderDetails/OrderDetails';
+import { Modal } from '../Modal/Modal';
 
 export const BurgerConstructor = (props) => {
     const [state, setState] = React.useState({
@@ -16,21 +17,7 @@ export const BurgerConstructor = (props) => {
 
     const closePopup = () => {
         setState({visible: false})
-
     }
-
-    const closeByEsc = (event) => {
-        if (event.key === 'Escape') {
-            setState({visible: false})
-        }
-    }
-
-    React.useEffect(() => {
-        document.addEventListener("keydown", closeByEsc);
-        return () => {
-          document.removeEventListener("keydown", closeByEsc);
-        };
-      }, []);
 
     return (
         <section className={styles.burgerConstructor}>
@@ -76,7 +63,9 @@ export const BurgerConstructor = (props) => {
                     Нажми на меня
                 </Button>
                 {state.visible && 
-                <OrderDetails closePopup={closePopup} closeByEsc={closeByEsc}/>
+                <Modal closePopup={closePopup}>
+                    <OrderDetails/>
+                </Modal>
                 }
             </div>
         </section>

@@ -16,7 +16,7 @@
 }
 
 .burgerMainSause {
-    overflow: scroll;
+    overflow-y: scroll;
     display: flex; 
     flex-direction: column; 
     gap: 16px;

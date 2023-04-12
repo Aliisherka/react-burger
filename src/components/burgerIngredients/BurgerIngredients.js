@@ -4,6 +4,7 @@ import styles from './BurgerIngredients.module.css'
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import { IngredientDetails } from '../IngredientDetails/IngredientDetails';
+import { Modal } from '../Modal/Modal';
 
 export const BurgerIngredients = (props) => {
         const [current, setCurrent] = React.useState('one')
@@ -31,18 +32,6 @@ export const BurgerIngredients = (props) => {
             setState({visible: false})
         }
 
-        const closeByEsc = (event) => {
-            if (event.key === 'Escape') {
-                setState({visible: false})
-            }
-        }
-    
-        React.useEffect(() => {
-            document.addEventListener("keydown", closeByEsc);
-            return () => {
-              document.removeEventListener("keydown", closeByEsc);
-            };
-          }, []);
         return (
             <section>
                 <h1 className={styles.title + ' text text_type_main-large'}>Соберите бургер</h1>
@@ -102,12 +91,11 @@ export const BurgerIngredients = (props) => {
                         ))}
                     </div>
                 </div>
-                {state.visible && 
-                <IngredientDetails  
-                    closePopup={closePopup}
-                    data={ingridient}
-                />
-                }
+                {state.visible && (
+                    <Modal title={'Детали ингредиента'} closePopup={closePopup}>
+                        <IngredientDetails data={ingridient}/> 
+                    </Modal>
+                )}
             </section>
         )
 }

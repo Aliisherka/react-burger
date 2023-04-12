@@ -15,7 +15,12 @@ export const App = () => {
     React.useEffect(() => {
         const getData = async () => {
             fetch('https://norma.nomoreparties.space/api/ingredients')
-                .then(res => res.json())
+                .then(res => {
+                    if (res.ok) {
+                        return res.json()
+                    }
+                    return Promise.reject(`Ошибка ${res.status}`);
+                })
                 .then(data => setState(data))
                 .catch(e => {
                     console.log('ошибка загрузки карточек');
@@ -31,7 +36,6 @@ export const App = () => {
                         <BurgerIngredients data={state.data}/>
                         <BurgerConstructor data={state.data}/>
                 </main>
-                <div id="react-modals"></div>
             </>
         )
 }
