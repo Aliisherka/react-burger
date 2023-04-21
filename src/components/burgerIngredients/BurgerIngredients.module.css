@@ -1,0 +1,46 @@
+.title {
+    padding-top: 40px;
+    margin: 0;
+}
+
+.tab {
+    display: flex;
+}
+
+.burgers {
+    overflow-y: scroll; 
+    height: 715px; 
+    width: 600px;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding-top: 24px;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 272px;
+    position: relative;
+    cursor: pointer;
+}
+
+.itemPrice {
+    display: flex; 
+    text-align: center; 
+    gap: 9px;
+}
+
+.text {
+    margin: 0;
+    text-align: center;
+}
+
+.itemNumber {
+    margin: 0;
+}

@@ -1,0 +1,23 @@
+.header {
+    display: flex;
+    justify-content: center;
+}
+
+.content {
+    display: flex; 
+    justify-content: space-between; 
+    width: 1280px;
+}
+
+.icons {
+    display: flex;
+    gap: 8px;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+}
+
