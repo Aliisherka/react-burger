@@ -4,13 +4,14 @@ import styles from './app.module.css';
 import {Header} from '../header/Header';
 import { BurgerIngredients } from '../burgerIngredients/BurgerIngredients';
 import { BurgerConstructor } from '../burgerConstructor/BurgerConstructor';
+import { BurgerContext } from '../../context/burgerContext';
 
 
 export const App = () => {
     const [state, setState] = React.useState({
-        data: [],
-        success: false
-    })
+        success: false,
+        ingredients: null
+    });
 
     React.useEffect(() => {
         const getData = async () => {
@@ -21,7 +22,7 @@ export const App = () => {
                     }
                     return Promise.reject(`Ошибка ${res.status}`);
                 })
-                .then(data => setState(data))
+                .then(data => setState({success: data.success, ingredients: data.data}))
                 .catch(e => {
                     console.log('ошибка загрузки карточек');
                 });
@@ -33,8 +34,12 @@ export const App = () => {
             <>
                 <Header/>
                 <main className={styles.main}>
-                        <BurgerIngredients data={state.data}/>
-                        <BurgerConstructor data={state.data}/>
+                    {state.success && (
+                    <BurgerContext.Provider value={state.ingredients}>
+                        <BurgerIngredients />
+                        <BurgerConstructor />
+                    </BurgerContext.Provider>
+                    )}
                 </main>
             </>
         )
