@@ -1,0 +1,19 @@
+.img {
+    padding-top: 105px;
+}
+
+.text {
+    padding-bottom: 32px;
+    margin: 0;
+}
+
+.details {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    padding-bottom: 60px;
+}
+
+.detailText {
+    margin: 0;
+}

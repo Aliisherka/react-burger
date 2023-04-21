@@ -3,9 +3,35 @@ import PropTypes from 'prop-types';
 import styles from './BurgerIngredients.module.css'
 
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
+import { IngredientDetails } from '../IngredientDetails/IngredientDetails';
+import { Modal } from '../Modal/Modal';
 
 export const BurgerIngredients = (props) => {
         const [current, setCurrent] = React.useState('one')
+
+        const [state, setState] = React.useState({
+            visible: false
+        })
+
+        const [ingridient, setIngridient] = React.useState();
+
+        const openPopup = (e) => {
+            setState({visible: true})
+            const findIngridient = props.data.find(item => item._id === e.currentTarget.id)
+            setIngridient({
+                img: findIngridient.image_large,
+                name: findIngridient.name,
+                calories: findIngridient.calories,
+                proteins: findIngridient.proteins,
+                fat: findIngridient.fat,
+                carbohydrates: findIngridient.carbohydrates
+            })
+        }
+    
+        const closePopup = () => {
+            setState({visible: false})
+        }
+
         return (
             <section>
                 <h1 className={styles.title + ' text text_type_main-large'}>Соберите бургер</h1>
@@ -25,14 +51,14 @@ export const BurgerIngredients = (props) => {
                     <div className={styles.cards}>
                         {props.data.map((item)=>(
                             item.type === 'bun' && 
-                                <div className={styles.item} key={item._id}>
+                                <div onClick={openPopup} id={item._id} className={styles.item} key={item._id}>
                                     <img className='pb-1' src={item.image} alt={item.name}/>
                                     <Counter count={1} size="default" extraClass="m-1" />
                                     <div className={styles.itemPrice + ' pb-1'}>
                                         <p className={styles.itemNumber}>{item.price}</p>
                                         <CurrencyIcon type="primary" />
                                     </div>
-                                    <p className={styles.text + ' text text_type_main-default'}>{item.name}</p>
+                                    <p id='text' className={styles.text + ' text text_type_main-default'}>{item.name}</p>
                                 </div>
                         ))}
                     </div>
@@ -40,7 +66,7 @@ export const BurgerIngredients = (props) => {
                     <div className={styles.cards}>
                         {props.data.map((item)=>(
                             item.type === 'sauce' && 
-                                <div className={styles.item} key={item._id}>
+                                <div onClick={openPopup} id={item._id} className={styles.item} key={item._id}>
                                     <img className='pb-1' src={item.image} alt={item.name}/>
                                     <div className={styles.itemPrice + ' pb-1'}>
                                         <p className={styles.itemNumber}>{item.price}</p>
@@ -54,7 +80,7 @@ export const BurgerIngredients = (props) => {
                     <div className={styles.cards}>
                         {props.data.map((item)=>(
                             item.type === 'main' && 
-                                <div className={styles.item} key={item._id}>
+                                <div onClick={openPopup} id={item._id} className={styles.item} key={item._id}>
                                     <img className='pb-1' src={item.image} alt={item.name}/>
                                     <div className={styles.itemPrice + ' pb-1'}>
                                         <p className={styles.itemNumber}>{item.price}</p>
@@ -65,6 +91,11 @@ export const BurgerIngredients = (props) => {
                         ))}
                     </div>
                 </div>
+                {state.visible && (
+                    <Modal title={'Детали ингредиента'} closePopup={closePopup}>
+                        <IngredientDetails data={ingridient}/> 
+                    </Modal>
+                )}
             </section>
         )
 }
