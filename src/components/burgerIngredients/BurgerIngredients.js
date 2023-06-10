@@ -5,19 +5,22 @@ import styles from './BurgerIngredients.module.css'
 import { Counter, CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import { IngredientDetails } from '../IngredientDetails/IngredientDetails';
 import { Modal } from '../Modal/Modal';
+import { BurgerContext } from '../../context/burgerContext';
 
-export const BurgerIngredients = (props) => {
+export const BurgerIngredients = () => {
         const [current, setCurrent] = React.useState('one')
 
         const [state, setState] = React.useState({
             visible: false
         })
 
+        const data = React.useContext(BurgerContext)
+
         const [ingridient, setIngridient] = React.useState();
 
         const openPopup = (e) => {
             setState({visible: true})
-            const findIngridient = props.data.find(item => item._id === e.currentTarget.id)
+            const findIngridient = data.find(item => item._id === e.currentTarget.id)
             setIngridient({
                 img: findIngridient.image_large,
                 name: findIngridient.name,
@@ -49,7 +52,7 @@ export const BurgerIngredients = (props) => {
                 <div className={styles.burgers}>
                     <h2 className={styles.title + ' text text_type_main-medium'}>Булки</h2>
                     <div className={styles.cards}>
-                        {props.data.map((item)=>(
+                        {data.map((item)=>(
                             item.type === 'bun' && 
                                 <div onClick={openPopup} id={item._id} className={styles.item} key={item._id}>
                                     <img className='pb-1' src={item.image} alt={item.name}/>
@@ -64,7 +67,7 @@ export const BurgerIngredients = (props) => {
                     </div>
                     <h2 className={styles.title + ' text text_type_main-medium'}>Соусы</h2>
                     <div className={styles.cards}>
-                        {props.data.map((item)=>(
+                        {data.map((item)=>(
                             item.type === 'sauce' && 
                                 <div onClick={openPopup} id={item._id} className={styles.item} key={item._id}>
                                     <img className='pb-1' src={item.image} alt={item.name}/>
@@ -78,7 +81,7 @@ export const BurgerIngredients = (props) => {
                     </div>
                     <h2 className={styles.title + ' text text_type_main-medium'}>Начинка</h2>
                     <div className={styles.cards}>
-                        {props.data.map((item)=>(
+                        {data.map((item)=>(
                             item.type === 'main' && 
                                 <div onClick={openPopup} id={item._id} className={styles.item} key={item._id}>
                                     <img className='pb-1' src={item.image} alt={item.name}/>
@@ -98,8 +101,4 @@ export const BurgerIngredients = (props) => {
                 )}
             </section>
         )
-}
-
-BurgerIngredients.propTypes = {
-    data: PropTypes.array.isRequired
 }
