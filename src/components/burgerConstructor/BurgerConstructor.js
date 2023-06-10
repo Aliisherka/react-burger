@@ -8,10 +8,6 @@ import { Modal } from '../Modal/Modal';
 import { BurgerContext } from '../../context/burgerContext';
 
 export const BurgerConstructor = () => {
-    const [state, setState] = React.useState({
-        visible: false
-    })
-
     const [number, setNumber] = React.useState();
 
     const [orderNumber , setOrderNumber] = React.useState({
@@ -20,7 +16,7 @@ export const BurgerConstructor = () => {
 
     const data = React.useContext(BurgerContext);
 
-    React.useEffect(() => {
+    const totalPrice = React.useMemo(() => {
         const arr = [];
 
         data.map((item) => {
@@ -32,7 +28,7 @@ export const BurgerConstructor = () => {
         })
 
         setNumber(total)
-    }, []);
+    }, [number]);
 
     const burgerBun = data.find((item) => {
         return item.type.includes("bun");
@@ -40,21 +36,20 @@ export const BurgerConstructor = () => {
 
 
     const openPopup = () => {
-        setState({visible: true});
-        orders()
+        sendOrders()
     }
 
     const closePopup = () => {
-        setState({visible: false})
+        setOrderNumber({success: false})
     }    
 
-    const orders = () => {
+    const sendOrders = () => {
         const orderId = []
+        const URL = 'https://norma.nomoreparties.space/api';
         data.map((item) => {
             orderId.push(item._id)
         })
-        console.log(orderId)
-        fetch('https://norma.nomoreparties.space/api/orders', {
+        fetch(URL + '/orders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8'
@@ -74,8 +69,6 @@ export const BurgerConstructor = () => {
             console.log('ошибка загрузки карточек');
         });
     }
-
-    //console.log(orderNumber)
 
     return (
         <section className={styles.burgerConstructor}>
@@ -118,9 +111,9 @@ export const BurgerConstructor = () => {
                     <CurrencyIcon type="primary" />
                 </div>
                 <Button onClick={openPopup} htmlType="button" type="primary" size="large">
-                    Нажми на меня
+                    Оформить заказ
                 </Button>
-                {(state.visible && orderNumber.success) &&
+                {(orderNumber.success && orderNumber.orderNumber) &&
                 <Modal closePopup={closePopup}>
                     <OrderDetails order={orderNumber.orderNumber}/>
                 </Modal>

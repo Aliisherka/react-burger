@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import done from '../../images/graphics.svg'
 
 export const OrderDetails = (props) => {
-    console.log(props.order)
     return (
         <>
             <p className={styles.numbers + ' text text_type_digits-large'}>{props.order}</p>
