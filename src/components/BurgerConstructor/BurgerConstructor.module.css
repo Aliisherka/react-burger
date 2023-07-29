@@ -1,0 +1,26 @@
+.burgerComponent {
+    display: flex; 
+    flex-direction: column; 
+    gap: 16px;
+    overflow: scroll;
+    height: 656px;
+}
+
+.ingredient {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.info {
+    display: flex;
+    justify-content: flex-end;
+    gap: 40px;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
