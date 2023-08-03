@@ -1,11 +1,12 @@
 import styles from './BurgerIngredients.module.css';
 import React from 'react';
 import PropTypes from 'prop-types';
+import {dataPropTypes} from '../../propTypes/data';
 
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 
 function BurgerIngredients({data}) {
-    const [current, setCurrent] = React.useState('one')
+    const [current, setCurrent] = React.useState('bun')
 
     const buns = data.filter((bun) => {
         return bun.type === 'bun';
@@ -18,17 +19,18 @@ function BurgerIngredients({data}) {
     const mains = data.filter((main) => {
         return main.type === 'main';
     })
+
     return(
         <div className={styles.burgerIngredients + ' mb-10'}>
             <h1 className={styles.title + ' pb-5 pt-10 text text_type_main-large'}>Соберите бургер</h1>
             <div style={{ display: 'flex' }} className='pb-10'>
-                <Tab value="one" active={current === 'one'} onClick={setCurrent}>
+                <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
                     Булки
                 </Tab>
-                <Tab value="two" active={current === 'two'} onClick={setCurrent}>
+                <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
                     Соусы
                 </Tab>
-                <Tab value="three" active={current === 'three'} onClick={setCurrent}>
+                <Tab value="main" active={current === 'main'} onClick={setCurrent}>
                     Начинки
                 </Tab>
             </div>
@@ -79,7 +81,7 @@ function BurgerIngredients({data}) {
 }
 
 BurgerIngredients.propTypes = {
-    data: PropTypes.array.isRequired
+    data: PropTypes.arrayOf(dataPropTypes).isRequired
 }
 
 export default BurgerIngredients;
