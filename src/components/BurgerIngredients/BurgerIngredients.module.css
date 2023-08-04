@@ -1,0 +1,40 @@
+.burgerIngredients {
+    width: 600px;
+    height: 912px;
+}
+
+.title {
+    margin: 0;
+}
+
+.ingredients {
+    height: 756px;
+    overflow: scroll;
+}
+
+.ingredientsTitle {
+    margin: 0;
+}
+
+.ingredientsColumn {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    width: 568px;
+}
+
+.ingredient {
+    width: 272px;
+    position: relative;
+}
+
+.price {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.text {
+    text-align: center;
+    min-height: 48px;
+}
