@@ -1,7 +1,7 @@
 import styles from './BurgerConstructor.module.css';
 import PropTypes from 'prop-types';
 import {dataPropTypes} from '../../propTypes/data';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import OrderDetails from '../OrderDetails/OrderDetails';
 
 import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -19,19 +19,8 @@ function BurgerConstructor({data}) {
         setState({visible: false})
     }
 
-    const closeByEsc = (e) => {
-        if(e.key === 'Escape') {
-            handleCloseModal()
-        }
-    }
-
     const bun = data.find((bun) => {
         return bun.type === 'bun';
-    })
-
-    useEffect(() => {
-        document.addEventListener('keydown', closeByEsc)
-        return () => document.removeEventListener('keydown', closeByEsc)
     })
 
     return (
@@ -80,7 +69,7 @@ function BurgerConstructor({data}) {
                 </div>
             </div>
             <div style={{overflow: 'hidden'}}>
-                {state.visible && <OrderDetails handleCloseModal={handleCloseModal} closeByEsc={closeByEsc}/>}
+                {state.visible && <OrderDetails handleCloseModal={handleCloseModal}/>}
             </div>
         </>
     )

@@ -3,10 +3,21 @@ import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import styles from './Modal.module.css';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
+import {useEffect} from 'react';
 
 const modalRoot = document.getElementById("react-modals");
 
 function Modal(props) {
+    const closeByEsc = (e) => {
+        if(e.key === 'Escape') {
+            props.handleCloseModal()
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener('keydown', closeByEsc)
+        return () => document.removeEventListener('keydown', closeByEsc)
+    })
     return createPortal(
             (
                 <div className={styles.modal}>

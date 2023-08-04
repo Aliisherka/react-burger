@@ -1,7 +1,7 @@
 import styles from './BurgerIngredients.module.css';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import {dataPropTypes} from '../../propTypes/data';
 
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -27,17 +27,6 @@ function BurgerIngredients({data}) {
     const handleCloseModal = () => {
         setState({visible: false})
     }
-
-    const closeByEsc = (e) => {
-        if(e.key === 'Escape') {
-            handleCloseModal()
-        }
-    }
-
-    useEffect(() => {
-        document.addEventListener('keydown', closeByEsc)
-        return () => document.removeEventListener('keydown', closeByEsc)
-    })
 
     const buns = data.filter((bun) => {
         return bun.type === 'bun';
@@ -110,7 +99,7 @@ function BurgerIngredients({data}) {
                 </div>
             </div>
             <div style={{overflow: 'hidden'}}>
-                {state.visible && state.element && <IngredientDetails element={state.element} handleCloseModal={handleCloseModal} closeByEsc={closeByEsc}/>}
+                {state.visible && state.element && <IngredientDetails element={state.element} handleCloseModal={handleCloseModal}/>}
             </div>
         </>
     );
