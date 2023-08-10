@@ -5,6 +5,9 @@ import AppHeader from '../AppHeader/AppHeader';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 
+import { ConstructorContext } from '../../services/constructorContext';
+import { getIngredients } from '../../utils/burger-api';
+
 function App() {
   const [state, setState] = useState({
     isLoading: false,
@@ -16,19 +19,7 @@ function App() {
   const URL = 'https://norma.nomoreparties.space/api/ingredients';
 
   useEffect(() => {
-    fetch(URL)
-    .then(res => {
-      if (res.ok) {
-        setState({...state, isLoading: true})
-        return res.json();
-      }
-
-      return Promise.reject(`Ошибка: ${res.status}`)})
-    .then(data => setState({ ...state, data: data.data, success: data.success, isLoading: false}))
-    .catch(error => {
-      setState({...state, isLoading: false, hasError: true})
-      console.log(error);
-    })
+    getIngredients(URL, state, setState);
   }, [URL]);
 
   return (
@@ -38,7 +29,9 @@ function App() {
         {state.success && 
           <>
             <BurgerIngredients data={state.data}/>
-            <BurgerConstructor data={state.data} />
+            <ConstructorContext.Provider value={state.data}>
+              <BurgerConstructor />
+            </ConstructorContext.Provider>
           </>
         }
       </main>

@@ -1,22 +1,45 @@
 import styles from './BurgerConstructor.module.css';
-import PropTypes from 'prop-types';
-import {dataPropTypes} from '../../propTypes/data';
-import {useState} from 'react';
+import {useState, useContext, useEffect} from 'react';
 import OrderDetails from '../OrderDetails/OrderDetails';
 
-import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-function BurgerConstructor({data}) {
+import { ConstructorContext } from '../../services/constructorContext';
+import { getOrderNumber } from '../../utils/order-api';
+
+function BurgerConstructor() {
+    const data = useContext(ConstructorContext);
+
     const [state, setState] = useState({
-        visible: false
+        visible: false,
+        total: null,
+        orderNumber: null
     })
 
+    useEffect(() => {
+        getTotalPrice();
+    }, [data]);
+    
+    function getTotalPrice() {
+        const price = [];
+        data.map((item) => {
+            price.push(item.price);
+        });
+        
+        const total = price.reduce((prev, item) => {
+            return prev + item;
+        }, 0);
+        setState({ ...state, total: total})
+    };
+
     const handleOpenModal = () => {
-        setState({visible: true})
+        setState({ ...state, visible: true});
+
+        getOrderNumber(data, state, setState);
     }
 
     const handleCloseModal = () => {
-        setState({visible: false})
+        setState({ ...state, visible: false})
     }
 
     const bun = data.find((bun) => {
@@ -60,7 +83,7 @@ function BurgerConstructor({data}) {
                 </div>
                 <div className={styles.info}>
                     <div className={styles.price}>
-                        <p className='text text_type_digits-medium'>100</p>
+                        <p className='text text_type_digits-medium'>{state.total}</p>
                         <CurrencyIcon type="primary" />
                     </div>
                     <Button htmlType="button" type="primary" size="large" onClick={handleOpenModal}>
@@ -69,14 +92,10 @@ function BurgerConstructor({data}) {
                 </div>
             </div>
             <div style={{overflow: 'hidden'}}>
-                {state.visible && <OrderDetails handleCloseModal={handleCloseModal}/>}
+                {state.visible && state.orderNumber && <OrderDetails handleCloseModal={handleCloseModal} orderNumber={state.orderNumber}/>}
             </div>
         </>
     )
-}
-
-BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(dataPropTypes).isRequired
 }
 
 export default BurgerConstructor;
