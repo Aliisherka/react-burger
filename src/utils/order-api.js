@@ -1,9 +1,11 @@
+import { request } from './request';
+
 export const getOrderNumber = (data, state, setState) => {
     const ingredientId = [];
     data.map((item) => {
         ingredientId.push(item._id);
     });
-    fetch('https://norma.nomoreparties.space/api/orders', {
+    request('orders', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -12,13 +14,10 @@ export const getOrderNumber = (data, state, setState) => {
             "ingredients": ingredientId
         })
     })
-    .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-  
-        return Promise.reject(`Ошибка: ${res.status}`)})
     .then((data) => {
         setState({ ...state, orderNumber: data.order.number, visible: true});
-    }); 
+    })
+    .catch(error => {
+        setState({...state, hasError: true})
+      })
 }

@@ -1,6 +1,7 @@
 import styles from './BurgerConstructor.module.css';
 import {useState, useContext, useEffect} from 'react';
 import OrderDetails from '../OrderDetails/OrderDetails';
+import Modal from '../Modal/Modal';
 
 import { ConstructorElement, DragIcon, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -12,6 +13,7 @@ function BurgerConstructor() {
 
     const [state, setState] = useState({
         visible: false,
+        hasError: false,
         total: null,
         orderNumber: null
     })
@@ -91,8 +93,11 @@ function BurgerConstructor() {
                     </Button>
                 </div>
             </div>
-            <div style={{overflow: 'hidden'}}>
-                {state.visible && state.orderNumber && <OrderDetails handleCloseModal={handleCloseModal} orderNumber={state.orderNumber}/>}
+            <div>
+                {state.visible && state.orderNumber 
+                && <Modal handleCloseModal={handleCloseModal}>
+                        <OrderDetails orderNumber={state.orderNumber}/>
+                    </Modal>}
             </div>
         </>
     )

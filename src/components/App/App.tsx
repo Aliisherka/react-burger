@@ -16,11 +16,9 @@ function App() {
     data: []
   });
 
-  const URL = 'https://norma.nomoreparties.space/api/ingredients';
-
   useEffect(() => {
-    getIngredients(URL, state, setState);
-  }, [URL]);
+    getIngredients(state, setState);
+  }, []);
 
   return (
     <>
@@ -28,8 +26,8 @@ function App() {
       <main className={styles.main}>
         {state.success && 
           <>
-            <BurgerIngredients data={state.data}/>
             <ConstructorContext.Provider value={state.data}>
+              <BurgerIngredients />
               <BurgerConstructor />
             </ConstructorContext.Provider>
           </>
