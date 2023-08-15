@@ -9,7 +9,7 @@
 
 .ingredients {
     height: 756px;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 .ingredientsTitle {

@@ -1,13 +1,15 @@
 import styles from './BurgerIngredients.module.css';
 import React from 'react';
-import PropTypes from 'prop-types';
-import {useState} from 'react';
-import {dataPropTypes} from '../../propTypes/data';
+import {useState, useContext} from 'react';
 
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import Modal from '../Modal/Modal';
+import { ConstructorContext } from '../../services/constructorContext';
 
-function BurgerIngredients({data}) {
+function BurgerIngredients() {
+    const data = useContext(ConstructorContext);
+
     const [current, setCurrent] = React.useState('bun')
 
     const [state, setState] = useState({
@@ -60,7 +62,7 @@ function BurgerIngredients({data}) {
                     <div className={styles.ingredientsColumn + ' pl-4 pr-4 pt-6 pb-10'}>
                         {buns.map((bun) =>(
                             <div id={bun._id} className={styles.ingredient} key={bun._id} onClick={handleOpenModal}>
-                                <img className='pl-4 pr-4 pb-1' src={bun.image}/>
+                                <img className='pl-4 pr-4 pb-1' src={bun.image} alt={'картинка булки бургера'}/>
                                 <div className={styles.price}>
                                     <p className='text text_type_digits-default'>{bun.price}</p>
                                     <CurrencyIcon type="primary" />
@@ -74,7 +76,7 @@ function BurgerIngredients({data}) {
                     <div className={styles.ingredientsColumn + ' pl-4 pr-4 pt-6 pb-10'}>
                         {sauces.map((sauce) =>(
                             <div className={styles.ingredient} key={sauce._id} id={sauce._id} onClick={handleOpenModal}>
-                                <img className='pl-4 pr-4 pb-1' src={sauce.image}/>
+                                <img className='pl-4 pr-4 pb-1' src={sauce.image} alt={'картинка соуса бургера'}/>
                                 <div className={styles.price}>
                                     <p className='text text_type_digits-default'>{sauce.price}</p>
                                     <CurrencyIcon type="primary" />
@@ -87,7 +89,7 @@ function BurgerIngredients({data}) {
                     <div className={styles.ingredientsColumn + ' pl-4 pr-4 pt-6 pb-10'}>
                         {mains.map((main) =>(
                             <div className={styles.ingredient} key={main._id} id={main._id} onClick={handleOpenModal}>
-                                <img className='pl-4 pr-4 pb-1' src={main.image}/>
+                                <img className='pl-4 pr-4 pb-1' src={main.image} alt={'картинка начинки бургера'}/>
                                 <div className={styles.price}>
                                     <p className='text text_type_digits-default'>{main.price}</p>
                                     <CurrencyIcon type="primary" />
@@ -98,15 +100,14 @@ function BurgerIngredients({data}) {
                     </div>
                 </div>
             </div>
-            <div style={{overflow: 'hidden'}}>
-                {state.visible && state.element && <IngredientDetails element={state.element} handleCloseModal={handleCloseModal}/>}
+            <div>
+                {state.visible && state.element 
+                && <Modal title={'Детали ингредиента'} handleCloseModal={handleCloseModal}>
+                    <IngredientDetails element={state.element}/>
+                </Modal>}
             </div>
         </>
     );
-}
-
-BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(dataPropTypes).isRequired
 }
 
 export default BurgerIngredients;

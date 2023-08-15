@@ -8,13 +8,14 @@ import {useEffect} from 'react';
 const modalRoot = document.getElementById("react-modals");
 
 function Modal(props) {
-    const closeByEsc = (e) => {
-        if(e.key === 'Escape') {
-            props.handleCloseModal()
-        }
-    }
-
+    
     useEffect(() => {
+        const closeByEsc = (e) => {
+            if(e.key === 'Escape') {
+                props.handleCloseModal()
+            }
+        }
+        
         document.addEventListener('keydown', closeByEsc)
         return () => document.removeEventListener('keydown', closeByEsc)
     })
