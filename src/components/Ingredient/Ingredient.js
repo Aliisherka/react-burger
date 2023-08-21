@@ -16,12 +16,9 @@ function Ingredient({_id, image, price, name, handleOpenModal, type, __v}) {
 
     let countBun = null;
 
-    if(draggedBun) {
-        draggedBun.map(item => {
-            if (item._id === _id) {
-                countBun = item.__v;
-            }
-        })
+
+    if(draggedBun && draggedBun._id === _id) {
+        countBun = draggedBun.__v;
     }
 
     return(

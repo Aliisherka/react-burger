@@ -11,6 +11,8 @@ export const GET_ORDER_NUMBER_ERROR = 'GET_ORDER_NUMBER_ERROR';
 export const INCREASE_INGREDIENT = 'INCREASE_INGREDIENT';
 export const DECREASE_INGREDIENT = 'DECREASE_INGREDIENT';
 
+export const CLEAR_QUANTITY = 'CLEAR_QUANTITY';
+
 export function getIngredient() {
     return function(dispatch) {
         dispatch({
@@ -37,18 +39,18 @@ export function getIngredient() {
     }
 }
 
-export function getOrder(ingredient, bun) {
-    const ingredientId = [];
-
-    ingredient.map((item) => {
-        ingredientId.push(item.prevId);
-    });
-
-    bun.map((item) => {
-        ingredientId.push(item._id);
-    });
-    
+export function getOrder(ingredients, bun) {
     return function(dispatch) {
+        const ingredientId = [];
+    
+        ingredients.map((item) => {
+            return ingredientId.push(item.prevId);
+        });
+    
+    
+        ingredientId.push(bun._id);
+
+
         dispatch({
             type: GET_ORDER_NUMBER
         })

@@ -10,7 +10,7 @@ import {
 } from "../actions/constructor";
 
 const initialState = {
-    draggedBun: [],
+    draggedBun: null,
     totalPrice: null,
     draggedIngredient: [],
 }
@@ -26,7 +26,7 @@ export const constructorReducer = (state = initialState, action) => {
         case DRAGGE_BUN: {
             return {
                 ...state,
-                draggedBun: [...action.ingredient.filter(ingredient => ingredient._id === action._id)]
+                draggedBun: action.ingredient.find(ingredient => {return ingredient._id === action._id})
             }
         }
         case GIVE_UNIQUE_ID: {
@@ -44,15 +44,12 @@ export const constructorReducer = (state = initialState, action) => {
         case GET_TOTAL_PRICE: {
             return {
                 ...state,
-                totalPrice: action.total
+                totalPrice: action.price
             }
         }
         case CLEAR_COSTRUCTOR: {
             return {
-                ...state,
-                draggedBun: [],
-                draggedIngredient: [],
-                //ingredient: [...state.ingredient].map(item => item.__v > null ? {...item, __v: null} : item)
+                ...initialState,
             }
         }
         case REORDER_CONSTRUCTOR: {
@@ -65,7 +62,7 @@ export const constructorReducer = (state = initialState, action) => {
         case INCREASE_BUN: {
             return {
                 ...state,
-                draggedBun: [...state.draggedBun].map(item => item._id === action._id ? { ...item, __v: 1} : item)
+                draggedBun: {...state.draggedBun, __v: 1}
             }
         }
         default: {

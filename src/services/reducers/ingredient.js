@@ -7,6 +7,7 @@ import {
     GET_ORDER_NUMBER_ERROR,
     INCREASE_INGREDIENT,
     DECREASE_INGREDIENT,
+    CLEAR_QUANTITY
 } from "../actions/ingredient";
 
 const initialState = {
@@ -17,8 +18,6 @@ const initialState = {
     orderNumberRequest: false,
     orderNumberFailed: false,
     orderNumber: null,
-
-    draggedIngredient: []
 }
 
 export const ingredientReducer = (state = initialState, action) => {
@@ -39,8 +38,7 @@ export const ingredientReducer = (state = initialState, action) => {
         }
         case GET_INGREDIENT_ERROR: {
             return {
-                ...state,
-                ingredientRequest: false,
+                ...initialState,
                 ingredientFailed: true
             }
         }
@@ -61,8 +59,8 @@ export const ingredientReducer = (state = initialState, action) => {
         case GET_ORDER_NUMBER_ERROR: {
             return {
                 ...state,
-                orderNumberRequest: false,
                 orderNumberFailed: true,
+                orderNumberRequest: false,
                 orderNumber: []
             }
         }
@@ -76,6 +74,12 @@ export const ingredientReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ingredient: [...state.ingredient].map(item => item._id === action.prevId ? { ...item, __v: --item.__v} : item),
+            }
+        }
+        case CLEAR_QUANTITY: {
+            return {
+                ...state,
+                ingredient: [...state.ingredient].map(item => item.__v > null ? {...item, __v: null} : item)
             }
         }
         default: {

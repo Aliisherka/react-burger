@@ -1,11 +1,11 @@
 import styles from './BurgerConstructor.module.css';
-import {useEffect} from 'react';
+import {useEffect, useMemo} from 'react';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import Modal from '../Modal/Modal';
 
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { getOrder, INCREASE_INGREDIENT, DECREASE_INGREDIENT } from '../../services/actions/ingredient';
+import { getOrder, INCREASE_INGREDIENT, DECREASE_INGREDIENT, CLEAR_QUANTITY } from '../../services/actions/ingredient';
 import { GET_TOTAL_PRICE, DELETE_INGREDIENT, DRAGGE_BUN, CLEAR_COSTRUCTOR, INCREASE_BUN, DRAGGE_INGREDIENT } from '../../services/actions/constructor';
 import { CLOSE_ORDER, OPEN_ORDER } from '../../services/actions/modal';
 
@@ -19,45 +19,35 @@ function BurgerConstructor() {
     const { visibleOrder } = useSelector(state => state.modal);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        getTotalPrice();
-    }, [draggedIngredient, draggedBun]);
-    
-    function getTotalPrice() {
-        const priceIngredient = [];
-        let priceBuns = null;
+    const price = useMemo(() => {
+        return (
+            (draggedBun ? draggedBun.price * 2 : 0) + (draggedIngredient ? draggedIngredient.reduce((s, v) => s + v.price, 0) : 0)
+        );
+    }, [draggedBun, draggedIngredient]);
 
-        if (draggedIngredient){
-            draggedIngredient.map((item) => {
-                priceIngredient.push(item.price);
-            });
-        }
-        if (draggedBun) {
-            draggedBun.map((item) => {
-                priceBuns = item.price * 2;
-            })
-        }    
-            const total = priceIngredient.reduce((prev, item) => {
-                return prev + item;
-            }, priceBuns);
-            dispatch({type: GET_TOTAL_PRICE, total})
-    };
+    useEffect(() => {
+        dispatch({type: GET_TOTAL_PRICE, price})
+    }, [dispatch, price]);
+    
 
     const handleOpenModal = () => {
-        dispatch({type: OPEN_ORDER});
-
-        dispatch(getOrder(draggedIngredient, draggedBun));
-
-        dispatch({
-            type: CLEAR_COSTRUCTOR
-        })
+        if (draggedIngredient && draggedBun) {
+            dispatch({type: OPEN_ORDER});
+    
+            dispatch(getOrder(draggedIngredient, draggedBun));
+    
+            dispatch({
+                type: CLEAR_COSTRUCTOR
+            })
+            dispatch({
+                type: CLEAR_QUANTITY
+            })
+        }
     }
 
     const handleCloseModal = () => {
         dispatch({type: CLOSE_ORDER});
     }
-
-    const bun = draggedBun && draggedBun[0];
 
     const [, drop] = useDrop({
         accept: 'ingredient',
@@ -103,13 +93,13 @@ function BurgerConstructor() {
         <>
             <div className={' pt-25 pl-4 pr-4 pb-10'} ref={drop}>
                 <div className={styles.burgerComponent + ' mb-10'}>
-                    {bun && 
+                    {draggedBun && 
                         <Constructor 
-                            item={bun} 
+                            item={draggedBun} 
                             isLocked={true} 
                             extraClass={'ml-8'} 
                             type={'top'} 
-                            text={bun.name + ' (верх)'}
+                            text={draggedBun.name + ' (верх)'}
                         />
                     }
                     {draggedIngredient &&
@@ -127,16 +117,17 @@ function BurgerConstructor() {
                                     />
                                 )
                             }
+                            return ingredient;
                         })}
                     </div>
                     }
-                    {bun && 
+                    {draggedBun && 
                         <Constructor 
-                            item={bun} 
+                            item={draggedBun} 
                             isLocked={true} 
                             extraClass={'ml-8'} 
                             type={'bottom'} 
-                            text={bun.name + ' (низ)'}
+                            text={draggedBun.name + ' (низ)'}
                         />
                     }
                 </div>

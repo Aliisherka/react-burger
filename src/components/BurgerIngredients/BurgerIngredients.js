@@ -1,5 +1,5 @@
 import styles from './BurgerIngredients.module.css';
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
@@ -39,17 +39,26 @@ function BurgerIngredients() {
         dispatch({ type: CLOSE_ELEMENT });
     }
 
-    const buns = ingredient.filter((bun) => {
-        return bun.type === 'bun';
-    })
+    const buns = useMemo(() => 
+        ingredient.filter((bun) => {
+            return bun.type === 'bun';
+        }),
+        [ingredient]
+    );
 
-    const sauces = ingredient.filter((sauce) => {
-        return sauce.type === 'sauce';
-    })
+    const sauces = useMemo(() =>
+        ingredient.filter((sauce) => {
+            return sauce.type === 'sauce';
+        }),
+        [ingredient]
+    );
 
-    const mains = ingredient.filter((main) => {
-        return main.type === 'main';
-    })
+    const mains = useMemo(() =>
+        ingredient.filter((main) => {
+            return main.type === 'main';
+        }),
+        [ingredient]
+    )
 
     return(
         <>

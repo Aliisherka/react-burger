@@ -1,11 +1,16 @@
+.appHeader {
+    margin: 40px 40px 0;
+    display: flex;
+    justify-content: center;
+    background-color: #1C1C21;
+}
+
 .header {
     width: 1280px;
     min-height: 56px;
-    margin: 40px auto 0;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     justify-items: center;
-    background-color: #1C1C21;
 }
 
 .linkList {
