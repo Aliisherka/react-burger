@@ -10,12 +10,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-}
-
-.ingredient {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    height: 656px;
 }
 
 .info {

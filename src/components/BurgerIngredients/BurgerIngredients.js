@@ -1,44 +1,53 @@
 import styles from './BurgerIngredients.module.css';
-import React from 'react';
-import {useState, useContext} from 'react';
+import React, {useEffect} from 'react';
 
-import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import Modal from '../Modal/Modal';
-import { ConstructorContext } from '../../services/constructorContext';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { CLOSE_ELEMENT, OPEN_ELEMENT } from '../../services/actions/modal';
+import { getIngredient } from '../../services/actions/ingredient';
+import Ingredient from '../Ingredient/Ingredient';
 
 function BurgerIngredients() {
-    const data = useContext(ConstructorContext);
+    const { ingredient } = useSelector(state => state.ingredient);
+    const { visibleElement } = useSelector(state => state.modal);
 
-    const [current, setCurrent] = React.useState('bun')
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getIngredient());
+    }, [dispatch]);
 
-    const [state, setState] = useState({
-        visible: false,
-        element: []
-    })
+    const [current, setCurrent] = React.useState('bun');
+
+    const scroll = (e) => {
+        if (e.target.scrollTop < 300) {
+            setCurrent('bun')
+        } else if (e.target.scrollTop >= 300 && e.target.scrollTop < 820) {
+            setCurrent('sauce')
+        } else if (e.target.scrollTop >= 820){
+            setCurrent('main')
+        }
+    }
 
     const handleOpenModal = (e) => {
-        setState({
-            visible: true,
-            element: data.filter((item) => {
-                return item._id === e.currentTarget.id;
-            })
-        })
+        dispatch({ type: OPEN_ELEMENT, e, ingredient });
     }
 
     const handleCloseModal = () => {
-        setState({visible: false})
+        dispatch({ type: CLOSE_ELEMENT });
     }
 
-    const buns = data.filter((bun) => {
+    const buns = ingredient.filter((bun) => {
         return bun.type === 'bun';
     })
 
-    const sauces = data.filter((sauce) => {
+    const sauces = ingredient.filter((sauce) => {
         return sauce.type === 'sauce';
     })
 
-    const mains = data.filter((main) => {
+    const mains = ingredient.filter((main) => {
         return main.type === 'main';
     })
 
@@ -57,54 +66,32 @@ function BurgerIngredients() {
                         Начинки
                     </Tab>
                 </div>
-                <div className={styles.ingredients}>
+                <div className={styles.ingredients} onScroll={scroll}>
                     <h2 className={styles.ingredientsTitle + ' text text_type_main-medium'}>Булки</h2>
                     <div className={styles.ingredientsColumn + ' pl-4 pr-4 pt-6 pb-10'}>
-                        {buns.map((bun) =>(
-                            <div id={bun._id} className={styles.ingredient} key={bun._id} onClick={handleOpenModal}>
-                                <img className='pl-4 pr-4 pb-1' src={bun.image} alt={'картинка булки бургера'}/>
-                                <div className={styles.price}>
-                                    <p className='text text_type_digits-default'>{bun.price}</p>
-                                    <CurrencyIcon type="primary" />
-                                </div>
-                                <p className={styles.text + ' text text_type_main-default pt-1'}>{bun.name}</p>
-                                <Counter count={1} size="default" extraClass="m-1" />
-                            </div>
-                        ))}
+                        {buns.map((bun, index) => {
+                             return <Ingredient key={index} {...bun} handleOpenModal={handleOpenModal}/>
+                        })}
                     </div>
                     <h2 className={styles.ingredientsTitle + ' text text_type_main-medium'}>Соусы</h2>
                     <div className={styles.ingredientsColumn + ' pl-4 pr-4 pt-6 pb-10'}>
-                        {sauces.map((sauce) =>(
-                            <div className={styles.ingredient} key={sauce._id} id={sauce._id} onClick={handleOpenModal}>
-                                <img className='pl-4 pr-4 pb-1' src={sauce.image} alt={'картинка соуса бургера'}/>
-                                <div className={styles.price}>
-                                    <p className='text text_type_digits-default'>{sauce.price}</p>
-                                    <CurrencyIcon type="primary" />
-                                </div>
-                                <p className={styles.text + ' text text_type_main-default pt-1'}>{sauce.name}</p>
-                            </div>
-                        ))}
+                        {sauces.map((sauce, index) => {
+                            return <Ingredient key={index} {...sauce} handleOpenModal={handleOpenModal}/>
+                        })}
                     </div>
                     <h2 className={styles.ingredientsTitle + ' text text_type_main-medium'}>Начинка</h2>
                     <div className={styles.ingredientsColumn + ' pl-4 pr-4 pt-6 pb-10'}>
-                        {mains.map((main) =>(
-                            <div className={styles.ingredient} key={main._id} id={main._id} onClick={handleOpenModal}>
-                                <img className='pl-4 pr-4 pb-1' src={main.image} alt={'картинка начинки бургера'}/>
-                                <div className={styles.price}>
-                                    <p className='text text_type_digits-default'>{main.price}</p>
-                                    <CurrencyIcon type="primary" />
-                                </div>
-                                <p className={styles.text + ' text text_type_main-default pt-1'}>{main.name}</p>
-                            </div>
-                        ))}
+                        {mains.map((main, index) => {
+                            return <Ingredient key={index} {...main} handleOpenModal={handleOpenModal}/>
+                        })}
                     </div>
                 </div>
             </div>
             <div>
-                {state.visible && state.element 
-                && <Modal title={'Детали ингредиента'} handleCloseModal={handleCloseModal}>
-                    <IngredientDetails element={state.element}/>
-                </Modal>}
+                {visibleElement && 
+                <Modal title={'Детали ингредиента'} handleCloseModal={handleCloseModal}>
+                    <IngredientDetails />
+                </Modal> }
             </div>
         </>
     );

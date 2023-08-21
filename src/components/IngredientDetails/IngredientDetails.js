@@ -1,9 +1,8 @@
 import styles from './IngredientDetails.module.css';
-import PropTypes from 'prop-types';
-import {dataPropTypes} from '../../propTypes/data';
+import { useSelector } from 'react-redux';
 
-function IngredientDetails(props) {
-    const element = props.element[0];
+function IngredientDetails() {
+    const { element } = useSelector(state => state.modal);
 
     return(
         <div className={styles.details}>
@@ -29,10 +28,6 @@ function IngredientDetails(props) {
             </div>
         </div>
     )
-}
-
-IngredientDetails.propTypes = {
-    element: PropTypes.arrayOf(dataPropTypes).isRequired
 }
 
 export default IngredientDetails
