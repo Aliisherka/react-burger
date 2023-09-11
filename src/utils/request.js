@@ -1,10 +1,7 @@
-const BASE_URL = 'https://norma.nomoreparties.space/api';
+export const BASE_URL = 'https://norma.nomoreparties.space/api';
 
 export function checkResponse(res) {
-    if (res.ok) {
-        return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`);
+    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
 }
 
 export function request(url, options) {

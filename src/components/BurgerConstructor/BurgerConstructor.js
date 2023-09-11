@@ -11,13 +11,17 @@ import { CLOSE_ORDER, OPEN_ORDER } from '../../services/actions/modal';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from "react-dnd";
+import { useNavigate, Navigate } from 'react-router-dom';
+
 import Constructor from '../Constructor/Constructor';
 
 function BurgerConstructor() {
     const { orderNumber, ingredient } = useSelector(state => state.ingredient);
     const {  draggedBun, totalPrice, draggedIngredient } = useSelector(state => state.constructor);
     const { visibleOrder } = useSelector(state => state.modal);
+    const { user } = useSelector(state => state.registration);
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
     const price = useMemo(() => {
         return (
@@ -31,7 +35,10 @@ function BurgerConstructor() {
     
 
     const handleOpenModal = () => {
-        if (draggedIngredient && draggedBun) {
+        if (!user) {
+            return navigate('/login')
+        }
+        (draggedIngredient && draggedBun)  &&
             dispatch({type: OPEN_ORDER});
     
             dispatch(getOrder(draggedIngredient, draggedBun));
@@ -42,7 +49,6 @@ function BurgerConstructor() {
             dispatch({
                 type: CLEAR_QUANTITY
             })
-        }
     }
 
     const handleCloseModal = () => {

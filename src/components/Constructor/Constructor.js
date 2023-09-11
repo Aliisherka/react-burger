@@ -13,7 +13,7 @@ function Constructor({item, isLocked, extraClass, type, text, handleClose, _id, 
     const ref = useRef(null);
 
     useEffect(() => {
-        if(item.type !== 'bun') {
+        if(item.type !== 'bun' && item.index !== index) {
             dispatch({
                 type: GIVE_UNIQUE_ID,
                 _id: _id,
@@ -21,7 +21,7 @@ function Constructor({item, isLocked, extraClass, type, text, handleClose, _id, 
                 index: index
             })
         }
-    }, [dispatch]);
+    }, []);
 
     const [, drop] = useDrop({
         accept: 'constructor',

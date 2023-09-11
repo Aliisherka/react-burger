@@ -1,12 +1,22 @@
 import styles from './IngredientDetails.module.css';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import {useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { getIngredient } from '../../services/actions/ingredient';
 
 function IngredientDetails() {
-    const { element } = useSelector(state => state.modal);
-
+    const { ingredientId } = useParams();
+    const { ingredient } = useSelector(state => state.ingredient);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getIngredient());
+    }, []);
+    
+    const element = ingredient.filter(item => item._id === ingredientId)[0]
     return(
         <div className={styles.details}>
-            <img src={element.image_large} alt={'картинка ингридиента бургера'}/>
+            {element 
+            ? <><img src={element.image_large} alt={'картинка ингридиента бургера'}/>
             <p className='text text_type_main-medium pt-4 pb-8'>{element.name}</p>
             <div className={styles.info}>
                 <div>
@@ -25,7 +35,8 @@ function IngredientDetails() {
                     <p className='text text_type_main-default text_color_inactive pb-2'>Углеводы, г</p>
                     <p className='text text_type_digits-default text_color_inactive'>{element.carbohydrates}</p>
                 </div>
-            </div>
+            </div> </>
+            : null}
         </div>
     )
 }
