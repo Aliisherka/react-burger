@@ -1,0 +1,16 @@
+.ingredient {
+    width: 272px;
+    position: relative;
+    cursor: pointer;
+}
+
+.price {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.text {
+    text-align: center;
+    min-height: 48px;
+}
