@@ -81,7 +81,6 @@ export function login(form) {
             deleteCookie('refreshToken');
             localStorage.setItem('accessToken', data.accessToken);
             setCookie('refreshToken', data.refreshToken)
-            console.log(getCookie('refreshToken'))
             dispatch({
                 type: LOGIN_SUCCESS,
                 user: data.user

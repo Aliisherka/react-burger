@@ -16,6 +16,7 @@ import AppHeader from '../AppHeader/AppHeader';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import Modal from '../Modal/Modal';
 import { getUser } from '../../services/actions/registration';
+import { getIngredient } from '../../services/actions/ingredient';
 
 function App() {
   const dispatch = useDispatch();
@@ -24,8 +25,9 @@ function App() {
   const { loggedIn } = useSelector(state => state.registration);
 
   useEffect(() => {
-    loggedIn && dispatch(getUser());
-  }, [loggedIn])
+    localStorage.getItem('accessToken') && dispatch(getUser());
+    dispatch(getIngredient());
+  }, [localStorage.getItem('accessToken')])
 
   const background = location.state && location.state.background;
 

@@ -1,16 +1,10 @@
 import styles from './IngredientDetails.module.css';
-import { useSelector, useDispatch } from 'react-redux';
-import {useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getIngredient } from '../../services/actions/ingredient';
 
 function IngredientDetails() {
     const { ingredientId } = useParams();
     const { ingredient } = useSelector(state => state.ingredient);
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(getIngredient());
-    }, []);
     
     const element = ingredient.filter(item => item._id === ingredientId)[0]
     return(

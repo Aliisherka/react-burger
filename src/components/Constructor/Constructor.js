@@ -2,26 +2,14 @@ import styles from './Constructor.module.css';
 
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch } from 'react-redux';
-import {useEffect, useId, useRef} from 'react';
-import { GIVE_UNIQUE_ID, REORDER_CONSTRUCTOR } from '../../services/actions/constructor';
+import {useRef} from 'react';
+import { REORDER_CONSTRUCTOR } from '../../services/actions/constructor';
 
 import { useDrop, useDrag } from "react-dnd";
 
-function Constructor({item, isLocked, extraClass, type, text, handleClose, _id, index}) {
+function Constructor({item, isLocked, extraClass, type, text, handleClose, index}) {
     const dispatch = useDispatch();
-    const uniqueId = useId();
     const ref = useRef(null);
-
-    useEffect(() => {
-        if(item.type !== 'bun' && item.index !== index) {
-            dispatch({
-                type: GIVE_UNIQUE_ID,
-                _id: _id,
-                uniqueId: uniqueId,
-                index: index
-            })
-        }
-    }, []);
 
     const [, drop] = useDrop({
         accept: 'constructor',
@@ -44,7 +32,6 @@ function Constructor({item, isLocked, extraClass, type, text, handleClose, _id, 
             opacity: monitor.isDragging() ? 0.5 : 1
         })
     })
-
 
     dragRef(drop(ref));
 

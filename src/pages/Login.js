@@ -1,72 +1,76 @@
 import styles from './Login.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import {useRef, useState, } from 'react';
+import {useRef} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from "react-router";
 import { Link, Navigate } from 'react-router-dom';
 
 import { login } from '../services/actions/registration';
+import { useForm } from '../hooks/useForm';
 
 export function LoginPage() {
-    const [value, setValue] = useState({email: '', password: ''});
     const inputRef = useRef(null);
     const { user } = useSelector(state => state.registration);
     const {state} = useLocation();
 
     const dispatch = useDispatch();
 
+    const {values, handleChange} = useForm({email: '', password: ''});
     
     const onIconClick = () => {
         setTimeout(() => inputRef.current.focus(), 0)
         alert('Icon Click Callback')
     }
     
-    const loginUser = () => {
-        dispatch(login(value))
+    const loginUser = (e) => {
+        e.preventDefault();
+        dispatch(login(values))
     }
     
     if (user) {
         return(
-            <Navigate to={state || '/'} replace />
+            <Navigate to={state ? state.from : '/'} replace /> 
         )
     }
 
     return (
             <div className={styles.login}>
-                <div className={styles.form}>
-                    <h2 className='text text_type_main-medium'>Вход</h2>
-                    <Input
-                        type={'email'}
-                        placeholder={'E-mail'}
-                        onChange={e => setValue({...value, [e.target.name]: e.target.value})}
-                        value={value.email}
-                        name={'email'}
-                        error={false}
-                        ref={inputRef}
-                        onIconClick={onIconClick}
-                        errorText={'Ошибка'}
-                        size={'default'}
-                        extraClass="ml-1"
-                    />
-                    <Input
-                        type={'password'}
-                        placeholder={'Пароль'}
-                        onChange={e => setValue({...value, [e.target.name]: e.target.value})}
-                        icon={'ShowIcon'}
-                        value={value.password}
-                        name={'password'}
-                        error={false}
-                        ref={inputRef}
-                        onIconClick={onIconClick}
-                        errorText={'Ошибка'}
-                        size={'default'}
-                        extraClass="ml-1"
-                    />
-                    <Button htmlType="button" type="primary" size="medium" onClick={loginUser}>
-                        Войти
-                    </Button>
-                </div>
+                <form onSubmit={loginUser}>
+                    <div className={styles.form}>
+                        <h2 className='text text_type_main-medium'>Вход</h2>
+                        <Input
+                            type={'email'}
+                            placeholder={'E-mail'}
+                            onChange={e => handleChange(e)}
+                            value={values.email}
+                            name={'email'}
+                            error={false}
+                            ref={inputRef}
+                            onIconClick={onIconClick}
+                            errorText={'Ошибка'}
+                            size={'default'}
+                            extraClass="ml-1"
+                        />
+                        <Input
+                            type={'password'}
+                            placeholder={'Пароль'}
+                            onChange={e => handleChange(e)}
+                            icon={'ShowIcon'}
+                            value={values.password}
+                            name={'password'}
+                            error={false}
+                            ref={inputRef}
+                            onIconClick={onIconClick}
+                            errorText={'Ошибка'}
+                            size={'default'}
+                            extraClass="ml-1"
+                        />
+                        <Button htmlType="submit" type="primary" size="medium">
+                            Войти
+                        </Button>
+                    </div>
+                </form>
                 <div className={styles.text}>
                     <div className={styles.links}>
                         <p className='text text_type_main-default text_color_inactive'>Вы — новый пользователь?</p>

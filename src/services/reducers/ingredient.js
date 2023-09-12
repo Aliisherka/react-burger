@@ -73,7 +73,7 @@ export const ingredientReducer = (state = initialState, action) => {
         case DECREASE_INGREDIENT: {
             return {
                 ...state,
-                ingredient: [...state.ingredient].map(item => item._id === action.prevId ? { ...item, __v: --item.__v} : item),
+                ingredient: [...state.ingredient].map(item => item._id === action.id ? { ...item, __v: --item.__v} : item),
             }
         }
         case CLEAR_QUANTITY: {

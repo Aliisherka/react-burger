@@ -1,20 +1,13 @@
 import styles from './BurgerIngredients.module.css';
-import React, {useEffect, useMemo} from 'react';
+import React, { useMemo } from 'react';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { getIngredient } from '../../services/actions/ingredient';
 import Ingredient from '../Ingredient/Ingredient';
 
 function BurgerIngredients() {
     const { ingredient } = useSelector(state => state.ingredient);
-    const { visibleElement } = useSelector(state => state.modal);
-
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(getIngredient());
-    }, [dispatch]);
 
     const [current, setCurrent] = React.useState('bun');
 
@@ -68,19 +61,19 @@ function BurgerIngredients() {
                     <h2 className={styles.ingredientsTitle + ' text text_type_main-medium'}>Булки</h2>
                     <div className={styles.ingredientsColumn + ' pl-4 pr-4 pt-6 pb-10'}>
                         {buns.map((bun, index) => {
-                             return <Ingredient key={index} {...bun}/>
+                             return <Ingredient key={bun._id} {...bun}/>
                         })}
                     </div>
                     <h2 className={styles.ingredientsTitle + ' text text_type_main-medium'}>Соусы</h2>
                     <div className={styles.ingredientsColumn + ' pl-4 pr-4 pt-6 pb-10'}>
                         {sauces.map((sauce, index) => {
-                            return <Ingredient key={index} {...sauce}/>
+                            return <Ingredient key={sauce._id} {...sauce} item={sauce}/>
                         })}
                     </div>
                     <h2 className={styles.ingredientsTitle + ' text text_type_main-medium'}>Начинка</h2>
                     <div className={styles.ingredientsColumn + ' pl-4 pr-4 pt-6 pb-10'}>
                         {mains.map((main, index) => {
-                            return <Ingredient key={index} {...main}/>
+                            return <Ingredient key={main._id} {...main} item={main}/>
                         })}
                     </div>
                 </div>

@@ -6,11 +6,11 @@ import { useSelector } from 'react-redux';
 import { useLocation } from "react-router";
 import { Link } from 'react-router-dom';
 
-function Ingredient({_id, image, price, name, type, __v}) {
+function Ingredient({_id, image, price, name, type, __v, item}) {
     const location = useLocation();
     const [{opacity}, dragRef] = useDrag({  
         type: 'ingredient',
-        item: {_id, type}, 
+        item: {_id, type, item}, 
         collect: monitor => ({
             opacity: monitor.isDragging() ? 0.5 : 1
           })
@@ -24,7 +24,6 @@ function Ingredient({_id, image, price, name, type, __v}) {
     if(draggedBun && draggedBun._id === _id) {
         countBun = draggedBun.__v;
     }
-
     return(
         <Link key={ingredientId} to={`/ingredients/${ingredientId}`} state={{ background: location }} className={styles.link}>
             <div ref={dragRef} id={_id}  className={styles.ingredient} style={{opacity}}>

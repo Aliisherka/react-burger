@@ -4,16 +4,18 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import {useRef, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { getUser, logout } from '../services/actions/registration';
+import { logout } from '../services/actions/registration';
 import { updateUser } from '../services/actions/registration';
+import { useForm } from '../hooks/useForm';
 
 export function ProfilePage() {
     const { user } = useSelector(state => state.registration);
     const dispatch = useDispatch();
     
-    const [value, setValue] = useState({name: user.name, email: user.email, password: '123456'})
     const [buttons, setbuttons] = useState({isChange: false})
     const inputRef = useRef(null)
+
+    const {values, handleChange, setValues} = useForm({name: user.name, email: user.email, password: '123456'});
 
     const onIconClick = () => {
         setTimeout(() => inputRef.current.focus(), 0)
@@ -26,12 +28,12 @@ export function ProfilePage() {
 
     const update = (e) => {
         e.preventDefault();
-        dispatch(updateUser(value))
+        dispatch(updateUser(values))
         setbuttons({isChange: false})
     }
 
     const cancel = () => {
-        setValue({...value, name: user.name, email: user.email, password: '123456'})
+        setValues({...values, name: user.name, email: user.email, password: '123456'})
         setbuttons({isChange: false})
     }
 
@@ -61,11 +63,11 @@ export function ProfilePage() {
                             type={'text'}
                             placeholder={'Имя'}
                             onChange={e => {
-                                setValue({...value, [e.target.name]: e.target.value})
+                                handleChange(e)
                                 setbuttons({isChange: true})
                             }}
                             icon={'EditIcon'}
-                            value={value.name}
+                            value={values.name}
                             name={'name'}
                             error={false}
                             ref={inputRef}
@@ -78,11 +80,11 @@ export function ProfilePage() {
                             type={'text'}
                             placeholder={'Логин'}
                             onChange={e => {
-                                setValue({...value, [e.target.name]: e.target.value})
+                                handleChange(e)
                                 setbuttons({isChange: true})
                             }}
                             icon={'EditIcon'}
-                            value={value.email}
+                            value={values.email}
                             name={'email'}
                             error={false}
                             ref={inputRef}
@@ -95,11 +97,11 @@ export function ProfilePage() {
                             type={'password'}
                             placeholder={'Пароль'}
                             onChange={e => {
-                                setValue({...value, [e.target.name]: e.target.value})
+                                handleChange(e)
                                 setbuttons({isChange: true})
                             }}
                             icon={'EditIcon'}
-                            value={value.password}
+                            value={values.password}
                             name={'password'}
                             error={false}
                             ref={inputRef}
