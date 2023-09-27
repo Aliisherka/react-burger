@@ -50,7 +50,6 @@ export function getOrder(ingredients, bun) {
     
         ingredientId.push(bun._id);
 
-
         dispatch({
             type: GET_ORDER_NUMBER
         })
@@ -60,7 +59,7 @@ export function getOrder(ingredients, bun) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "ingredients": ingredientId
+                "ingredients": ingredientId,
             })
         })
         .then(data => {

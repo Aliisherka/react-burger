@@ -6,18 +6,22 @@ import Modal from '../Modal/Modal';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { getOrder, INCREASE_INGREDIENT, DECREASE_INGREDIENT, CLEAR_QUANTITY } from '../../services/actions/ingredient';
-import { GET_TOTAL_PRICE, DELETE_INGREDIENT, DRAGGE_BUN, CLEAR_COSTRUCTOR, INCREASE_BUN, DRAGGE_INGREDIENT } from '../../services/actions/constructor';
+import { GET_TOTAL_PRICE, DELETE_INGREDIENT, DRAGGE_BUN, CLEAR_COSTRUCTOR, INCREASE_BUN, DRAGGE_INGREDIENT, addIngridient } from '../../services/actions/constructor';
 import { CLOSE_ORDER, OPEN_ORDER } from '../../services/actions/modal';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from "react-dnd";
+import { useNavigate } from 'react-router-dom';
+
 import Constructor from '../Constructor/Constructor';
 
 function BurgerConstructor() {
     const { orderNumber, ingredient } = useSelector(state => state.ingredient);
     const {  draggedBun, totalPrice, draggedIngredient } = useSelector(state => state.constructor);
     const { visibleOrder } = useSelector(state => state.modal);
+    const { user } = useSelector(state => state.registration);
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
     const price = useMemo(() => {
         return (
@@ -31,7 +35,10 @@ function BurgerConstructor() {
     
 
     const handleOpenModal = () => {
-        if (draggedIngredient && draggedBun) {
+        if (!user) {
+            return navigate('/login')
+        }
+        if (draggedIngredient  && draggedBun) {
             dispatch({type: OPEN_ORDER});
     
             dispatch(getOrder(draggedIngredient, draggedBun));
@@ -51,7 +58,7 @@ function BurgerConstructor() {
 
     const [, drop] = useDrop({
         accept: 'ingredient',
-        drop({_id, type}) {
+        drop({_id, type, item}) {
             if (type === 'bun') {
                 dispatch({
                     type: DRAGGE_BUN,
@@ -63,11 +70,7 @@ function BurgerConstructor() {
                     _id
                 })
             } else {
-                dispatch({
-                    type: DRAGGE_INGREDIENT,
-                    _id: _id,
-                    ingredient,
-                })
+                dispatch(addIngridient(item))
                 dispatch({
                     type: INCREASE_INGREDIENT,
                     _id: _id
@@ -76,18 +79,17 @@ function BurgerConstructor() {
         }
     })
 
-
-
-    const deleteIngredient = (prevId, id) => {
+    const deleteIngredient = (id, uniqueId) => {
         dispatch({
             type: DELETE_INGREDIENT,
-            id
+            uniqueId
         })
         dispatch({
             type: DECREASE_INGREDIENT,
-            prevId
+            id
         })
     }
+    console.log(draggedIngredient)
 
     return (
         <>
@@ -110,9 +112,10 @@ function BurgerConstructor() {
                                     <Constructor 
                                         text ={ingredient.name}
                                         item={ingredient}
-                                        handleClose={() => deleteIngredient(ingredient.prevId, ingredient._id)}
+                                        handleClose={() => deleteIngredient(ingredient._id, ingredient.uniqueId)}
                                         _id={ingredient._id}
-                                        key={index}
+                                        uniqueId={ingredient.uniqueId}
+                                        key={ingredient.uniqueId}
                                         index={index}
                                     />
                                 )
@@ -142,7 +145,7 @@ function BurgerConstructor() {
                 </div>
             </div>
             <div>
-                {visibleOrder && orderNumber
+                {(visibleOrder && orderNumber)
                 && <Modal handleCloseModal={handleCloseModal}>
                         <OrderDetails orderNumber={orderNumber}/>
                     </Modal>}

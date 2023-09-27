@@ -1,0 +1,45 @@
+.profile {
+    width: 1073px;
+    min-height: 430px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 60px;
+    margin: 0 auto;
+    padding-top: 120px;
+}
+
+.navigation {
+    width: 320px;
+}
+
+.linkList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.links {
+    height: 64px;
+    display: flex;
+    align-items: center;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.active {
+    color: var(--text-primary-light-standart-text, #F2F2F3);
+    text-decoration: none;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+}

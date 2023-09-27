@@ -6,7 +6,8 @@ import {
     GET_TOTAL_PRICE,
     CLEAR_COSTRUCTOR,
     REORDER_CONSTRUCTOR,
-    INCREASE_BUN
+    INCREASE_BUN,
+    ADD_INGRIDIENT
 } from "../actions/constructor";
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
 export const constructorReducer = (state = initialState, action) => {
     switch(action.type) {
         case DRAGGE_INGREDIENT: {
+            console.log(action)
             return {
                 ...state,
                 draggedIngredient: state.draggedIngredient ? [...state.draggedIngredient, ...action.ingredient.filter(ingredient => ingredient._id === action._id)] : [...action.ingredient.filter(ingredient => ingredient._id === action._id)]
@@ -38,7 +40,7 @@ export const constructorReducer = (state = initialState, action) => {
         case DELETE_INGREDIENT: {
             return {
                 ...state,
-                draggedIngredient: [...state.draggedIngredient].filter(ingredient => ingredient._id !== action.id)
+                draggedIngredient: [...state.draggedIngredient].filter(ingredient => ingredient.uniqueId !== action.uniqueId)
             }
         }
         case GET_TOTAL_PRICE: {
@@ -63,6 +65,12 @@ export const constructorReducer = (state = initialState, action) => {
             return {
                 ...state,
                 draggedBun: {...state.draggedBun, __v: 1}
+            }
+        }
+        case ADD_INGRIDIENT: {
+            return {
+                ...state,
+                draggedIngredient: state.draggedIngredient ? [...state.draggedIngredient, action.payload] : [action.payload]
             }
         }
         default: {
