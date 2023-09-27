@@ -1,4 +1,3 @@
-import { getCookie } from '../../utils/cookie';
 import { request } from '../../utils/request';
 
 export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';

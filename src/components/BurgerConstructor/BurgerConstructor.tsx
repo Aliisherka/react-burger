@@ -6,7 +6,7 @@ import Modal from '../Modal/Modal';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { getOrder, INCREASE_INGREDIENT, DECREASE_INGREDIENT, CLEAR_QUANTITY } from '../../services/actions/ingredient';
-import { GET_TOTAL_PRICE, DELETE_INGREDIENT, DRAGGE_BUN, CLEAR_COSTRUCTOR, INCREASE_BUN, DRAGGE_INGREDIENT, addIngridient } from '../../services/actions/constructor';
+import { GET_TOTAL_PRICE, DELETE_INGREDIENT, DRAGGE_BUN, CLEAR_COSTRUCTOR, INCREASE_BUN, addIngridient } from '../../services/actions/constructor';
 import { CLOSE_ORDER, OPEN_ORDER } from '../../services/actions/modal';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -14,34 +14,34 @@ import { useDrop } from "react-dnd";
 import { useNavigate } from 'react-router-dom';
 
 import Constructor from '../Constructor/Constructor';
+import { IConstructorIngredient, IIngredient } from '../../utils/types';
 
 function BurgerConstructor() {
-    const { orderNumber, ingredient } = useSelector(state => state.ingredient);
-    const {  draggedBun, totalPrice, draggedIngredient } = useSelector(state => state.constructor);
-    const { visibleOrder } = useSelector(state => state.modal);
-    const { user } = useSelector(state => state.registration);
+    const { orderNumber, ingredient } = useSelector((state: any) => state.ingredient);
+    const {  draggedBun, totalPrice, draggedIngredient } = useSelector((state: any) => state.constructor);
+    const { visibleOrder } = useSelector((state: any) => state.modal);
+    const { user } = useSelector((state: any) => state.registration);
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
-    const price = useMemo(() => {
+    const price = useMemo<number>(() => {
         return (
-            (draggedBun ? draggedBun.price * 2 : 0) + (draggedIngredient ? draggedIngredient.reduce((s, v) => s + v.price, 0) : 0)
+            (draggedBun ? draggedBun.price * 2 : 0) + (draggedIngredient ? draggedIngredient.reduce((s: number, v: IIngredient) => s + v.price, 0) : 0)
         );
     }, [draggedBun, draggedIngredient]);
 
     useEffect(() => {
         dispatch({type: GET_TOTAL_PRICE, price})
-    }, [dispatch, price]);
-    
+    }, [dispatch, price]);    
 
-    const handleOpenModal = () => {
+    const handleOpenModal = (): void => {
         if (!user) {
             return navigate('/login')
         }
         if (draggedIngredient  && draggedBun) {
             dispatch({type: OPEN_ORDER});
     
-            dispatch(getOrder(draggedIngredient, draggedBun));
+            getOrder(draggedIngredient, draggedBun)(dispatch);
     
             dispatch({
                 type: CLEAR_COSTRUCTOR
@@ -52,11 +52,11 @@ function BurgerConstructor() {
         }
     }
 
-    const handleCloseModal = () => {
+    const handleCloseModal = (): void => {
         dispatch({type: CLOSE_ORDER});
     }
 
-    const [, drop] = useDrop({
+    const [, drop] = useDrop<any>({
         accept: 'ingredient',
         drop({_id, type, item}) {
             if (type === 'bun') {
@@ -79,7 +79,7 @@ function BurgerConstructor() {
         }
     })
 
-    const deleteIngredient = (id, uniqueId) => {
+    const deleteIngredient = (id: string, uniqueId: string): void => {
         dispatch({
             type: DELETE_INGREDIENT,
             uniqueId
@@ -89,7 +89,6 @@ function BurgerConstructor() {
             id
         })
     }
-    console.log(draggedIngredient)
 
     return (
         <>
@@ -106,15 +105,13 @@ function BurgerConstructor() {
                     }
                     {draggedIngredient &&
                     <div className={styles.ingredients}>
-                        {draggedIngredient.map((ingredient, index) => {
+                        {draggedIngredient.map((ingredient: IIngredient & IConstructorIngredient, index: number) => {
                             if (ingredient.type !== 'bun') {
                                 return (
                                     <Constructor 
                                         text ={ingredient.name}
                                         item={ingredient}
                                         handleClose={() => deleteIngredient(ingredient._id, ingredient.uniqueId)}
-                                        _id={ingredient._id}
-                                        uniqueId={ingredient.uniqueId}
                                         key={ingredient.uniqueId}
                                         index={index}
                                     />
