@@ -23,7 +23,7 @@ export function LoginPage() {
         alert('Icon Click Callback')
     }
     
-    const loginUser = (e: any): void => {
+    const loginUser = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         login(values)(dispatch)
     }

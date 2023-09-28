@@ -23,7 +23,7 @@ export function RegisterPage() {
         alert('Icon Click Callback')
     }
 
-    const registration = (e: any): void => {
+    const registration = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         regist(values)(dispatch);
     }

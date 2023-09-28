@@ -1,5 +1,5 @@
 import styles from './BurgerIngredients.module.css';
-import React, { useMemo } from 'react';
+import React, { useMemo, UIEvent } from 'react';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useSelector } from 'react-redux';
@@ -18,12 +18,13 @@ function BurgerIngredients() {
 
     const [current, setCurrent] = React.useState<IngredientType>(IngredientType.BUN);
 
-    const scroll = (e: any): void => {
-        if (e.target.scrollTop < 300) {
+    const scroll = (e: UIEvent<HTMLDivElement>): void => {
+        const target = e.target as HTMLElement;
+        if (target.scrollTop < 300) {
             setCurrent(IngredientType.BUN)
-        } else if (e.target.scrollTop >= 300 && e.target.scrollTop < 820) {
+        } else if (target.scrollTop >= 300 && target.scrollTop < 820) {
             setCurrent(IngredientType.SAUCE)
-        } else if (e.target.scrollTop >= 820){
+        } else if (target.scrollTop >= 820){
             setCurrent(IngredientType.MAIN)
         }
     }

@@ -4,7 +4,7 @@ import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-dev
 import { NavLink } from 'react-router-dom';
 
 function AppHeader() {
-    const setActive = ({ isActive }: any): string => (isActive ? `${styles.link} ${styles.active} text text_type_main-default` : `${styles.link} text text_type_main-default text_color_inactive`);
+    const setActive = ({ isActive }: { isActive: boolean }): string => (isActive ? `${styles.link} ${styles.active} text text_type_main-default` : `${styles.link} text text_type_main-default text_color_inactive`);
 
     return(
         <header className={styles.appHeader}>

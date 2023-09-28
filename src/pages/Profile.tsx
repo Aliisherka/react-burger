@@ -30,7 +30,7 @@ export function ProfilePage() {
         logout()(dispatch);
     }
 
-    const update = (e: any): void => {
+    const update = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         updateUser(values)(dispatch)
         setbuttons({isChange: false})

@@ -27,7 +27,7 @@ export function ForgotPassword() {
 
     const {values, handleChange} = useForm({email: ''});
 
-    const sendMail = (e: any): void => {
+    const sendMail = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         if (state.isEmail) {
             forgotPassword(values.email)(dispatch);

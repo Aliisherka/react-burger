@@ -2,7 +2,7 @@ import styles from './Reset-password.module.css';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import {useRef} from 'react';
+import React, {useRef} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import { resetPassword, RETURN_BACK } from '../services/actions/password';
@@ -21,7 +21,7 @@ export function ResetPassword() {
         alert('Icon Click Callback')
     }
 
-    const sendNewPassword = (e: any): void => {
+    const sendNewPassword = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         resetPassword(values)(dispatch);
     }
