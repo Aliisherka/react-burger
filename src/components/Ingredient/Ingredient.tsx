@@ -2,10 +2,10 @@ import styles from './Ingredient.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { useDrag } from "react-dnd";
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks';
 import { useLocation } from "react-router";
 import { Link } from 'react-router-dom';
-import { IIngredient } from '../../utils/types';
+import { IIngredient } from '../../services/types/data';
 
 interface IIngredientProps {
     _id: string; 
@@ -26,7 +26,7 @@ function Ingredient({_id, image, price, name, type, __v, item}: IIngredientProps
             opacity: monitor.isDragging() ? 0.5 : 1
           })
     })
-    const { draggedBun } = useSelector((store: any) => store.constructor);
+    const { draggedBun } = useSelector((store) => store.constructor);
 
     const ingredientId: string = _id;
     let countBun: number = 0;

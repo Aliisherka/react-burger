@@ -1,3 +1,4 @@
+import { IUseFormProps } from '../../hooks/useForm';
 import { request } from '../../utils/request';
 
 export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
@@ -10,8 +11,48 @@ export const RESET_PASSWORD_ERROR = 'RESET_PASSWORD_ERROR';
 
 export const RETURN_BACK = 'RETURN_BACK';
 
-export function forgotPassword(email) {
-    return function(dispatch) {
+export interface IFORGOT_PASSWORD {
+    readonly type: typeof FORGOT_PASSWORD;
+}
+
+export interface IFORGOT_PASSWORD_SUCCESS {
+    readonly type: typeof FORGOT_PASSWORD_SUCCESS;
+    readonly success: boolean
+}
+
+export interface IFORGOT_PASSWORD_ERROR {
+    readonly type: typeof FORGOT_PASSWORD_ERROR;
+}
+
+export interface IRESET_PASSWORD {
+    readonly type: typeof RESET_PASSWORD;
+}
+
+export interface IRESET_PASSWORD_SUCCESS {
+    readonly type: typeof RESET_PASSWORD_SUCCESS;
+    readonly resetSuccess: boolean
+}
+
+export interface IRESET_PASSWORD_ERROR {
+    readonly type: typeof RESET_PASSWORD_ERROR;
+}
+
+export interface IRETURN_BACK {
+    readonly type: typeof RETURN_BACK;
+}
+
+export type TPasswordActions = 
+    | IFORGOT_PASSWORD
+    | IFORGOT_PASSWORD_SUCCESS
+    | IFORGOT_PASSWORD_ERROR
+    | IRESET_PASSWORD
+    | IRESET_PASSWORD_SUCCESS
+    | IRESET_PASSWORD_ERROR
+    | IRETURN_BACK;
+
+
+export function forgotPassword(email: string) {
+    return function(dispatch: any) {
         dispatch({
             type: FORGOT_PASSWORD
         })
@@ -38,8 +79,8 @@ export function forgotPassword(email) {
     }
 }
 
-export function resetPassword(form) {
-    return function(dispatch) {
+export function resetPassword(form: IUseFormProps) {
+    return function(dispatch: any) {
         dispatch({
             type: RESET_PASSWORD
         })

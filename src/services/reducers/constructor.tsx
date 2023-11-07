@@ -1,3 +1,4 @@
+import { IIngredient } from "../types/data";
 import { 
     DRAGGE_INGREDIENT,
     DRAGGE_BUN,
@@ -7,28 +8,34 @@ import {
     CLEAR_COSTRUCTOR,
     REORDER_CONSTRUCTOR,
     INCREASE_BUN,
-    ADD_INGRIDIENT
+    ADD_INGRIDIENT,
+    TConstructorActions
 } from "../actions/constructor";
 
-const initialState = {
-    draggedBun: null,
-    totalPrice: null,
+type TConstructorState = {
+    draggedBun?: IIngredient;
+    totalPrice: number;
+    draggedIngredient: Array<IIngredient>;
+}
+
+const initialState: TConstructorState = {
+    draggedBun: undefined,
+    totalPrice: 0,
     draggedIngredient: [],
 }
 
-export const constructorReducer = (state = initialState, action) => {
+export const constructorReducer = (state = initialState, action: TConstructorActions): TConstructorState => {
     switch(action.type) {
         case DRAGGE_INGREDIENT: {
-            console.log(action)
             return {
                 ...state,
-                draggedIngredient: state.draggedIngredient ? [...state.draggedIngredient, ...action.ingredient.filter(ingredient => ingredient._id === action._id)] : [...action.ingredient.filter(ingredient => ingredient._id === action._id)]
+                draggedIngredient: state.draggedIngredient ? [...state.draggedIngredient, ...action.ingredient.filter((ingredient: IIngredient) => ingredient._id === action._id)] : [...action.ingredient.filter((ingredient: IIngredient) => ingredient._id === action._id)]
             }
         }
         case DRAGGE_BUN: {
             return {
                 ...state,
-                draggedBun: action.ingredient.find(ingredient => {return ingredient._id === action._id})
+                draggedBun: action.ingredient.find((ingredient: IIngredient) => {return ingredient._id === action._id})
             }
         }
         case GIVE_UNIQUE_ID: {
@@ -51,20 +58,22 @@ export const constructorReducer = (state = initialState, action) => {
         }
         case CLEAR_COSTRUCTOR: {
             return {
-                ...initialState,
+                draggedBun: undefined,
+                totalPrice: 0,
+                draggedIngredient: []
             }
         }
         case REORDER_CONSTRUCTOR: {
             return {
                 ...state,
                 ...state.draggedIngredient.splice(action.order, 1),
-                ...state.draggedIngredient.splice(action.index, 0, action.item)
+                ...state.draggedIngredient.splice(action.index, 0, action.item),
             }
         }
         case INCREASE_BUN: {
             return {
                 ...state,
-                draggedBun: {...state.draggedBun, __v: 1}
+                draggedBun: state.draggedBun && {...state.draggedBun, __v: 1}
             }
         }
         case ADD_INGRIDIENT: {

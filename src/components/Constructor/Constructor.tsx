@@ -1,12 +1,12 @@
 import styles from './Constructor.module.css';
 
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/hooks';
 import {useRef} from 'react';
 import { REORDER_CONSTRUCTOR } from '../../services/actions/constructor';
 
 import { useDrop, useDrag } from "react-dnd";
-import { IConstructorIngredient, IIngredient } from '../../utils/types';
+import { IConstructorIngredient, IIngredient } from '../../services/types/data';
 
 interface IConstructorProps {
     item: IIngredient & IConstructorIngredient;
@@ -15,7 +15,7 @@ interface IConstructorProps {
     type?: 'top' | 'bottom' | undefined;
     text: string; 
     handleClose?: () => void; 
-    index?: number;
+    index: number;
 }
 
 function Constructor({item, isLocked, extraClass, type, text, handleClose, index}: IConstructorProps) {

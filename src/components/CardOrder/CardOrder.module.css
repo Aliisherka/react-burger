@@ -1,0 +1,79 @@
+.link {
+    text-decoration: none;
+    color: white;
+}
+
+.cardOrder {
+    background-color: #1C1C21;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+}
+
+.orderId {
+    display: flex;
+    justify-content: space-between;
+}
+
+.done {
+    color: #0CC;
+}
+
+.cancel {
+    color: red;
+}
+
+.imgAndPrice {
+    display: flex;
+    justify-content: space-between;
+}
+
+.price {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.ingredients{
+    display: flex;
+}
+
+.imageContainer {
+    border-radius: 100px;
+    border: 2px solid var(--button-normal, #801AB2);
+    background: var(--interface-bg, #131316);
+    width: 64px;
+    height: 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: -16px;
+    position: relative;
+}
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgb(0 0 0 / 0.4);
+    border-radius: 100px;
+}
+
+.number {
+    position: absolute;
+    left: 20px;
+    z-index: 1;
+}
+
+.image {
+    width: 112px;
+    height: 56px;
+}
+
+.feedSize {
+    width: 536px;
+    height: 166px;
+}

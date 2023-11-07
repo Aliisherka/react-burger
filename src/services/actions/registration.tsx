@@ -1,3 +1,4 @@
+import { IUseFormProps } from '../../hooks/useForm';
 import { setCookie, getCookie, deleteCookie } from '../../utils/cookie';
 import { request, checkResponse, BASE_URL } from '../../utils/request';
 
@@ -27,8 +28,111 @@ export const UPDATE_USER_ERROR = 'UPDATE_USER_ERROR';
 
 export const LOADING_USER = 'LOADING_USER';
 
-export function regist(form) {
-    return function(dispatch) {
+export interface IUser {
+    email: string;
+    name: string
+}
+
+export interface IREGIST {
+    readonly type: typeof REGIST;
+}
+
+export interface IREGIST_SUCCESS {
+    readonly type: typeof REGIST_SUCCESS;
+    readonly user: IUser;
+}
+
+export interface IREGIST_ERROR {
+    readonly type: typeof REGIST_ERROR;
+}
+
+export interface ILOGIN {
+    readonly type: typeof LOGIN;
+}
+
+export interface ILOGIN_SUCCESS {
+    readonly type: typeof LOGIN_SUCCESS;
+    readonly user: IUser;
+}
+
+export interface ILOGIN_ERROR {
+    readonly type: typeof LOGIN_ERROR;
+}
+
+export interface IREFRESH_TOKEN {
+    readonly type: typeof REFRESH_TOKEN;
+}
+
+export interface IREFRESH_TOKEN_SUCCESS {
+    readonly type: typeof REFRESH_TOKEN_SUCCESS;
+}
+
+export interface IREFRESH_TOKEN_ERROR {
+    readonly type: typeof REFRESH_TOKEN_ERROR;
+}
+
+export interface ILOGOUT {
+    readonly type: typeof LOGOUT;
+}
+
+export interface ILOGOUT_SUCCESS {
+    readonly type: typeof LOGOUT_SUCCESS;
+}
+
+export interface ILOGOUT_ERROR {
+    readonly type: typeof LOGOUT_ERROR;
+}
+
+export interface IGET_USER {
+    readonly type: typeof GET_USER;
+}
+
+export interface IGET_USER_SUCCESS {
+    readonly type: typeof GET_USER_SUCCESS;
+    readonly user: IUser;
+}
+
+export interface IGET_USER_ERROR {
+    readonly type: typeof GET_USER_ERROR;
+}
+
+export interface IUPDATE_USER {
+    readonly type: typeof UPDATE_USER;
+}
+
+export interface IUPDATE_USER_SUCCESS {
+    readonly type: typeof UPDATE_USER_SUCCESS;
+    readonly user: IUser;
+}
+
+export interface IUPDATE_USER_ERROR {
+    readonly type: typeof UPDATE_USER_ERROR;
+}
+
+export interface ILOADING_USER {
+    readonly type: typeof LOADING_USER;
+}
+
+export type TRegistrationActions = 
+    | IREGIST
+    | IREGIST_SUCCESS
+    | IREGIST_ERROR
+    | ILOGIN
+    | ILOGIN_SUCCESS
+    | ILOGIN_ERROR
+    | ILOGOUT
+    | ILOGOUT_SUCCESS
+    | ILOGOUT_ERROR
+    | IGET_USER
+    | IGET_USER_SUCCESS
+    | IGET_USER_ERROR
+    | IUPDATE_USER
+    | IUPDATE_USER_SUCCESS
+    | IUPDATE_USER_ERROR
+    | ILOADING_USER;
+
+export function regist(form: IUseFormProps) {
+    return function(dispatch: any) {
         dispatch({type: REGIST})
         request('auth/register', {
             method: 'POST',
@@ -61,8 +165,8 @@ export function regist(form) {
     }
 }
 
-export function login(form) {
-    return function(dispatch) {
+export function login(form: IUseFormProps) {
+    return function(dispatch: any) {
         dispatch({type: LOGIN})
         request('auth/login', {
             method: 'POST',
@@ -80,13 +184,14 @@ export function login(form) {
             localStorage.removeItem('accessToken');
             deleteCookie('refreshToken');
             localStorage.setItem('accessToken', data.accessToken);
-            setCookie('refreshToken', data.refreshToken)
+            setCookie('refreshToken', data.refreshToken);
             dispatch({
                 type: LOGIN_SUCCESS,
                 user: data.user
             })
         })
         .catch(err => {
+            console.log(err)
             dispatch({
                 type: LOGIN_ERROR
             })
@@ -106,11 +211,11 @@ export function refreshToken() {
         })
 }
 
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (url: string, options: any) => {
     try {
       const res = await fetch(url, options);
       return await checkResponse(res);
-    } catch (err) {
+    } catch (err: any) {
       if (err.message === "jwt expired") {
         const refreshData = await refreshToken();
         if (!refreshData.success) {
@@ -128,7 +233,7 @@ export const fetchWithRefresh = async (url, options) => {
   };
 
 export function logout() {
-    return function(dispatch) {
+    return function(dispatch: any) {
         dispatch({type: LOGOUT})
         request('auth/logout', {
             method: 'POST',
@@ -160,7 +265,7 @@ export function logout() {
 }
 
 export function getUser() {
-    return function(dispatch) {
+    return function(dispatch: any) {
         dispatch({type: GET_USER})
         fetchWithRefresh(`${BASE_URL}/auth/user`, {
             headers: {
@@ -182,8 +287,8 @@ export function getUser() {
     }
 }
 
-export function updateUser(form) {
-    return function(dispatch) {
+export function updateUser(form: IUseFormProps) {
+    return function(dispatch: any) {
         dispatch({type: UPDATE_USER})
         fetchWithRefresh(`${BASE_URL}/auth/user`, {
             method: 'PATCH',

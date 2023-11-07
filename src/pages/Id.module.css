@@ -1,0 +1,71 @@
+.feedId {
+    width: 640px;
+    height: 620px;
+    margin: 0 auto;
+}
+
+.title {
+    text-align: center;
+}
+
+.done {
+    color: #0CC;
+}
+
+.cancel {
+    color: red;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: scroll;
+    height: 310px;
+    width: 608px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.listItem {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 64px;
+}
+
+.imageContainer {
+    left: 1px;
+    border-radius: 100px;
+    border: 2px solid var(--button-normal, #801AB2);
+    background: var(--interface-bg, #131316);
+    width: 64px;
+    height: 52px;
+    padding: 4px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image {
+    width: 112px;
+    height: 56px;
+}
+
+.name {
+    height: 30px;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden;
+}
+
+.price {
+    display: flex;
+    gap: 8px;
+}
+
+.timePrice {
+    display: flex;
+    justify-content: space-between;
+}

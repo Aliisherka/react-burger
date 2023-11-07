@@ -5,24 +5,24 @@ import Modal from '../Modal/Modal';
 
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { getOrder, INCREASE_INGREDIENT, DECREASE_INGREDIENT, CLEAR_QUANTITY } from '../../services/actions/ingredient';
+import { getOrder, INCREASE_INGREDIENT, DECREASE_INGREDIENT, CLEAR_QUANTITY, CLEAR_ORDER_NUMBER } from '../../services/actions/ingredient';
 import { GET_TOTAL_PRICE, DELETE_INGREDIENT, DRAGGE_BUN, CLEAR_COSTRUCTOR, INCREASE_BUN, addIngridient } from '../../services/actions/constructor';
 import { CLOSE_ORDER, OPEN_ORDER } from '../../services/actions/modal';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../services/hooks';
 import { useDrop } from "react-dnd";
 import { useNavigate } from 'react-router-dom';
 
 import Constructor from '../Constructor/Constructor';
-import { IConstructorIngredient, IIngredient } from '../../utils/types';
+import { IIngredient } from '../../services/types/data';
 
 function BurgerConstructor() {
-    const { orderNumber, ingredient } = useSelector((state: any) => state.ingredient);
-    const {  draggedBun, totalPrice, draggedIngredient } = useSelector((state: any) => state.constructor);
-    const { visibleOrder } = useSelector((state: any) => state.modal);
-    const { user } = useSelector((state: any) => state.registration);
+    const { orderNumber, ingredient } = useSelector((state) => state.ingredient);
+    const {  draggedBun, totalPrice, draggedIngredient } = useSelector(state => state.constructor);
+    const { visibleOrder } = useSelector((state) => state.modal);
+    const { user } = useSelector((state) => state.registration);
     const dispatch = useDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const price = useMemo<number>(() => {
         return (
@@ -32,7 +32,7 @@ function BurgerConstructor() {
 
     useEffect(() => {
         dispatch({type: GET_TOTAL_PRICE, price})
-    }, [dispatch, price]);    
+    }, [dispatch, price]);  
 
     const handleOpenModal = (): void => {
         if (!user) {
@@ -41,7 +41,7 @@ function BurgerConstructor() {
         if (draggedIngredient  && draggedBun) {
             dispatch({type: OPEN_ORDER});
     
-            getOrder(draggedIngredient, draggedBun)(dispatch);
+            dispatch(getOrder(draggedIngredient, draggedBun))
     
             dispatch({
                 type: CLEAR_COSTRUCTOR
@@ -54,6 +54,10 @@ function BurgerConstructor() {
 
     const handleCloseModal = (): void => {
         dispatch({type: CLOSE_ORDER});
+
+        dispatch({
+            type: CLEAR_ORDER_NUMBER
+        })
     }
 
     const [, drop] = useDrop<any>({
@@ -101,11 +105,12 @@ function BurgerConstructor() {
                             extraClass={'ml-8'} 
                             type={'top'} 
                             text={draggedBun.name + ' (верх)'}
+                            index={0}
                         />
                     }
                     {draggedIngredient &&
                     <div className={styles.ingredients}>
-                        {draggedIngredient.map((ingredient: IIngredient & IConstructorIngredient, index: number) => {
+                        {draggedIngredient.map((ingredient: any, index: number) => {
                             if (ingredient.type !== 'bun') {
                                 return (
                                     <Constructor 
@@ -128,6 +133,7 @@ function BurgerConstructor() {
                             extraClass={'ml-8'} 
                             type={'bottom'} 
                             text={draggedBun.name + ' (низ)'}
+                            index={0}
                         />
                     }
                 </div>
@@ -143,7 +149,7 @@ function BurgerConstructor() {
             </div>
             <div>
                 {(visibleOrder && orderNumber)
-                && <Modal handleCloseModal={handleCloseModal}>
+                && <Modal handleCloseModal={handleCloseModal} isIngredient={true}>
                         <OrderDetails orderNumber={orderNumber}/>
                     </Modal>}
             </div>

@@ -14,10 +14,31 @@ import {
     UPDATE_USER,
     UPDATE_USER_SUCCESS,
     UPDATE_USER_ERROR,
-    LOADING_USER
+    LOADING_USER,
+    TRegistrationActions,
+    IUser
 } from "../actions/registration";
 
-const initialState = {
+type TRegistrationState = {
+    registRequest: boolean;
+    registError: boolean;
+
+    loginRequest: boolean;
+    loginError: boolean;
+
+    logoutRequest: boolean;
+    logoutError: boolean;
+
+    loggedIn: boolean;
+
+    getUserRequest: boolean;
+    getUserError: boolean;
+
+    user?: IUser;
+    isUserLoaded: boolean
+}
+
+const initialState: TRegistrationState = {
     registRequest: false,
     registError: false,
 
@@ -32,11 +53,11 @@ const initialState = {
     getUserRequest: false,
     getUserError: false,
 
-    user: null,
+    user: undefined,
     isUserLoaded: false
 }
 
-export const registReducer = (state = initialState, action) => {
+export const registReducer = (state = initialState, action: TRegistrationActions): TRegistrationState => {
     switch(action.type) {
         case REGIST: {
             return {
@@ -84,8 +105,8 @@ export const registReducer = (state = initialState, action) => {
         case LOGOUT: {
             return {
                 ...state,
-                logotRequest: true,
-                logotError: false
+                logoutRequest: true,
+                logoutError: false
             }
         }
         case LOGOUT_SUCCESS: {
@@ -93,7 +114,7 @@ export const registReducer = (state = initialState, action) => {
                 ...state,
                 loggedIn: false,
                 isUserLoaded: false,
-                user: null
+                user: undefined
             }
         }
         case LOGOUT_ERROR: {

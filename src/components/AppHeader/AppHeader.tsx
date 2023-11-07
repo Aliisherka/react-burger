@@ -15,7 +15,7 @@ function AppHeader() {
                             <NavLink to='/' className={setActive} ><BurgerIcon type="primary"/><span className='pl-2'></span>Конструктор</NavLink>
                         </li>
                         <li className='pl-5 pr-5 pt-4 pb-4'>
-                            <NavLink to='/profile/orders' className={setActive}><ListIcon type="primary"/><span className='pl-2'></span>Лента заказов</NavLink>
+                            <NavLink to='/feed' className={setActive}><ListIcon type="primary"/><span className='pl-2'></span>Лента заказов</NavLink>
                         </li>
                     </ul>
                 </nav>

@@ -2,8 +2,8 @@ import styles from './Forgot-password.module.css';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import {useRef, useState, useEffect} from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from '../services/hooks';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 
 import { forgotPassword } from '../services/actions/password';
@@ -15,8 +15,8 @@ interface IForgotPassword {
 
 export function ForgotPassword() {
     const [state, setState] = useState<IForgotPassword>({isEmail: false});
-    const { forgotSuccess } = useSelector((state: any) => state.password);
-    const { user } = useSelector((state: any) => state.registration);
+    const { forgotSuccess } = useSelector((state) => state.password);
+    const { user } = useSelector((state) => state.registration);
 
     const navigate = useNavigate(); 
     const dispatch = useDispatch();
@@ -30,7 +30,7 @@ export function ForgotPassword() {
     const sendMail = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         if (state.isEmail) {
-            forgotPassword(values.email)(dispatch);
+            dispatch(forgotPassword(values.email));
             setState({isEmail: false})
         }
     }
