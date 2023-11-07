@@ -2,17 +2,23 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import styles from './Modal.module.css';
 import { createPortal } from 'react-dom';
-import PropTypes from 'prop-types';
 import {useEffect} from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 
-const modalRoot = document.getElementById("react-modals");
+const modalRoot = document.getElementById("react-modals")!;
 
-function Modal(props) {
+interface IModal {
+    title?: string;
+    handleCloseModal: () => void;
+    children: ReactNode
+}
+
+const Modal: FunctionComponent<IModal> = ({title, handleCloseModal, children}) => {
     
     useEffect(() => {
-        const closeByEsc = (e) => {
+        const closeByEsc = (e: KeyboardEvent): void => {
             if(e.key === 'Escape') {
-                props.handleCloseModal()
+                handleCloseModal()
             }
         }
         
@@ -24,20 +30,15 @@ function Modal(props) {
                 <div className={styles.modal}>
                     <div className={styles.container}>
                         <div className={styles.card + ' pl-10 pr-10 pt-10'}>
-                            <h2 className='text text_type_main-large'>{props.title}</h2>
-                            <button type='button' className={styles.close}><CloseIcon type="primary" onClick={props.handleCloseModal}/></button>
+                            <h2 className='text text_type_main-large'>{title}</h2>
+                            <button type='button' className={styles.close}><CloseIcon type="primary" onClick={handleCloseModal}/></button>
                         </div>
-                        {props.children}
+                        {children}
                     </div>
-                    <ModalOverlay handleCloseModal={props.handleCloseModal}/>
+                    <ModalOverlay handleCloseModal={handleCloseModal}/>
                 </div>
             ), modalRoot
         )
-}
-
-Modal.propTypes = {
-    title: PropTypes.string,
-    handleCloseModal: PropTypes.func.isRequired,
 }
 
 export default Modal;

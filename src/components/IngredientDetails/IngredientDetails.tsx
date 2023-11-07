@@ -1,12 +1,13 @@
 import styles from './IngredientDetails.module.css';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { IIngredient } from '../../utils/types';
 
 function IngredientDetails() {
     const { ingredientId } = useParams();
-    const { ingredient } = useSelector(state => state.ingredient);
+    const { ingredient } = useSelector((state: any) => state.ingredient);
     
-    const element = ingredient.filter(item => item._id === ingredientId)[0]
+    const element: IIngredient = ingredient.filter((item: IIngredient)=> item._id === ingredientId)[0];
     return(
         <div className={styles.details}>
             {element 

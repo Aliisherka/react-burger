@@ -2,31 +2,31 @@ import styles from './Reset-password.module.css';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import {useRef} from 'react';
+import React, {useRef} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import { resetPassword, RETURN_BACK } from '../services/actions/password';
 import { useForm } from '../hooks/useForm';
 
 export function ResetPassword() {
-    const inputRef = useRef(null);
-    const { forgotSuccess } = useSelector(state => state.password);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const { forgotSuccess } = useSelector((state: any) => state.password);
 
     const dispatch = useDispatch();
 
     const {values, handleChange} = useForm({password: '', token: ''});
 
-    const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
+    const onIconClick = (): void => {
+        setTimeout(() => inputRef.current && inputRef.current.focus(), 0)
         alert('Icon Click Callback')
     }
 
-    const sendNewPassword = (e) => {
+    const sendNewPassword = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        dispatch(resetPassword(values));
+        resetPassword(values)(dispatch);
     }
 
-    const returnToLogin = () => {
+    const returnToLogin = (): void => {
         dispatch({type: RETURN_BACK})
     }
 

@@ -5,8 +5,19 @@ import { useDrag } from "react-dnd";
 import { useSelector } from 'react-redux';
 import { useLocation } from "react-router";
 import { Link } from 'react-router-dom';
+import { IIngredient } from '../../utils/types';
 
-function Ingredient({_id, image, price, name, type, __v, item}) {
+interface IIngredientProps {
+    _id: string; 
+    image: string; 
+    price: number; 
+    name: string; 
+    type:string; 
+    __v:number ;
+    item: IIngredient
+}
+
+function Ingredient({_id, image, price, name, type, __v, item}: IIngredientProps) {
     const location = useLocation();
     const [{opacity}, dragRef] = useDrag({  
         type: 'ingredient',
@@ -15,10 +26,10 @@ function Ingredient({_id, image, price, name, type, __v, item}) {
             opacity: monitor.isDragging() ? 0.5 : 1
           })
     })
-    const { draggedBun } = useSelector(store => store.constructor);
+    const { draggedBun } = useSelector((store: any) => store.constructor);
 
-    const ingredientId = _id;
-    let countBun = null;
+    const ingredientId: string = _id;
+    let countBun: number = 0;
 
 
     if(draggedBun && draggedBun._id === _id) {
@@ -34,8 +45,8 @@ function Ingredient({_id, image, price, name, type, __v, item}) {
                 </div>
                 <p className={styles.text + ' text text_type_main-default pt-1'}>{name}</p>
                 { type === 'bun'
-                    ? (countBun > null) && <Counter count={countBun} size="default" extraClass="m-1" />
-                    : (__v > null) && <Counter count={__v} size="default" extraClass="m-1" />
+                    ? (countBun > 0) && <Counter count={countBun} size="default" extraClass="m-1" />
+                    : (__v > 0) && <Counter count={__v} size="default" extraClass="m-1" />
                 }
             </div>
         </Link>

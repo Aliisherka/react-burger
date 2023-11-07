@@ -6,12 +6,23 @@ import {useRef} from 'react';
 import { REORDER_CONSTRUCTOR } from '../../services/actions/constructor';
 
 import { useDrop, useDrag } from "react-dnd";
+import { IConstructorIngredient, IIngredient } from '../../utils/types';
 
-function Constructor({item, isLocked, extraClass, type, text, handleClose, index}) {
+interface IConstructorProps {
+    item: IIngredient & IConstructorIngredient;
+    isLocked?: boolean;
+    extraClass?: string;
+    type?: 'top' | 'bottom' | undefined;
+    text: string; 
+    handleClose?: () => void; 
+    index?: number;
+}
+
+function Constructor({item, isLocked, extraClass, type, text, handleClose, index}: IConstructorProps) {
     const dispatch = useDispatch();
-    const ref = useRef(null);
+    const ref = useRef<HTMLDivElement>(null);
 
-    const [, drop] = useDrop({
+    const [, drop] = useDrop<any>({
         accept: 'constructor',
         drop({ index: order, item}) {
             if (item.type !== 'bun') {

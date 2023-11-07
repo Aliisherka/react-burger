@@ -4,13 +4,13 @@ import {useEffect} from 'react';
 import { getUser, LOADING_USER } from '../services/actions/registration';
 import { useLocation } from "react-router";
 
-export const ProtectedRouteElement = ({ element }) => {
-    const { user, isUserLoaded, loggedIn } = useSelector(state => state.registration);
+export const ProtectedRouteElement = ({ element }: any) => {
+    const { user, isUserLoaded, loggedIn } = useSelector((state: any) => state.registration);
     const dispatch = useDispatch();
     const location = useLocation();
     
     useEffect(() => {
-        loggedIn && dispatch(getUser());
+        loggedIn && getUser()(dispatch);
         dispatch({type: LOADING_USER})
     }, [loggedIn])
 

@@ -9,11 +9,14 @@ import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { forgotPassword } from '../services/actions/password';
 import { useForm } from '../hooks/useForm';
 
+interface IForgotPassword {
+    isEmail: boolean
+}
+
 export function ForgotPassword() {
-    const [state, setState] = useState({isEmail: false});
-    const inputRef = useRef(null);
-    const { forgotSuccess } = useSelector(state => state.password);
-    const { user } = useSelector(state => state.registration);
+    const [state, setState] = useState<IForgotPassword>({isEmail: false});
+    const { forgotSuccess } = useSelector((state: any) => state.password);
+    const { user } = useSelector((state: any) => state.registration);
 
     const navigate = useNavigate(); 
     const dispatch = useDispatch();
@@ -22,17 +25,12 @@ export function ForgotPassword() {
         {forgotSuccess && navigate('/reset-password')};
     }, [forgotSuccess]);
 
-    const {values, handleChange, setValues} = useForm({email: ''});
+    const {values, handleChange} = useForm({email: ''});
 
-    const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
-        alert('Icon Click Callback')
-    }
-
-    const sendMail = (e) => {
+    const sendMail = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         if (state.isEmail) {
-            dispatch(forgotPassword(values.email));
+            forgotPassword(values.email)(dispatch);
             setState({isEmail: false})
         }
     }
@@ -58,8 +56,6 @@ export function ForgotPassword() {
                             value={values.email}
                             name={'email'}
                             error={false}
-                            ref={inputRef}
-                            onIconClick={onIconClick}
                             errorText={'Ошибка'}
                             size={'default'}
                             extraClass="ml-1"

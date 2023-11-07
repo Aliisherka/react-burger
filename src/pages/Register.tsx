@@ -1,44 +1,56 @@
-import styles from './Login.module.css';
+import styles from './Register.module.css';
+
+
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import {useRef} from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useLocation } from "react-router";
+import { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
-
-import { login } from '../services/actions/registration';
+import { regist } from '../services/actions/registration';
 import { useForm } from '../hooks/useForm';
 
-export function LoginPage() {
-    const inputRef = useRef(null);
-    const { user } = useSelector(state => state.registration);
-    const {state} = useLocation();
+
+export function RegisterPage() {
+    const { user } = useSelector((state: any) => state.registration);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const dispatch = useDispatch();
 
-    const {values, handleChange} = useForm({email: '', password: ''});
-    
-    const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
+    const {values, handleChange} = useForm({email: '', password: '', name: ''});
+
+    const onIconClick = (): void => {
+        setTimeout(() => inputRef.current && inputRef.current.focus(), 0)
         alert('Icon Click Callback')
     }
-    
-    const loginUser = (e) => {
+
+    const registration = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        dispatch(login(values))
-    }
-    
-    if (user) {
-        return(
-            <Navigate to={state ? state.from : '/'} replace /> 
-        )
+        regist(values)(dispatch);
     }
 
+    if (user) {
+        return(
+            <Navigate to='/' replace />
+        )
+    }
     return (
-            <div className={styles.login}>
-                <form onSubmit={loginUser}>
+            <div className={styles.register}>
+                <form onSubmit={registration}>
                     <div className={styles.form}>
-                        <h2 className='text text_type_main-medium'>Вход</h2>
+                        <h2 className='text text_type_main-medium'>Регистрация</h2>
+                        <Input
+                            type={'text'}
+                            placeholder={'Имя'}
+                            onChange={e => handleChange(e)}
+                            value={values.name}
+                            name={'name'}
+                            error={false}
+                            ref={inputRef}
+                            onIconClick={onIconClick}
+                            errorText={'Ошибка'}
+                            size={'default'}
+                            extraClass="ml-1"
+                        />
                         <Input
                             type={'email'}
                             placeholder={'E-mail'}
@@ -67,19 +79,13 @@ export function LoginPage() {
                             extraClass="ml-1"
                         />
                         <Button htmlType="submit" type="primary" size="medium">
-                            Войти
+                            Зарегистрироваться
                         </Button>
                     </div>
                 </form>
-                <div className={styles.text}>
-                    <div className={styles.links}>
-                        <p className='text text_type_main-default text_color_inactive'>Вы — новый пользователь?</p>
-                        <Link className={styles.link + ' text text_type_main-default'} to='/register'>Зарегистрироваться</Link>
-                    </div>
-                    <div className={styles.links}>
-                        <p className='text text_type_main-default text_color_inactive'>Забыли пароль?</p>
-                        <Link className={styles.link + ' text text_type_main-default'} to='/forgot-password'>Восстановить пароль</Link>
-                    </div>
+                <div className={styles.links}>
+                    <p className='text text_type_main-default text_color_inactive'>Уже зарегистрированы?</p>
+                    <Link className={styles.link + ' text text_type_main-default'} to='/login'>Войти</Link>
                 </div>
             </div>
     )

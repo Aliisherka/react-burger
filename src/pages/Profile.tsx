@@ -8,31 +8,35 @@ import { logout } from '../services/actions/registration';
 import { updateUser } from '../services/actions/registration';
 import { useForm } from '../hooks/useForm';
 
+interface IProfilePage {
+    isChange: boolean
+}
+
 export function ProfilePage() {
-    const { user } = useSelector(state => state.registration);
+    const { user } = useSelector((state: any) => state.registration);
     const dispatch = useDispatch();
     
-    const [buttons, setbuttons] = useState({isChange: false})
-    const inputRef = useRef(null)
+    const [buttons, setbuttons] = useState<IProfilePage>({isChange: false})
+    const inputRef = useRef<HTMLInputElement>(null)
 
     const {values, handleChange, setValues} = useForm({name: user.name, email: user.email, password: '123456'});
 
-    const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
+    const onIconClick = (): void => {
+        setTimeout(() => inputRef.current && inputRef.current.focus(), 0)
         alert('Icon Click Callback')
     }
 
-    const logoutUser = () => {
-        dispatch(logout());
+    const logoutUser = (): void => {
+        logout()(dispatch);
     }
 
-    const update = (e) => {
+    const update = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        dispatch(updateUser(values))
+        updateUser(values)(dispatch)
         setbuttons({isChange: false})
     }
 
-    const cancel = () => {
+    const cancel = (): void => {
         setValues({...values, name: user.name, email: user.email, password: '123456'})
         setbuttons({isChange: false})
     }

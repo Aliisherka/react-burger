@@ -22,16 +22,15 @@ function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const { loggedIn } = useSelector(state => state.registration);
 
   useEffect(() => {
-    localStorage.getItem('accessToken') && dispatch(getUser());
-    dispatch(getIngredient());
+    localStorage.getItem('accessToken') && getUser()(dispatch);
+    getIngredient()(dispatch);
   }, [localStorage.getItem('accessToken')])
 
   const background = location.state && location.state.background;
 
-  const handleModalClose = () => {
+  const handleModalClose = (): void => {
     navigate(-1);
   };
 
