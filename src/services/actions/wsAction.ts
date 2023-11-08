@@ -33,7 +33,7 @@ export interface IWSGetMessageAction {
   
 export interface IWSSendMessageAction {
     readonly type: typeof WS_SEND_MESSAGE;
-    readonly payload: any
+    readonly payload: Event
 }
 
 export type TWSActions =

@@ -81,7 +81,7 @@ export function forgotPassword(email: string): AppThunkAction {
 }
 
 export function resetPassword(form: IUseFormProps) {
-    return function(dispatch: any) {
+    return function(dispatch: AppDispatch) {
         dispatch({
             type: RESET_PASSWORD
         })

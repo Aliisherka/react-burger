@@ -39,8 +39,8 @@ export function IdPage({owner}: IIdPageProps) {
     let price: number[] = []
     let totalPrice: number = 0;
 
-    const elements: IOrder | undefined = ownOrder && owner ? ownOrder.orders.filter((item: any)=> item._id === ingredientId)[0]
-    : messages && messages.orders.filter((item: any)=> item._id === ingredientId)[0]
+    const elements: IOrder | undefined = ownOrder && owner ? ownOrder.orders.filter((item: IOrder)=> item._id === ingredientId)[0]
+    : messages && messages.orders.filter((item: IOrder)=> item._id === ingredientId)[0]
 
     useEffect(() => {
         if (elements && elements.status === 'done') {
