@@ -6,7 +6,7 @@ import type {
     RootState,
 } from '../types';
 
-export const socketMiddleware = (wsUrl: string, wsActions: TWsStoreActions, owner: boolean): Middleware => {
+export const socketMiddleware = (wsActions: TWsStoreActions, owner: boolean): Middleware => {
     return((store: MiddlewareAPI<AppDispatch, RootState>) => {
         let socket: WebSocket | null = null;
         
@@ -17,7 +17,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWsStoreActions, owne
             const accessToken = localStorage.getItem('accessToken');
 
             if (type === wsInit) {
-                socket = new WebSocket(`${wsUrl}?token=${accessToken && accessToken.split('Bearer ')[1]}`);
+                socket = new WebSocket(action.payload);
             }
 
             if (socket) {

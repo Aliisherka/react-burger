@@ -39,7 +39,7 @@ declare global {
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const store = createStore(rootReducer, composeEnhancers(
-  applyMiddleware(thunk, socketMiddleware('wss://norma.nomoreparties.space/orders/all', wsActions, false), socketMiddleware('wss://norma.nomoreparties.space/orders', wsActions, true))
+  applyMiddleware(thunk, socketMiddleware(wsActions, false), socketMiddleware(wsActions, true))
 ));
 
 const root = ReactDOM.createRoot(

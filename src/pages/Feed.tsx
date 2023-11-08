@@ -3,15 +3,20 @@ import { useSelector, useDispatch } from '../services/hooks';
 import CardOrder from '../components/CardOrder/CardOrder';
 import { IOrder } from '../services/types/data';
 import {useEffect} from 'react';
-import { WS_CONNECTION_START } from '../services/actions/wsAction';
+import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from '../services/actions/wsAction';
 
 export function FeedPage () {
     const {messages} = useSelector(store => store.ws);
     const dispatch = useDispatch();
+    //console.log(messages)
 
     useEffect(() => {
-        dispatch({ type: WS_CONNECTION_START });
-      }, [dispatch])
+        dispatch({ type: WS_CONNECTION_START, payload: 'wss://norma.nomoreparties.space/orders/all'});
+
+        return () => {
+            dispatch({type: WS_CONNECTION_CLOSED})
+        }
+    }, [dispatch]);
     
     let doneOrders: number[] = [];
     let prepareOrders: number[] = [];

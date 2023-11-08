@@ -1,4 +1,5 @@
 import { request } from '../../utils/request';
+import { AppDispatch, AppThunkAction } from '../types';
 import { IIngredient } from '../types/data';
 
 export const GET_INGREDIENT = 'GET_INGREDIENT';
@@ -62,8 +63,9 @@ export type TIngredientActions =
     | ICLEAR_QUANTITY
     | ICLEAR_ORDER_NUMBER;
 
-export function getIngredient() {
-    return function(dispatch: any) {
+    
+export function getIngredient(): AppThunkAction {
+    return function(dispatch: AppDispatch) {
         dispatch({
             type: GET_INGREDIENT
         })
@@ -88,8 +90,8 @@ export function getIngredient() {
     }
 }
 
-export function getOrder(ingredients: ReadonlyArray<IIngredient>, bun: IIngredient) {
-    return function(dispatch: any) {
+export function getOrder(ingredients: ReadonlyArray<IIngredient>, bun: IIngredient): AppThunkAction {
+    return function(dispatch: AppDispatch) {
         const ingredientId = [];
     
         ingredients.map((item: IIngredient) => {

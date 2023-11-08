@@ -9,6 +9,7 @@ export const WS_SEND_MESSAGE: 'WS_SEND_MESSAGE' = 'WS_SEND_MESSAGE';
 
 export interface IWSConnectionStart {
     readonly type: typeof WS_CONNECTION_START;
+    readonly payload: string
 }
   
 export interface IWSConnectionSuccessAction {

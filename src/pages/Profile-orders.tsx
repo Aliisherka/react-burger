@@ -4,10 +4,21 @@ import { logout } from '../services/actions/registration';
 import { useDispatch, useSelector } from '../services/hooks';
 import CardOrder from '../components/CardOrder/CardOrder';
 import { IOrder } from '../services/types/data';
+import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from '../services/actions/wsAction';
+import {useEffect} from 'react';
 
 export function ProfileOrdersPage() {
     const { ownOrder} = useSelector(store => store.ws);
     const dispatch = useDispatch();
+    const accessToken = localStorage.getItem('accessToken');
+
+    useEffect(() => {
+        dispatch({ type: WS_CONNECTION_START, payload: `wss://norma.nomoreparties.space/orders?token=${accessToken && accessToken.split('Bearer ')[1]}` });
+
+        return () => {
+            dispatch({type: WS_CONNECTION_CLOSED})
+        }
+    }, [dispatch, accessToken]);
 
     const logoutUser = (): void => {
         dispatch(logout());

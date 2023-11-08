@@ -19,7 +19,6 @@ import { getIngredient } from '../../services/actions/ingredient';
 import { FeedPage } from '../../pages/Feed';
 import { IdPage } from '../../pages/Id';
 import { ProfileOrdersPage } from '../../pages/Profile-orders';
-import { WS_CONNECTION_START } from '../../services/actions/wsAction';
 
 function App() {
   const dispatch = useDispatch();
@@ -28,15 +27,12 @@ function App() {
   const {messages, ownOrder} = useSelector(store => store.ws);
 
   const accessToken = localStorage.getItem('accessToken');
+
   useEffect(() => {
     accessToken && dispatch(getUser());
     dispatch(getIngredient())
   }, [accessToken, dispatch])
   
-  /*useEffect(() => {
-    dispatch({ type: WS_CONNECTION_START });
-  }, [accessToken, dispatch])*/
-
   const background = location.state && location.state.background;
 
   const handleModalClose = (): void => {
@@ -55,9 +51,9 @@ function App() {
         <Route path='/reset-password' element={<ResetPassword />}/>
         <Route path='/profile' element={<ProtectedRouteElement element={<ProfilePage/>} />} />
         <Route path='/profile/orders' element={<ProtectedRouteElement element={<ProfileOrdersPage/>} />} />
-        {ownOrder && <Route path='/profile/orders/:ingredientId' element={<ProtectedRouteElement element={<IdPage owner={true}/>} />} />}
+        <Route path='/profile/orders/:ingredientId' element={<ProtectedRouteElement element={<IdPage owner={true}/>} />} />
         <Route path='/feed' element={<FeedPage />}/>
-        {messages && <Route path='/feed/:ingredientId' element={<IdPage />}/>}
+        <Route path='/feed/:ingredientId' element={<IdPage />}/>
       </Routes>
       {background && (
         <Routes>

@@ -3,8 +3,8 @@ import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burge
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from '../services/hooks';
 import { useEffect, useState } from 'react';
-import { IIngredient } from '../services/types/data';
-import { WS_CONNECTION_START } from '../services/actions/wsAction';
+import { IIngredient, IOrder } from '../services/types/data';
+import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from '../services/actions/wsAction';
 
 enum OrderType {
     DONE = 'Выполнен',
@@ -18,57 +18,64 @@ interface IIdPageProps {
 }
 
 export function IdPage({owner}: IIdPageProps) {
+    const { ingredient } = useSelector((state) => state.ingredient);
     const { ingredientId } = useParams();
     const {messages, ownOrder} = useSelector(store => store.ws);
-    const { ingredient } = useSelector((state) => state.ingredient);
     const [current, setCurrent] = useState<OrderType>(OrderType.DONE);
+    const accessToken = localStorage.getItem('accessToken');
+    
     const dispatch = useDispatch();
-
     useEffect(() => {
-        dispatch({ type: WS_CONNECTION_START });
-    }, [dispatch])
+        owner ? dispatch({ type: WS_CONNECTION_START, payload: `wss://norma.nomoreparties.space/orders?token=${accessToken && accessToken.split('Bearer ')[1]}` })
+            : dispatch({ type: WS_CONNECTION_START, payload: 'wss://norma.nomoreparties.space/orders/all'});
 
-    let elements: any;
+        return () => {
+            dispatch({type: WS_CONNECTION_CLOSED})
+        }
+    }, [accessToken, dispatch, owner]);
+
     let ingredientArray: any = [];
     let count: IIngredient[][] = [];
-    
-    owner && ownOrder ? elements = ownOrder.orders.filter((item: any)=> item._id === ingredientId)[0]
-        : messages ? elements = messages.orders.filter((item: any)=> item._id === ingredientId)[0]
-        : elements = undefined
-    
+    let price: number[] = []
+    let totalPrice: number = 0;
+
+    const elements: IOrder | undefined = ownOrder && owner ? ownOrder.orders.filter((item: any)=> item._id === ingredientId)[0]
+    : messages && messages.orders.filter((item: any)=> item._id === ingredientId)[0]
+
     useEffect(() => {
-        if (elements.status === 'done') {
+        if (elements && elements.status === 'done') {
             setCurrent(OrderType.DONE);
-        } else if(elements.status === 'inWork') {
+        } else if(elements && elements.status === 'inWork') {
             setCurrent(OrderType.INWORK);
-        } else if(elements.status === 'cancel') {
+        } else if(elements && elements.status === 'cancel') {
             setCurrent(OrderType.CANCEL);
-        } else if (elements.status === 'create') {
+        } else if (elements && elements.status === 'create') {
             setCurrent(OrderType.CREATE);
         }
     }, [elements])
+
+    if (elements) {
+        elements.ingredients.sort().map((element: string) => {
+            return ingredientArray.push(ingredient.find((ingredient: IIngredient) => ingredient._id === element))
+        })
         
-    elements.ingredients.sort().map((element: any) => {
-        return ingredientArray.push(ingredient.find((ingredient: IIngredient) => ingredient._id === element))
-    })
+        elements.ingredients.reduce((prev: string, item: string) => {
+            if (prev !== item) {
+                count.push(ingredientArray.filter((ingredient: IIngredient) => ingredient._id === item))
+            }
+            return item
+        }, '');
     
-    elements.ingredients.reduce((prev: string, item: string) => {
-        if (prev !== item) {
-            count.push(ingredientArray.filter((ingredient: IIngredient) => ingredient._id === item))
-        }
-        return item
-    }, '');
+        ingredientArray.map((ingredient: IIngredient) => {
+            return price.push(ingredient.price); 
+        })
 
-    let price: number[] = []
-
-    ingredientArray.map((ingredient: IIngredient) => {
-        return price.push(ingredient.price); 
-    })
-    const totalPrice = price.reduce((s: number, v: number) => { return s + v }, 0);
+        totalPrice = price.reduce((s: number, v: number) => { return s + v }, 0);
+    }
 
     return (
         <div className={styles.feedId}>
-            {(messages || ownOrder) &&
+            {((messages || ownOrder) && elements) &&
             <>
                 <h2 className={styles.title + ' text text_type_digits-default mb-8 mt-2'}>#{elements.number}</h2>
                 <>
