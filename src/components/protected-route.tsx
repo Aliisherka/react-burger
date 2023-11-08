@@ -5,7 +5,6 @@ import { getUser, LOADING_USER } from '../services/actions/registration';
 import { useLocation } from "react-router";
 
 export const ProtectedRouteElement = ({ element }: any) => {
-    console.log(element)
     const { user, isUserLoaded, loggedIn } = useSelector((state) => state.registration);
     const dispatch = useDispatch();
     const location = useLocation();
@@ -13,7 +12,7 @@ export const ProtectedRouteElement = ({ element }: any) => {
     useEffect(() => {
         loggedIn && dispatch(getUser());
         dispatch({type: LOADING_USER})
-    }, [loggedIn])
+    }, [loggedIn, dispatch])
 
 
     if(!isUserLoaded) {

@@ -1,6 +1,6 @@
 import {Routes, Route, useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router";
-import { useDispatch, useSelector } from '../../services/hooks';
+import { useDispatch } from '../../services/hooks';
 import {useEffect} from 'react';
 
 import { HomePage} from '../../pages/Home';
@@ -24,7 +24,6 @@ function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const {messages, ownOrder} = useSelector(store => store.ws);
 
   const accessToken = localStorage.getItem('accessToken');
 
@@ -65,22 +64,22 @@ function App() {
                 </Modal>
               }
             />
-            {messages && <Route 
+            <Route 
               path='/feed/:ingredientId'
               element={
                 <Modal handleCloseModal={handleModalClose}>
                   <IdPage />
                 </Modal>
               }
-            />}
-            {ownOrder &&<Route 
+            />
+            <Route 
               path='/profile/orders/:ingredientId'
               element={
                 <Modal handleCloseModal={handleModalClose}>
                   <IdPage owner={true}/>
                 </Modal>
               }
-            />}
+            />
         </Routes>
       )}
     </>
