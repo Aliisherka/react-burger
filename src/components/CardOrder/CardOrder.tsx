@@ -39,16 +39,18 @@ function CardOrder({orders, link, status}: ICardOrdersProps) {
     let ingredientArray: any = [];
     let price: number[] = [];
     orders.ingredients.sort().map((order: string) => {
-        return ingredientArray.push(ingredient.find((ingredient: IIngredient) => ingredient._id === order))
+        return order === null 
+            ? order 
+            : ingredientArray.push(ingredient.find((ingredient: IIngredient) => ingredient._id === order))
     })
 
     ingredientArray.forEach((ingredient: IIngredient) => {
         price.push(ingredient.price);
     })
-
+    
     let count: IIngredient[][] = [];
     orders.ingredients.sort().reduce((prev: string, item: string) => {
-        if (prev !== item) {
+        if (prev !== item && item !== null) {
             count.push(ingredientArray.filter((ingredient: IIngredient) => ingredient._id === item))
         }
         return item
@@ -82,7 +84,7 @@ function CardOrder({orders, link, status}: ICardOrdersProps) {
                         {count.map((cardOrder: IIngredient[], index: number) => {
                             imageIndex = imageIndex - 1;
                             let number = ingredientArray.length - 6;
-                            return imageIndex > 0 
+                            return imageIndex > 0
                                 ? <div className={styles.imageContainer} key={index} style={{zIndex: imageIndex}}>
                                     <img className={styles.image} src={`${cardOrder[0].image}`} alt={'ingredient'}/>
                                   </div>

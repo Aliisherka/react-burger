@@ -6,6 +6,7 @@ import CardOrder from '../components/CardOrder/CardOrder';
 import { IOrder } from '../services/types/data';
 import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from '../services/actions/wsAction';
 import {useEffect} from 'react';
+import { WS_BASE_URL } from '../utils/request';
 
 export function ProfileOrdersPage() {
     const { ownOrder} = useSelector(store => store.ws);
@@ -13,7 +14,7 @@ export function ProfileOrdersPage() {
     const accessToken = localStorage.getItem('accessToken');
 
     useEffect(() => {
-        dispatch({ type: WS_CONNECTION_START, payload: `wss://norma.nomoreparties.space/orders?token=${accessToken && accessToken.split('Bearer ')[1]}` });
+        dispatch({ type: WS_CONNECTION_START, payload: `${WS_BASE_URL}?token=${accessToken && accessToken.split('Bearer ')[1]}` });
 
         return () => {
             dispatch({type: WS_CONNECTION_CLOSED})

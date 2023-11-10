@@ -5,8 +5,8 @@ import Modal from '../Modal/Modal';
 
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { getOrder, INCREASE_INGREDIENT, DECREASE_INGREDIENT, CLEAR_QUANTITY, CLEAR_ORDER_NUMBER } from '../../services/actions/ingredient';
-import { GET_TOTAL_PRICE, DELETE_INGREDIENT, DRAGGE_BUN, CLEAR_COSTRUCTOR, INCREASE_BUN, addIngridient } from '../../services/actions/constructor';
+import { getOrder, INCREASE_INGREDIENT, DECREASE_INGREDIENT, CLEAR_ORDER_NUMBER } from '../../services/actions/ingredient';
+import { GET_TOTAL_PRICE, DELETE_INGREDIENT, DRAGGE_BUN, INCREASE_BUN, addIngridient } from '../../services/actions/constructor';
 import { CLOSE_ORDER, OPEN_ORDER } from '../../services/actions/modal';
 
 import { useSelector, useDispatch } from '../../services/hooks';
@@ -42,13 +42,6 @@ function BurgerConstructor() {
             dispatch({type: OPEN_ORDER});
     
             dispatch(getOrder(draggedIngredient, draggedBun))
-    
-            dispatch({
-                type: CLEAR_COSTRUCTOR
-            })
-            dispatch({
-                type: CLEAR_QUANTITY
-            })
         }
     }
 

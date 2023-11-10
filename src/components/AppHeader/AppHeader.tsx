@@ -1,7 +1,7 @@
 import styles from './AppHeader.module.css';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 function AppHeader() {
     const setActive = ({ isActive }: { isActive: boolean }): string => (isActive ? `${styles.link} ${styles.active} text text_type_main-default` : `${styles.link} text text_type_main-default text_color_inactive`);
@@ -19,7 +19,7 @@ function AppHeader() {
                         </li>
                     </ul>
                 </nav>
-                <Logo />
+                <Link to='/'><Logo /></Link>
                 <nav className={styles.secondNavigation}>
                     <ul className={styles.linkList}>
                         <li className='pl-5 pr-5 pt-4 pb-4'>

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from '../services/hooks';
 import { useEffect, useState } from 'react';
 import { IIngredient, IOrder } from '../services/types/data';
 import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from '../services/actions/wsAction';
+import { WS_BASE_URL } from '../utils/request';
 
 enum OrderType {
     DONE = 'Выполнен',
@@ -26,8 +27,8 @@ export function IdPage({owner}: IIdPageProps) {
     
     const dispatch = useDispatch();
     useEffect(() => {
-        owner ? dispatch({ type: WS_CONNECTION_START, payload: `wss://norma.nomoreparties.space/orders?token=${accessToken && accessToken.split('Bearer ')[1]}` })
-            : dispatch({ type: WS_CONNECTION_START, payload: 'wss://norma.nomoreparties.space/orders/all'});
+        owner ? dispatch({ type: WS_CONNECTION_START, payload: `${WS_BASE_URL}?token=${accessToken && accessToken.split('Bearer ')[1]}` })
+            : dispatch({ type: WS_CONNECTION_START, payload: `${WS_BASE_URL}/all`});
 
         return () => {
             dispatch({type: WS_CONNECTION_CLOSED})
@@ -75,7 +76,7 @@ export function IdPage({owner}: IIdPageProps) {
 
     return (
         <div className={styles.feedId}>
-            {((messages || ownOrder) && elements) &&
+            {(messages || ownOrder) && elements ?
             <>
                 <h2 className={styles.title + ' text text_type_digits-default mb-8 mt-2'}>#{elements.number}</h2>
                 <>
@@ -115,6 +116,7 @@ export function IdPage({owner}: IIdPageProps) {
                     </div>
                 </>
             </>
+            : <></>
             }
         </div>
     )

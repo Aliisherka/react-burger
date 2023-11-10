@@ -49,7 +49,7 @@ function App() {
         <Route path='/forgot-password' element={<ForgotPassword />}/>
         <Route path='/reset-password' element={<ResetPassword />}/>
         <Route path='/profile' element={<ProtectedRouteElement element={<ProfilePage/>} />} />
-        <Route path='/profile/orders' element={<ProtectedRouteElement element={<ProfileOrdersPage/>} />} />
+        <Route path='/profile/orders' element={<ProfileOrdersPage/>} />
         <Route path='/profile/orders/:ingredientId' element={<ProtectedRouteElement element={<IdPage owner={true}/>} />} />
         <Route path='/feed' element={<FeedPage />}/>
         <Route path='/feed/:ingredientId' element={<IdPage />}/>

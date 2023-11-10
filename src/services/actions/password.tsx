@@ -1,6 +1,6 @@
 import { IUseFormProps } from '../../hooks/useForm';
 import { request } from '../../utils/request';
-import { AppDispatch, AppThunkAction } from '../types';
+import { AppThunkAction } from '../types';
 
 export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
 export const FORGOT_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS';
@@ -53,7 +53,7 @@ export type TPasswordActions =
 
 
 export function forgotPassword(email: string): AppThunkAction {
-    return function(dispatch: AppDispatch) {
+    return function(dispatch) {
         dispatch({
             type: FORGOT_PASSWORD
         })
@@ -80,8 +80,8 @@ export function forgotPassword(email: string): AppThunkAction {
     }
 }
 
-export function resetPassword(form: IUseFormProps) {
-    return function(dispatch: AppDispatch) {
+export function resetPassword(form: IUseFormProps): AppThunkAction {
+    return function(dispatch) {
         dispatch({
             type: RESET_PASSWORD
         })

@@ -1,7 +1,7 @@
 import { IUseFormProps } from '../../hooks/useForm';
 import { setCookie, getCookie, deleteCookie } from '../../utils/cookie';
 import { request, checkResponse, BASE_URL } from '../../utils/request';
-import { AppDispatch, AppThunkAction } from '../types';
+import { AppThunkAction } from '../types';
 
 export const REGIST = 'REGIST';
 export const REGIST_SUCCESS = 'REGIST_SUCCESS';
@@ -133,7 +133,7 @@ export type TRegistrationActions =
     | ILOADING_USER;
 
 export function regist(form: IUseFormProps): AppThunkAction {
-    return function(dispatch: AppDispatch) {
+    return function(dispatch) {
         dispatch({type: REGIST})
         request('auth/register', {
             method: 'POST',
@@ -167,7 +167,7 @@ export function regist(form: IUseFormProps): AppThunkAction {
 }
 
 export function login(form: IUseFormProps): AppThunkAction {
-    return function(dispatch: AppDispatch) {
+    return function(dispatch) {
         dispatch({type: LOGIN})
         request('auth/login', {
             method: 'POST',
@@ -234,7 +234,7 @@ export const fetchWithRefresh = async (url: string, options: any) => {
   };
 
 export function logout(): AppThunkAction {
-    return function(dispatch: AppDispatch) {
+    return function(dispatch) {
         dispatch({type: LOGOUT})
         request('auth/logout', {
             method: 'POST',
@@ -266,7 +266,7 @@ export function logout(): AppThunkAction {
 }
 
 export function getUser(): AppThunkAction {
-    return function(dispatch: AppDispatch) {
+    return function(dispatch) {
         dispatch({type: GET_USER})
         fetchWithRefresh(`${BASE_URL}/auth/user`, {
             headers: {
@@ -289,7 +289,7 @@ export function getUser(): AppThunkAction {
 }
 
 export function updateUser(form: IUseFormProps): AppThunkAction {
-    return function(dispatch: AppDispatch) {
+    return function(dispatch) {
         dispatch({type: UPDATE_USER})
         fetchWithRefresh(`${BASE_URL}/auth/user`, {
             method: 'PATCH',

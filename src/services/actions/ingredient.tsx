@@ -1,6 +1,7 @@
 import { request } from '../../utils/request';
-import { AppDispatch, AppThunkAction } from '../types';
+import { AppThunkAction } from '../types';
 import { IIngredient } from '../types/data';
+import { CLEAR_COSTRUCTOR } from './constructor';
 
 export const GET_INGREDIENT = 'GET_INGREDIENT';
 export const GET_INGREDIENT_SUCCESS = 'GET_INGREDIENT_SUCCESS';
@@ -65,7 +66,7 @@ export type TIngredientActions =
 
     
 export function getIngredient(): AppThunkAction {
-    return function(dispatch: AppDispatch) {
+    return function(dispatch) {
         dispatch({
             type: GET_INGREDIENT
         })
@@ -91,7 +92,7 @@ export function getIngredient(): AppThunkAction {
 }
 
 export function getOrder(ingredients: ReadonlyArray<IIngredient>, bun: IIngredient): AppThunkAction {
-    return function(dispatch: AppDispatch) {
+    return function(dispatch) {
         const ingredientId = [];
     
         ingredients.map((item: IIngredient) => {
@@ -119,6 +120,12 @@ export function getOrder(ingredients: ReadonlyArray<IIngredient>, bun: IIngredie
                 orderNumber: data.order.number
             })
             ingredientId.length = 0;
+            dispatch({
+                type: CLEAR_COSTRUCTOR
+            })
+            dispatch({
+                type: CLEAR_QUANTITY
+            })
         })
         .catch(err => {
             dispatch({
