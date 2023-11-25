@@ -1,18 +1,18 @@
 import { Navigate } from 'react-router-dom';
-import { useSelector, useDispatch,  } from 'react-redux';
+import { useSelector, useDispatch,  } from '../services/hooks';
 import {useEffect} from 'react';
 import { getUser, LOADING_USER } from '../services/actions/registration';
 import { useLocation } from "react-router";
 
 export const ProtectedRouteElement = ({ element }: any) => {
-    const { user, isUserLoaded, loggedIn } = useSelector((state: any) => state.registration);
+    const { user, isUserLoaded, loggedIn } = useSelector((state) => state.registration);
     const dispatch = useDispatch();
     const location = useLocation();
     
     useEffect(() => {
-        loggedIn && getUser()(dispatch);
+        loggedIn && dispatch(getUser());
         dispatch({type: LOADING_USER})
-    }, [loggedIn])
+    }, [loggedIn, dispatch])
 
 
     if(!isUserLoaded) {

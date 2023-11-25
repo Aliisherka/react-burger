@@ -1,8 +1,8 @@
 import styles from './Profile.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import {useRef, useState} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {useEffect, useRef, useState} from 'react';
+import { useDispatch, useSelector } from '../services/hooks';
 import { NavLink } from 'react-router-dom';
 import { logout } from '../services/actions/registration';
 import { updateUser } from '../services/actions/registration';
@@ -13,13 +13,17 @@ interface IProfilePage {
 }
 
 export function ProfilePage() {
-    const { user } = useSelector((state: any) => state.registration);
+    const { user } = useSelector((state) => state.registration);
     const dispatch = useDispatch();
     
     const [buttons, setbuttons] = useState<IProfilePage>({isChange: false})
     const inputRef = useRef<HTMLInputElement>(null)
 
-    const {values, handleChange, setValues} = useForm({name: user.name, email: user.email, password: '123456'});
+    const {values, handleChange, setValues} = useForm({name: '', email: '', password: '123456'});
+
+    useEffect(() => {
+        user && setValues({name: user.name, email: user.email, password: '123456'})
+    }, [user, setValues])
 
     const onIconClick = (): void => {
         setTimeout(() => inputRef.current && inputRef.current.focus(), 0)
@@ -27,17 +31,17 @@ export function ProfilePage() {
     }
 
     const logoutUser = (): void => {
-        logout()(dispatch);
+        dispatch(logout());
     }
 
     const update = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        updateUser(values)(dispatch)
-        setbuttons({isChange: false})
+        dispatch(updateUser(values));
+        setbuttons({isChange: false});
     }
 
     const cancel = (): void => {
-        setValues({...values, name: user.name, email: user.email, password: '123456'})
+        user && setValues({...values, name: user.name, email: user.email, password: '123456'})
         setbuttons({isChange: false})
     }
 

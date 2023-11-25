@@ -4,14 +4,14 @@ import styles from './Register.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../services/hooks';
 import { Link, Navigate } from 'react-router-dom';
 import { regist } from '../services/actions/registration';
 import { useForm } from '../hooks/useForm';
 
 
 export function RegisterPage() {
-    const { user } = useSelector((state: any) => state.registration);
+    const { user } = useSelector((state) => state.registration);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const dispatch = useDispatch();
@@ -25,7 +25,7 @@ export function RegisterPage() {
 
     const registration = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        regist(values)(dispatch);
+        dispatch(regist(values));
     }
 
     if (user) {

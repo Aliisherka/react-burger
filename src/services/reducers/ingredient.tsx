@@ -1,3 +1,4 @@
+import { IIngredient } from "../types/data";
 import { 
     GET_INGREDIENT,
     GET_INGREDIENT_SUCCESS,
@@ -7,20 +8,32 @@ import {
     GET_ORDER_NUMBER_ERROR,
     INCREASE_INGREDIENT,
     DECREASE_INGREDIENT,
-    CLEAR_QUANTITY
+    CLEAR_QUANTITY,
+    TIngredientActions,
+    CLEAR_ORDER_NUMBER
 } from "../actions/ingredient";
 
-const initialState = {
+type TIngredientState = {
+    ingredientRequest: boolean,
+    ingredientFailed: boolean,
+    ingredient: Array<IIngredient>,
+
+    orderNumberRequest: boolean,
+    orderNumberFailed: boolean,
+    orderNumber: number,
+}
+
+const initialState: TIngredientState = {
     ingredientRequest: false,
     ingredientFailed: false,
     ingredient: [],
 
     orderNumberRequest: false,
     orderNumberFailed: false,
-    orderNumber: null,
+    orderNumber: 0,
 }
 
-export const ingredientReducer = (state = initialState, action) => {
+export const ingredientReducer = (state = initialState, action: TIngredientActions): TIngredientState => {
     switch(action.type) {
         case GET_INGREDIENT: {
             return {
@@ -61,7 +74,7 @@ export const ingredientReducer = (state = initialState, action) => {
                 ...state,
                 orderNumberFailed: true,
                 orderNumberRequest: false,
-                orderNumber: []
+                orderNumber: 0
             }
         }
         case INCREASE_INGREDIENT: {
@@ -79,7 +92,13 @@ export const ingredientReducer = (state = initialState, action) => {
         case CLEAR_QUANTITY: {
             return {
                 ...state,
-                ingredient: [...state.ingredient].map(item => item.__v > null ? {...item, __v: null} : item)
+                ingredient: [...state.ingredient].map(item => item.__v > 0 ? {...item, __v: 0} : item)
+            }
+        }
+        case CLEAR_ORDER_NUMBER: {
+            return {
+                ...state,
+                orderNumber: 0
             }
         }
         default: {

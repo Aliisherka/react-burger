@@ -1,0 +1,40 @@
+.profileOrders {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    padding-top: 40px;
+}
+
+.navigation {
+    width: 320px;
+}
+
+.linkList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.links {
+    height: 64px;
+    display: flex;
+    align-items: center;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.active {
+    color: var(--text-primary-light-standart-text, #F2F2F3);
+    text-decoration: none;
+}
+
+.order {
+    width: 844px;
+    height: 916px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}

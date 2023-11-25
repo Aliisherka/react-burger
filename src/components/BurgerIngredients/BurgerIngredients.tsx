@@ -2,10 +2,10 @@ import styles from './BurgerIngredients.module.css';
 import React, { useMemo, UIEvent } from 'react';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks';
 
 import Ingredient from '../Ingredient/Ingredient';
-import { IIngredient } from '../../utils/types';
+import { IIngredient } from '../../services/types/data';
 
 enum IngredientType {
     BUN = 'bun',
@@ -14,7 +14,7 @@ enum IngredientType {
 }
 
 function BurgerIngredients() {
-    const { ingredient } = useSelector((state: any) => state.ingredient);
+    const {ingredient} = useSelector((state) => state.ingredient);
 
     const [current, setCurrent] = React.useState<IngredientType>(IngredientType.BUN);
 

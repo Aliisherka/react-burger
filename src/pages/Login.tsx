@@ -2,7 +2,7 @@ import styles from './Login.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import {useRef} from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../services/hooks';
 import { useLocation } from "react-router";
 import { Link, Navigate } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ import { useForm } from '../hooks/useForm';
 
 export function LoginPage() {
     const inputRef = useRef<HTMLInputElement>(null);
-    const { user } = useSelector((state: any) => state.registration);
+    const { user } = useSelector((state) => state.registration);
     const {state} = useLocation();
 
     const dispatch = useDispatch();
@@ -25,7 +25,7 @@ export function LoginPage() {
     
     const loginUser = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        login(values)(dispatch)
+        dispatch(login(values))
     }
     
     if (user) {

@@ -3,14 +3,14 @@ import styles from './Reset-password.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import React, {useRef} from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../services/hooks';
 import { Link, Navigate } from 'react-router-dom';
 import { resetPassword, RETURN_BACK } from '../services/actions/password';
 import { useForm } from '../hooks/useForm';
 
 export function ResetPassword() {
     const inputRef = useRef<HTMLInputElement>(null);
-    const { forgotSuccess } = useSelector((state: any) => state.password);
+    const { forgotSuccess } = useSelector((state) => state.password);
 
     const dispatch = useDispatch();
 
@@ -23,7 +23,7 @@ export function ResetPassword() {
 
     const sendNewPassword = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        resetPassword(values)(dispatch);
+        dispatch(resetPassword(values));
     }
 
     const returnToLogin = (): void => {
