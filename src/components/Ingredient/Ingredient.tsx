@@ -37,7 +37,7 @@ function Ingredient({_id, image, price, name, type, __v, item}: IIngredientProps
     }
     return(
         <Link key={ingredientId} to={`/ingredients/${ingredientId}`} state={{ background: location }} className={styles.link}>
-            <div ref={dragRef} id={_id}  className={styles.ingredient} style={{opacity}}>
+            <div data-cy='dragIngredients' ref={dragRef} id={_id}  className={styles.ingredient} style={{opacity}}>
                 <img className='pl-4 pr-4 pb-1' src={image} alt={'картинка булки бургера'}/>
                 <div className={styles.price}>
                     <p className='text text_type_digits-default'>{price}</p>

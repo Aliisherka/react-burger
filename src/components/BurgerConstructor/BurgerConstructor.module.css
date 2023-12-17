@@ -25,3 +25,8 @@
     gap: 8px;
     margin: 0;
 }
+
+.text {
+    padding-top: 250px;
+    text-align: center;
+}

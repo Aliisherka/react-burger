@@ -23,7 +23,7 @@ type TIngredientState = {
     orderNumber: number,
 }
 
-const initialState: TIngredientState = {
+export const initialState: TIngredientState = {
     ingredientRequest: false,
     ingredientFailed: false,
     ingredient: [],
@@ -80,7 +80,7 @@ export const ingredientReducer = (state = initialState, action: TIngredientActio
         case INCREASE_INGREDIENT: {
             return {
                 ...state,
-                ingredient: [...state.ingredient].map(item => item._id === action._id ? { ...item, __v: ++item.__v} : item)
+                ingredient: [...state.ingredient].map(item => item._id === action.id ? { ...item, __v: ++item.__v} : item)
             }
         }
         case DECREASE_INGREDIENT: {
