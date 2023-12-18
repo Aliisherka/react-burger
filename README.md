@@ -1,3 +1,3 @@
-#Cloud: 
+#Github pages: 
 
-http://reactburger.alisher.nomoredomainsmonster.ru
+https://aliisherka.github.io/react-burger/build/
