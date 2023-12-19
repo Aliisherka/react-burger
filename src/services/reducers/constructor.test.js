@@ -51,6 +51,10 @@ describe('constructor reducer', () => {
         uniqueId: "2"
     }
 
+    it('should return the initial state', () => {
+        expect(constructorReducer(undefined, {})).toEqual(initialState)
+    })
+
     it('dragge ingredient', () => {
         const action = {
             type: DRAGGE_INGREDIENT,
@@ -79,7 +83,7 @@ describe('constructor reducer', () => {
 
     it('delete ingredient', () => {
         const  initialStateForDeleting = {
-            draggedBun: undefined,
+            ...initialState,
             draggedIngredient: [ingredientMain, ingredientSauce]
         }
 
@@ -113,7 +117,7 @@ describe('constructor reducer', () => {
 
     it('reorder constructor', () => {
         const initialStateToReorder = {
-            draggedBun: undefined,
+            ...initialState,
             draggedIngredient: [ingredientMain, ingredientSauce]
         }
 
@@ -133,8 +137,8 @@ describe('constructor reducer', () => {
 
     it('increase bun', () => {
         const initialStateIncrease = {
-            draggedBun: ingredientBun,
-            draggedIngredient: [],
+            ...initialState,
+            draggedBun: ingredientBun
         }
 
         const action = {

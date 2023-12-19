@@ -3,6 +3,10 @@ import { initialState, modalReducer } from './modal';
 import { OPEN_ORDER, CLOSE_ORDER, OPER_ERROR_ORDER, CLOSE_ERROR_ORDER } from '../actions/modal';
 
 describe('modal reducer', () => {
+    it('should return the initial state', () => {
+        expect(modalReducer(undefined, {})).toEqual(initialState)
+    })
+
     it('open order', () => {
         const action = {
             type: OPEN_ORDER
@@ -16,8 +20,8 @@ describe('modal reducer', () => {
 
     it('close order', () => {
         const initialStateCloseModal = {
-            visibleOrder: true,
-            errorOrder: false
+            ...initialState,
+            visibleOrder: true
         }
 
         const action = {
@@ -43,7 +47,7 @@ describe('modal reducer', () => {
 
     it('close error order', () => {
         const initialStateCloseError = {
-            visibleOrder: false,
+            ...initialState,
             errorOrder: true
         }
 

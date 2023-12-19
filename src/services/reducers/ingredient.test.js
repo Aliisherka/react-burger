@@ -19,6 +19,10 @@ describe('ingredient reducer', () => {
         uniqueId: "1",
       };
 
+    it('should return the initial state', () => {
+        expect(ingredientReducer(undefined, {})).toEqual(initialState)
+    })  
+
     it('ingredient request after situation without Error', () => {
         const action = {
             type: GET_INGREDIENT
@@ -32,13 +36,8 @@ describe('ingredient reducer', () => {
 
     it('ingredient request after Error', () => {
         const initialStateWithError = {
-            ingredientRequest: false,
-            ingredientFailed: true,
-            ingredient: [],
-
-            orderNumberRequest: false,
-            orderNumberFailed: false,
-            orderNumber: 0,
+            ...initialState,
+            ingredientFailed: true
         }
 
         const action = {
@@ -54,13 +53,8 @@ describe('ingredient reducer', () => {
 
     it('ingredient request success', () => {
         const initialStateSuccess = {
-            ingredientRequest: true,
-            ingredientFailed: false,
-            ingredient: [],
-
-            orderNumberRequest: false,
-            orderNumberFailed: false,
-            orderNumber: 0,
+            ...initialState,
+            ingredientRequest: true
         }
 
         const action = {
@@ -88,13 +82,8 @@ describe('ingredient reducer', () => {
 
     it('order request after Error', () => {
         const initialStateWithError = {
-            ingredientRequest: false,
-            ingredientFailed: false,
-            ingredient: [],
-        
-            orderNumberRequest: false,
-            orderNumberFailed: true,
-            orderNumber: 0,
+            ...initialState,
+            orderNumberFailed: true
         }
 
         const action = {
@@ -110,13 +99,8 @@ describe('ingredient reducer', () => {
 
     it('order request success', () => {
         const initialStateSuccess = {
-            ingredientRequest: false,
-            ingredientFailed: false,
-            ingredient: [],
-        
-            orderNumberRequest: true,
-            orderNumberFailed: false,
-            orderNumber: 0,
+            ...initialState,
+            orderNumberRequest: true
         }
 
         const action = {
@@ -133,12 +117,7 @@ describe('ingredient reducer', () => {
 
     it('clear order number', () => {
         const initialStateWithNumber = {
-            ingredientRequest: false,
-            ingredientFailed: false,
-            ingredient: [],
-        
-            orderNumberRequest: false,
-            orderNumberFailed: false,
+            ...initialState,
             orderNumber: 6,
         }
 
@@ -154,13 +133,8 @@ describe('ingredient reducer', () => {
 
     it('clear quantity', () => {
         const initialStateWithQuantity = {
-            ingredientRequest: false,
-            ingredientFailed: false,
-            ingredient: [{...ingredientMain, __v: 5}],
-        
-            orderNumberRequest: false,
-            orderNumberFailed: false,
-            orderNumber: 0,
+            ...initialState,
+            ingredient: [{...ingredientMain, __v: 5}]
         }
 
         const action = {
@@ -175,13 +149,8 @@ describe('ingredient reducer', () => {
 
     it('increace ingredient', () => {
         const initialStateIncrease = {
-            ingredientRequest: false,
-            ingredientFailed: false,
-            ingredient: [ingredientMain],
-        
-            orderNumberRequest: false,
-            orderNumberFailed: false,
-            orderNumber: 0,
+            ...initialState,
+            ingredient: [ingredientMain]
         }
 
         const action = {
@@ -196,13 +165,8 @@ describe('ingredient reducer', () => {
 
     it('decreace ingredient', () => {
         const initialStateDecrease = {
-            ingredientRequest: false,
-            ingredientFailed: false,
-            ingredient: [ingredientMain],
-        
-            orderNumberRequest: false,
-            orderNumberFailed: false,
-            orderNumber: 0,
+            ...initialState,
+            ingredient: [ingredientMain]
         }
 
         const action = {

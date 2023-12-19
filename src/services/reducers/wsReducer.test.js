@@ -3,6 +3,10 @@ import { initialState, wsReducer } from "./wsReducer"
 
 
 describe('wsReducer', () => {
+    it('should return the initial state', () => {
+        expect(wsReducer(undefined, {})).toEqual(initialState)
+    })
+
     it('ws connection success', () => {
         const action = {
             type: WS_CONNECTION_SUCCESS
@@ -17,9 +21,8 @@ describe('wsReducer', () => {
 
     it('ws connection closed', () => {
         const initialStateClosed = {
+            ...initialState,
             wsConnected: true,
-            messages: undefined,
-            ownOrder: undefined
         }
 
         const action = {
@@ -35,9 +38,8 @@ describe('wsReducer', () => {
 
     it('ws get message', () => {
         const initialStateMessages = {
+            ...initialState,
             wsConnected: true,
-            messages: undefined,
-            ownOrder: undefined
         }
 
         const action = {

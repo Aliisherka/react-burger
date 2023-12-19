@@ -8,6 +8,10 @@ describe('registration reducer', () => {
         email: 'abc@mail.ru'
     }
 
+    it('should return the initial state', () => {
+        expect(registReducer(undefined, {})).toEqual(initialState)
+    })
+
     it('registration request after situation without Error', () => {
         const action = {
             type: REGIST
@@ -21,22 +25,8 @@ describe('registration reducer', () => {
 
     it('registration request after Error', () => {
         const initialStateWithError = {
-            registRequest: false,
+            ...initialState,
             registError: true,
-        
-            loginRequest: false,
-            loginError: false,
-        
-            logoutRequest: false,
-            logoutError: false,
-        
-            loggedIn: false,
-        
-            getUserRequest: false,
-            getUserError: false,
-        
-            user: undefined,
-            isUserLoaded: false
         }
 
         const action = {
@@ -52,22 +42,8 @@ describe('registration reducer', () => {
 
     it('registration request success', () => {
         const initialStateSuccess = {
-            registRequest: true,
-            registError: false,
-        
-            loginRequest: false,
-            loginError: false,
-        
-            logoutRequest: false,
-            logoutError: false,
-        
-            loggedIn: false,
-        
-            getUserRequest: false,
-            getUserError: false,
-        
-            user: undefined,
-            isUserLoaded: false
+            ...initialState,
+            registRequest: true
         }
 
         const action = {
@@ -95,22 +71,8 @@ describe('registration reducer', () => {
 
     it('login request after Error', () => {
         const initialStateWithError = {
-            registRequest: false,
-            registError: false,
-        
-            loginRequest: false,
-            loginError: true,
-        
-            logoutRequest: false,
-            logoutError: false,
-        
-            loggedIn: false,
-        
-            getUserRequest: false,
-            getUserError: false,
-        
-            user: undefined,
-            isUserLoaded: false
+            ...initialState,
+            loginError: true
         }
 
         const action = {
@@ -126,22 +88,8 @@ describe('registration reducer', () => {
 
     it('login request success', () => {
         const initialStateSuccess = {
-            registRequest: false,
-            registError: false,
-        
-            loginRequest: true,
-            loginError: false,
-        
-            logoutRequest: false,
-            logoutError: false,
-        
-            loggedIn: false,
-        
-            getUserRequest: false,
-            getUserError: false,
-        
-            user: undefined,
-            isUserLoaded: false
+            ...initialState,
+            loginRequest: true
         }
 
         const action = {
@@ -170,22 +118,8 @@ describe('registration reducer', () => {
 
     it('logout request after Error', () => {
         const initialStateWithError = {
-            registRequest: false,
-            registError: false,
-        
-            loginRequest: false,
-            loginError: false,
-        
-            logoutRequest: false,
+            ...initialState,
             logoutError: true,
-        
-            loggedIn: false,
-        
-            getUserRequest: false,
-            getUserError: false,
-        
-            user: undefined,
-            isUserLoaded: false
         }
 
         const action = {
@@ -201,22 +135,10 @@ describe('registration reducer', () => {
 
     it('logout request success', () => {
         const initialStateSuccess = {
-            registRequest: false,
-            registError: false,
-        
-            loginRequest: false,
-            loginError: false,
-        
-            logoutRequest: true,
-            logoutError: false,
-        
+            ...initialState,      
+            logoutRequest: true,  
             loggedIn: true,
-        
-            getUserRequest: false,
-            getUserError: false,
-        
-            user: user,
-            isUserLoaded: false
+            user: user
         }
 
         const action = {
@@ -243,22 +165,8 @@ describe('registration reducer', () => {
 
     it('get user request after Error', () => {
         const initialStateWithError = {
-            registRequest: false,
-            registError: false,
-        
-            loginRequest: false,
-            loginError: false,
-        
-            logoutRequest: false,
-            logoutError: false,
-        
-            loggedIn: false,
-        
-            getUserRequest: false,
-            getUserError: true,
-        
-            user: undefined,
-            isUserLoaded: false
+            ...initialState,
+            getUserError: true
         }
 
         const action = {
@@ -274,22 +182,9 @@ describe('registration reducer', () => {
 
     it('get user request success', () => {
         const initialStateSuccess = {
-            registRequest: false,
-            registError: false,
-        
-            loginRequest: false,
-            loginError: false,
-        
-            logoutRequest: true,
-            logoutError: false,
-        
-            loggedIn: true,
-        
-            getUserRequest: false,
-            getUserError: false,
-        
-            user: undefined,
-            isUserLoaded: false
+            ...initialState,      
+            logoutRequest: true,        
+            loggedIn: true
         }
 
         const action = {
@@ -317,22 +212,8 @@ describe('registration reducer', () => {
 
     it('update user request after Error', () => {
         const initialStateWithError = {
-            registRequest: false,
-            registError: false,
-        
-            loginRequest: false,
-            loginError: false,
-        
-            logoutRequest: false,
-            logoutError: false,
-        
-            loggedIn: false,
-        
-            getUserRequest: false,
-            getUserError: true,
-        
-            user: undefined,
-            isUserLoaded: false
+            ...initialState,
+            getUserError: true
         }
 
         const action = {
@@ -348,22 +229,9 @@ describe('registration reducer', () => {
 
     it('update user request success', () => {
         const initialStateSuccess = {
-            registRequest: false,
-            registError: false,
-        
-            loginRequest: false,
-            loginError: false,
-        
-            logoutRequest: true,
-            logoutError: false,
-        
-            loggedIn: true,
-        
-            getUserRequest: false,
-            getUserError: false,
-        
-            user: undefined,
-            isUserLoaded: false
+            ...initialState,
+            logoutRequest: true,        
+            loggedIn: true
         }
 
         const action = {

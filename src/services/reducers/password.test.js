@@ -3,6 +3,10 @@ import { initialState, passwordReducer } from "./password"
 
 
 describe('password reducer', () => {
+    it('should return the initial state', () => {
+        expect(passwordReducer(undefined, {})).toEqual(initialState)
+    })
+
     it('forgot password request after situation without Error', () => {
         const action = {
             type: FORGOT_PASSWORD
@@ -16,13 +20,8 @@ describe('password reducer', () => {
 
     it('forgot password request after Error', () => {
         const initialStateWithError = {
-            forgotPasswordRequest: false,
-            forgotPasswordError: true,
-            forgotSuccess: false,
-
-            resetPasswordRequest: false,
-            resetPasswordError: false,
-            resetSuccess: false
+            ...initialState,
+            forgotPasswordError: true
         }
 
         const action = {
@@ -38,13 +37,8 @@ describe('password reducer', () => {
 
     it('forgot password request success', () => {
         const initialStateSuccess = {
-            forgotPasswordRequest: true,
-            forgotPasswordError: false,
-            forgotSuccess: false,
-        
-            resetPasswordRequest: false,
-            resetPasswordError: false,
-            resetSuccess: false
+            ...initialState,
+            forgotPasswordRequest: true
         }
 
         const action = {
@@ -72,13 +66,8 @@ describe('password reducer', () => {
 
     it('reset password request after Error', () => {
         const initialStateWithError = {
-            forgotPasswordRequest: false,
-            forgotPasswordError: false,
-            forgotSuccess: false,
-
-            resetPasswordRequest: false,
+            ...initialState,
             resetPasswordError: true,
-            resetSuccess: false
         }
 
         const action = {
@@ -94,13 +83,8 @@ describe('password reducer', () => {
 
     it('reset password request success', () => {
         const initialStateSuccess = {
-            forgotPasswordRequest: false,
-            forgotPasswordError: false,
-            forgotSuccess: false,
-        
-            resetPasswordRequest: true,
-            resetPasswordError: false,
-            resetSuccess: false
+            ...initialState,
+            resetPasswordRequest: true
         }
 
         const action = {
@@ -117,13 +101,8 @@ describe('password reducer', () => {
 
     it('return back', () => {
         const initialStateSuccess = {
-            forgotPasswordRequest: false,
-            forgotPasswordError: false,
-            forgotSuccess: true,
-        
-            resetPasswordRequest: false,
-            resetPasswordError: false,
-            resetSuccess: false
+            ...initialState,
+            forgotSuccess: true
         }
 
         const action = {
