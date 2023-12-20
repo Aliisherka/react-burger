@@ -25,6 +25,7 @@ function Constructor({item, isLocked, extraClass, type, text, handleClose, index
     const [, drop] = useDrop<any>({
         accept: 'constructor',
         drop({ index: order, item}) {
+            console.log(order, index, item)
             if (item.type !== 'bun') {
                 dispatch({
                     type: REORDER_CONSTRUCTOR,
@@ -47,7 +48,7 @@ function Constructor({item, isLocked, extraClass, type, text, handleClose, index
     dragRef(drop(ref));
 
     return (
-        <div className={styles.ingredient}  ref={ref} style={{opacity}}>
+        <div data-cy='droppedIngredients' id={item._id} className={styles.ingredient}  ref={ref} style={{opacity}}>
             { item.type !== 'bun' && <DragIcon type="primary" /> }
             <ConstructorElement
                 type={type}

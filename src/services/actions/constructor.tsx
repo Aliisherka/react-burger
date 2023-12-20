@@ -5,10 +5,6 @@ export const DRAGGE_INGREDIENT = 'DRAGGE_INGREDIENT';
 export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
 export const DRAGGE_BUN = 'DRAGGE_BUN';
 
-export const GIVE_UNIQUE_ID = 'GIVE_UNIQUE_ID';
-
-export const GET_TOTAL_PRICE = 'GET_TOTAL_PRICE';
-
 export const CLEAR_COSTRUCTOR = 'CLEAR_COSTRUCTOR';
 
 export const REORDER_CONSTRUCTOR = 'REORDER_CONSTRUCTOR';
@@ -24,23 +20,12 @@ export interface IDRAGGE_INGREDIENT {
 }
 export interface IDELETE_INGREDIENT {
     readonly type: typeof DELETE_INGREDIENT;
-    readonly _id?: string;
     readonly uniqueId: string;
 }
 export interface IDRAGGE_BUN {
     readonly type: typeof DRAGGE_BUN;
     readonly ingredient: IIngredient[];
     readonly _id: string;
-}
-export interface IGIVE_UNIQUE_ID {
-    readonly type: typeof GIVE_UNIQUE_ID;
-    readonly _id: string;
-    readonly uniqueId: string;
-    readonly index: number;
-}
-export interface IGET_TOTAL_PRICE {
-    readonly type: typeof GET_TOTAL_PRICE;
-    readonly price: number;
 }
 export interface ICLEAR_COSTRUCTOR {
     readonly type: typeof CLEAR_COSTRUCTOR;
@@ -63,19 +48,19 @@ export type TConstructorActions =
     | IDRAGGE_INGREDIENT
     | IDELETE_INGREDIENT
     | IDRAGGE_BUN
-    | IGIVE_UNIQUE_ID
-    | IGET_TOTAL_PRICE
     | ICLEAR_COSTRUCTOR
     | IREORDER_CONSTRUCTOR
     | IINCREASE_BUN
     | IADD_INGRIDIENT;
 
-export const addIngridient = (item: IIngredient): IADD_INGRIDIENT => {
+export const addIngridient = (item: IIngredient): IADD_INGRIDIENT => { 
+    let unique = uuidv4()
+
     return {
         type: ADD_INGRIDIENT,
         payload: {
             ...item,
-           uniqueId: uuidv4()
+           uniqueId: unique
         }
     }
 }

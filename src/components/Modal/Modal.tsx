@@ -31,7 +31,7 @@ const Modal: FunctionComponent<IModal> = ({title, handleCloseModal, children, is
     const Title = isIngredient 
         ? <div className={styles.card + ' pl-10 pr-10 pt-10'}>
             <h2 className={'text text_type_main-large'}>{title}</h2>
-            <button type='button' className={styles.close}><CloseIcon type="primary" onClick={handleCloseModal}/></button>
+            <button data-cy='closeBtn' type='button' className={styles.close}><CloseIcon type="primary" onClick={handleCloseModal}/></button>
         </div> 
         : <button type='button' className={styles.closeButton}><CloseIcon type="primary" onClick={handleCloseModal}/></button>
 

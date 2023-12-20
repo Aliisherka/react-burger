@@ -2,9 +2,7 @@ import { IIngredient } from "../types/data";
 import { 
     DRAGGE_INGREDIENT,
     DRAGGE_BUN,
-    GIVE_UNIQUE_ID,
     DELETE_INGREDIENT,
-    GET_TOTAL_PRICE,
     CLEAR_COSTRUCTOR,
     REORDER_CONSTRUCTOR,
     INCREASE_BUN,
@@ -14,13 +12,11 @@ import {
 
 type TConstructorState = {
     draggedBun?: IIngredient;
-    totalPrice: number;
     draggedIngredient: Array<IIngredient>;
 }
 
-const initialState: TConstructorState = {
+export const initialState: TConstructorState = {
     draggedBun: undefined,
-    totalPrice: 0,
     draggedIngredient: [],
 }
 
@@ -38,28 +34,15 @@ export const constructorReducer = (state = initialState, action: TConstructorAct
                 draggedBun: action.ingredient.find((ingredient: IIngredient) => {return ingredient._id === action._id})
             }
         }
-        case GIVE_UNIQUE_ID: {
-            return {
-                ...state,
-                draggedIngredient: [...state.draggedIngredient].map(item => item._id === action._id ? {...item, _id: action.uniqueId, prevId: action._id, index: action.index} : item)
-            }
-        }
         case DELETE_INGREDIENT: {
             return {
                 ...state,
                 draggedIngredient: [...state.draggedIngredient].filter(ingredient => ingredient.uniqueId !== action.uniqueId)
             }
         }
-        case GET_TOTAL_PRICE: {
-            return {
-                ...state,
-                totalPrice: action.price
-            }
-        }
         case CLEAR_COSTRUCTOR: {
             return {
                 draggedBun: undefined,
-                totalPrice: 0,
                 draggedIngredient: []
             }
         }

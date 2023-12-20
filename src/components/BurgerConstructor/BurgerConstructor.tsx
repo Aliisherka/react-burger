@@ -6,8 +6,8 @@ import Modal from '../Modal/Modal';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { getOrder, INCREASE_INGREDIENT, DECREASE_INGREDIENT, CLEAR_ORDER_NUMBER } from '../../services/actions/ingredient';
-import { GET_TOTAL_PRICE, DELETE_INGREDIENT, DRAGGE_BUN, INCREASE_BUN, addIngridient } from '../../services/actions/constructor';
-import { CLOSE_ORDER, OPEN_ORDER } from '../../services/actions/modal';
+import { DELETE_INGREDIENT, DRAGGE_BUN, INCREASE_BUN, addIngridient } from '../../services/actions/constructor';
+import { CLOSE_ERROR_ORDER, CLOSE_ORDER, OPEN_ORDER } from '../../services/actions/modal';
 
 import { useSelector, useDispatch } from '../../services/hooks';
 import { useDrop } from "react-dnd";
@@ -15,11 +15,12 @@ import { useNavigate } from 'react-router-dom';
 
 import Constructor from '../Constructor/Constructor';
 import { IIngredient } from '../../services/types/data';
+import ModalWait from '../ModalWait/ModalWait';
 
 function BurgerConstructor() {
     const { orderNumber, ingredient } = useSelector((state) => state.ingredient);
-    const {  draggedBun, totalPrice, draggedIngredient } = useSelector(state => state.constructor);
-    const { visibleOrder } = useSelector((state) => state.modal);
+    const {  draggedBun, draggedIngredient } = useSelector(state => state.constructor);
+    const { visibleOrder, errorOrder } = useSelector((state) => state.modal);
     const { user } = useSelector((state) => state.registration);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -29,10 +30,6 @@ function BurgerConstructor() {
             (draggedBun ? draggedBun.price * 2 : 0) + (draggedIngredient ? draggedIngredient.reduce((s: number, v: IIngredient) => s + v.price, 0) : 0)
         );
     }, [draggedBun, draggedIngredient]);
-
-    useEffect(() => {
-        dispatch({type: GET_TOTAL_PRICE, price})
-    }, [dispatch, price]);  
 
     const handleOpenModal = (): void => {
         if (!user) {
@@ -50,6 +47,10 @@ function BurgerConstructor() {
 
         dispatch({
             type: CLEAR_ORDER_NUMBER
+        })
+
+        dispatch({
+            type: CLOSE_ERROR_ORDER
         })
     }
 
@@ -70,7 +71,7 @@ function BurgerConstructor() {
                 dispatch(addIngridient(item))
                 dispatch({
                     type: INCREASE_INGREDIENT,
-                    _id: _id
+                    id: _id
                 })
             }
         }
@@ -89,7 +90,7 @@ function BurgerConstructor() {
 
     return (
         <>
-            <div className={' pt-25 pl-4 pr-4 pb-10'} ref={drop}>
+            <div data-cy='dropIngredients' className={' pt-25 pl-4 pr-4 pb-10'} ref={drop}>
                 <div className={styles.burgerComponent + ' mb-10'}>
                     {draggedBun && 
                         <Constructor 
@@ -132,7 +133,7 @@ function BurgerConstructor() {
                 </div>
                 <div className={styles.info}>
                     <div className={styles.price}>
-                        <p className='text text_type_digits-medium'>{totalPrice}</p>
+                        <p className='text text_type_digits-medium'>{price}</p>
                         <CurrencyIcon type="primary" />
                     </div>
                     <Button htmlType="button" type="primary" size="large" onClick={handleOpenModal}>
@@ -145,6 +146,12 @@ function BurgerConstructor() {
                 && <Modal handleCloseModal={handleCloseModal} isIngredient={true}>
                         <OrderDetails orderNumber={orderNumber}/>
                     </Modal>}
+                {(visibleOrder && !orderNumber) && <ModalWait />}
+                {errorOrder && 
+                    <Modal handleCloseModal={handleCloseModal} >
+                        <p className={`${styles.text} text text_type_main-large`}>Ошибка, повторите попытку позже</p>
+                    </Modal>
+                }
             </div>
         </>
     )

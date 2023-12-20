@@ -38,7 +38,7 @@ type TRegistrationState = {
     isUserLoaded: boolean
 }
 
-const initialState: TRegistrationState = {
+export const initialState: TRegistrationState = {
     registRequest: false,
     registError: false,
 
@@ -92,6 +92,7 @@ export const registReducer = (state = initialState, action: TRegistrationActions
                 ...state,
                 loginError: false,
                 loggedIn: true,
+                loginRequest: false,
                 user: action.user
             }
         }

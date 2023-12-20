@@ -1,15 +1,19 @@
 import { 
     OPEN_ORDER,
     CLOSE_ORDER,
-    TModalActions
+    TModalActions,
+    OPER_ERROR_ORDER,
+    CLOSE_ERROR_ORDER,
 } from "../actions/modal";
 
 type TModalState = {
-    visibleOrder: boolean
+    visibleOrder: boolean,
+    errorOrder: boolean
 }
 
-const initialState: TModalState = {
+export const initialState: TModalState = {
     visibleOrder: false,
+    errorOrder: false
 }
 
 export const modalReducer = (state = initialState, action: TModalActions) => {
@@ -24,6 +28,18 @@ export const modalReducer = (state = initialState, action: TModalActions) => {
             return {
                 ...state,
                 visibleOrder: false
+            }
+        }
+        case OPER_ERROR_ORDER: {
+            return {
+                ...state,
+                errorOrder: true
+            }
+        }
+        case  CLOSE_ERROR_ORDER: {
+            return {
+                ...state,
+                errorOrder: false
             }
         }
         default: {

@@ -2,6 +2,7 @@ import { request } from '../../utils/request';
 import { AppThunkAction } from '../types';
 import { IIngredient } from '../types/data';
 import { CLEAR_COSTRUCTOR } from './constructor';
+import { CLOSE_ORDER, OPER_ERROR_ORDER } from './modal';
 
 export const GET_INGREDIENT = 'GET_INGREDIENT';
 export const GET_INGREDIENT_SUCCESS = 'GET_INGREDIENT_SUCCESS';
@@ -39,7 +40,7 @@ export interface IGET_ORDER_NUMBER_ERROR {
 }
 export interface IINCREASE_INGREDIENT {
     readonly type: typeof INCREASE_INGREDIENT;
-    readonly _id: string;
+    readonly id: string;
 }
 export interface IDECREASE_INGREDIENT {
     readonly type: typeof DECREASE_INGREDIENT;
@@ -115,6 +116,7 @@ export function getOrder(ingredients: ReadonlyArray<IIngredient>, bun: IIngredie
             })
         })
         .then(data => {
+            console.log(data)
             dispatch({
                 type: GET_ORDER_NUMBER_SUCCESS,
                 orderNumber: data.order.number
@@ -130,6 +132,12 @@ export function getOrder(ingredients: ReadonlyArray<IIngredient>, bun: IIngredie
         .catch(err => {
             dispatch({
                 type: GET_ORDER_NUMBER_ERROR
+            })
+            dispatch({
+                type: OPER_ERROR_ORDER
+            })
+            dispatch({
+                type: CLOSE_ORDER
             })
         })
     }
