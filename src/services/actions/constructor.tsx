@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { IConstructorIngredient, IIngredient } from '../types/data';
+import { IConstructorIngredient, IIngredient } from 'services/types/data';
 
 export const DRAGGE_INGREDIENT = 'DRAGGE_INGREDIENT';
 export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
@@ -44,7 +44,7 @@ export interface IADD_INGRIDIENT {
     readonly payload: IIngredient & IConstructorIngredient;
 }
 
-export type TConstructorActions = 
+export type TConstructorActions =
     | IDRAGGE_INGREDIENT
     | IDELETE_INGREDIENT
     | IDRAGGE_BUN
@@ -53,14 +53,14 @@ export type TConstructorActions =
     | IINCREASE_BUN
     | IADD_INGRIDIENT;
 
-export const addIngridient = (item: IIngredient): IADD_INGRIDIENT => { 
-    let unique = uuidv4()
+export const addIngridient = (item: IIngredient): IADD_INGRIDIENT => {
+  const unique = uuidv4();
 
-    return {
-        type: ADD_INGRIDIENT,
-        payload: {
-            ...item,
-           uniqueId: unique
-        }
-    }
-}
+  return {
+    type: ADD_INGRIDIENT,
+    payload: {
+      ...item,
+      uniqueId: unique,
+    },
+  };
+};

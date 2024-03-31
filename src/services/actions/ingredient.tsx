@@ -1,8 +1,8 @@
-import { request } from '../../utils/request';
-import { AppThunkAction } from '../types';
-import { IIngredient } from '../types/data';
-import { CLEAR_COSTRUCTOR } from './constructor';
-import { CLOSE_ORDER, OPER_ERROR_ORDER } from './modal';
+import { request } from 'utils/request';
+import { AppThunkAction } from 'services/types';
+import { IIngredient } from 'services/types/data';
+import { CLEAR_COSTRUCTOR } from 'services/actions/constructor';
+import { CLOSE_ORDER, OPER_ERROR_ORDER } from 'services/actions/modal';
 
 export const GET_INGREDIENT = 'GET_INGREDIENT';
 export const GET_INGREDIENT_SUCCESS = 'GET_INGREDIENT_SUCCESS';
@@ -65,80 +65,78 @@ export type TIngredientActions =
     | ICLEAR_QUANTITY
     | ICLEAR_ORDER_NUMBER;
 
-    
 export function getIngredient(): AppThunkAction {
-    return function(dispatch) {
+  return function (dispatch) {
+    dispatch({
+      type: GET_INGREDIENT,
+    });
+    request('ingredients')
+      .then((data) => {
+        if (data.success) {
+          dispatch({
+            type: GET_INGREDIENT_SUCCESS,
+            ingredient: data.data,
+          });
+        } else {
+          dispatch({
+            type: GET_INGREDIENT_ERROR,
+          });
+        }
+      })
+      .catch(() => {
         dispatch({
-            type: GET_INGREDIENT
-        })
-        request('ingredients')
-        .then(data => {
-            if (data.success) {
-                dispatch({
-                    type: GET_INGREDIENT_SUCCESS,
-                    ingredient: data.data
-                })
-            } else {
-                dispatch({
-                    type: GET_INGREDIENT_ERROR
-                })
-            }
-        })
-        .catch(err => {
-            dispatch({
-                type: GET_INGREDIENT_ERROR
-            })
-        })
-    }
+          type: GET_INGREDIENT_ERROR,
+        });
+      });
+  };
 }
 
 export function getOrder(ingredients: ReadonlyArray<IIngredient>, bun: IIngredient): AppThunkAction {
-    return function(dispatch) {
-        const ingredientId = [];
-    
-        ingredients.map((item: IIngredient) => {
-            return ingredientId.push(item._id);
-        });
-    
-        ingredientId.push(bun._id, bun._id);
+  return function (dispatch) {
+    const ingredientId = [];
 
+    ingredients.map((item: IIngredient) => ingredientId.push(item._id));
+
+    ingredientId.push(bun._id, bun._id);
+
+    dispatch({
+      type: GET_ORDER_NUMBER,
+    });
+    request('orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `${localStorage.getItem('accessToken')}`,
+      },
+      body: JSON.stringify({
+        // eslint-disable-next-line quote-props
+        'ingredients': ingredientId,
+      }),
+    })
+      .then((data) => {
+        console.log(data);
         dispatch({
-            type: GET_ORDER_NUMBER
-        })
-        request('orders', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: `${localStorage.getItem('accessToken')}`
-            },
-            body: JSON.stringify({
-                "ingredients": ingredientId,
-            })
-        })
-        .then(data => {
-            console.log(data)
-            dispatch({
-                type: GET_ORDER_NUMBER_SUCCESS,
-                orderNumber: data.order.number
-            })
-            ingredientId.length = 0;
-            dispatch({
-                type: CLEAR_COSTRUCTOR
-            })
-            dispatch({
-                type: CLEAR_QUANTITY
-            })
-        })
-        .catch(err => {
-            dispatch({
-                type: GET_ORDER_NUMBER_ERROR
-            })
-            dispatch({
-                type: OPER_ERROR_ORDER
-            })
-            dispatch({
-                type: CLOSE_ORDER
-            })
-        })
-    }
+          type: GET_ORDER_NUMBER_SUCCESS,
+          orderNumber: data.order.number,
+        });
+        ingredientId.length = 0;
+        dispatch({
+          type: CLEAR_COSTRUCTOR,
+        });
+        dispatch({
+          type: CLEAR_QUANTITY,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: GET_ORDER_NUMBER_ERROR,
+        });
+        dispatch({
+          type: OPER_ERROR_ORDER,
+        });
+        dispatch({
+          type: CLOSE_ORDER,
+        });
+      });
+  };
 }

@@ -1,7 +1,9 @@
-import { IUseFormProps } from '../../hooks/useForm';
-import { setCookie, getCookie, deleteCookie } from '../../utils/cookie';
-import { request, checkResponse, BASE_URL } from '../../utils/request';
-import { AppThunkAction } from '../types';
+/* eslint-disable no-return-await */
+/* eslint-disable no-param-reassign */
+import { IUseFormProps } from 'hooks/useForm';
+import { setCookie, getCookie, deleteCookie } from 'utils/cookie';
+import { request, checkResponse, BASE_URL } from 'utils/request';
+import { AppThunkAction } from 'services/types';
 
 export const REGIST = 'REGIST';
 export const REGIST_SUCCESS = 'REGIST_SUCCESS';
@@ -114,7 +116,7 @@ export interface ILOADING_USER {
     readonly type: typeof LOADING_USER;
 }
 
-export type TRegistrationActions = 
+export type TRegistrationActions =
     | IREGIST
     | IREGIST_SUCCESS
     | IREGIST_ERROR
@@ -133,183 +135,182 @@ export type TRegistrationActions =
     | ILOADING_USER;
 
 export function regist(form: IUseFormProps): AppThunkAction {
-    return function(dispatch) {
-        dispatch({type: REGIST})
-        request('auth/register', {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify(form)
-        })
-        .then(data => {
-            localStorage.removeItem('accessToken');
-            deleteCookie('refreshToken');
-            localStorage.setItem('accessToken', data.accessToken);
-            setCookie('refreshToken', data.refreshToken);
-            dispatch({
-                type: REGIST_SUCCESS,
-                user: data.user
-            })
-        })
-        .catch(err => {
-            console.log(err)
-            dispatch({
-                type: REGIST_ERROR
-            })
-        })
-    }
+  return function (dispatch) {
+    dispatch({ type: REGIST });
+    request('auth/register', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(form),
+    })
+      .then((data) => {
+        localStorage.removeItem('accessToken');
+        deleteCookie('refreshToken');
+        localStorage.setItem('accessToken', data.accessToken);
+        setCookie('refreshToken', data.refreshToken);
+        dispatch({
+          type: REGIST_SUCCESS,
+          user: data.user,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: REGIST_ERROR,
+        });
+      });
+  };
 }
 
 export function login(form: IUseFormProps): AppThunkAction {
-    return function(dispatch) {
-        dispatch({type: LOGIN})
-        request('auth/login', {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify(form)
-        })
-        .then(data => {
-            localStorage.removeItem('accessToken');
-            deleteCookie('refreshToken');
-            localStorage.setItem('accessToken', data.accessToken);
-            setCookie('refreshToken', data.refreshToken);
-            dispatch({
-                type: LOGIN_SUCCESS,
-                user: data.user
-            })
-        })
-        .catch(err => {
-            console.log(err)
-            dispatch({
-                type: LOGIN_ERROR
-            })
-        })
-    }
+  return function (dispatch) {
+    dispatch({ type: LOGIN });
+    request('auth/login', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(form),
+    })
+      .then((data) => {
+        localStorage.removeItem('accessToken');
+        deleteCookie('refreshToken');
+        localStorage.setItem('accessToken', data.accessToken);
+        setCookie('refreshToken', data.refreshToken);
+        dispatch({
+          type: LOGIN_SUCCESS,
+          user: data.user,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: LOGIN_ERROR,
+        });
+      });
+  };
 }
 
 export function refreshToken() {
-    return request('auth/token', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                token: getCookie('refreshToken')
-            })
-        })
+  return request('auth/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      token: getCookie('refreshToken'),
+    }),
+  });
 }
 
 export const fetchWithRefresh = async (url: string, options: any) => {
-    try {
+  try {
+    const res = await fetch(url, options);
+    return await checkResponse(res);
+  } catch (err: any) {
+    if (err.message === 'jwt expired') {
+      const refreshData = await refreshToken();
+      if (!refreshData.success) {
+        return Promise.reject(refreshData);
+      }
+      setCookie('refreshToken', refreshData.refreshToken);
+      localStorage.setItem('accessToken', refreshData.accessToken);
+      options.headers.authorization = refreshData.accessToken;
       const res = await fetch(url, options);
       return await checkResponse(res);
-    } catch (err: any) {
-      if (err.message === "jwt expired") {
-        const refreshData = await refreshToken();
-        if (!refreshData.success) {
-          return Promise.reject(refreshData);
-        }
-        setCookie("refreshToken", refreshData.refreshToken);
-        localStorage.setItem("accessToken", refreshData.accessToken);
-        options.headers.authorization = refreshData.accessToken;
-        const res = await fetch(url, options);
-        return await checkResponse(res);
-      } else {
-        return Promise.reject(err);
-      }
     }
-  };
+
+    return Promise.reject(err);
+  }
+};
 
 export function logout(): AppThunkAction {
-    return function(dispatch) {
-        dispatch({type: LOGOUT})
-        request('auth/logout', {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify({
-                token: getCookie('refreshToken')
-            })
-        })
-        .then(data => {
-            deleteCookie('refreshToken');
-            localStorage.removeItem('accessToken');
-            dispatch({
-                type: LOGOUT_SUCCESS,
-            })
-        })
-        .catch(err => {
-            dispatch({
-                type: LOGOUT_ERROR
-            })
-        })
-    }
+  return function (dispatch) {
+    dispatch({ type: LOGOUT });
+    request('auth/logout', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({
+        token: getCookie('refreshToken'),
+      }),
+    })
+      // eslint-disable-next-line no-unused-vars
+      .then((data) => {
+        deleteCookie('refreshToken');
+        localStorage.removeItem('accessToken');
+        dispatch({
+          type: LOGOUT_SUCCESS,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: LOGOUT_ERROR,
+        });
+      });
+  };
 }
 
 export function getUser(): AppThunkAction {
-    return function(dispatch) {
-        dispatch({type: GET_USER})
-        fetchWithRefresh(`${BASE_URL}/auth/user`, {
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                authorization: localStorage.getItem('accessToken')
-            }
-        })
-        .then(data => {
-            dispatch({
-                type: GET_USER_SUCCESS,
-                user: data.user
-            })
-        })
-        .catch(err => {
-            dispatch({
-                type: GET_USER_ERROR
-            })
-        })
-    }
+  return function (dispatch) {
+    dispatch({ type: GET_USER });
+    fetchWithRefresh(`${BASE_URL}/auth/user`, {
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        authorization: localStorage.getItem('accessToken'),
+      },
+    })
+      .then((data) => {
+        dispatch({
+          type: GET_USER_SUCCESS,
+          user: data.user,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: GET_USER_ERROR,
+        });
+      });
+  };
 }
 
 export function updateUser(form: IUseFormProps): AppThunkAction {
-    return function(dispatch) {
-        dispatch({type: UPDATE_USER})
-        fetchWithRefresh(`${BASE_URL}/auth/user`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                authorization: localStorage.getItem('accessToken')
-            },
-            body: JSON.stringify(form)
-        })
-        .then(data => {
-            dispatch({
-                type: UPDATE_USER_SUCCESS,
-                user: data.user
-            })
-        })
-        .catch(err => {
-            console.log(err)
-            dispatch({
-                type: UPDATE_USER_ERROR
-            })
-        })
-    }
+  return function (dispatch) {
+    dispatch({ type: UPDATE_USER });
+    fetchWithRefresh(`${BASE_URL}/auth/user`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        authorization: localStorage.getItem('accessToken'),
+      },
+      body: JSON.stringify(form),
+    })
+      .then((data) => {
+        dispatch({
+          type: UPDATE_USER_SUCCESS,
+          user: data.user,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({
+          type: UPDATE_USER_ERROR,
+        });
+      });
+  };
 }

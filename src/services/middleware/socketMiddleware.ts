@@ -1,52 +1,55 @@
 import type { Middleware, MiddlewareAPI } from 'redux';
 import type {
-    TWsStoreActions,
-    TApplicationActions,
-    AppDispatch,
-    RootState,
+  TWsStoreActions,
+  TApplicationActions,
+  AppDispatch,
+  RootState,
 } from '../types';
 
-export const socketMiddleware = (wsActions: TWsStoreActions, owner: boolean): Middleware => {
-    return((store: MiddlewareAPI<AppDispatch, RootState>) => {
-        let socket: WebSocket | null = null;
-        
-        return next => (action: TApplicationActions) => {
-            const { dispatch } = store;
-            const { type } = action;
-            const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } = wsActions;
-            const accessToken = localStorage.getItem('accessToken');
+// eslint-disable-next-line max-len
+const socketMiddleware = (wsActions: TWsStoreActions, owner: boolean): Middleware => ((store: MiddlewareAPI<AppDispatch, RootState>) => {
+  let socket: WebSocket | null = null;
 
-            if (type === wsInit) {
-                socket = new WebSocket(action.payload);
-            }
+  return (next) => (action: TApplicationActions) => {
+    const { dispatch } = store;
+    const { type } = action;
+    const {
+      wsInit, wsSendMessage, onOpen, onClose, onError, onMessage,
+    } = wsActions;
+    const accessToken = localStorage.getItem('accessToken');
 
-            if (socket) {
-                socket.onopen = event => {
-                    dispatch({ type: onOpen, payload: event });
-                };
+    if (type === wsInit) {
+      socket = new WebSocket(action.payload);
+    }
 
-                socket.onerror = event => {
-                    dispatch({ type: onError, payload: event });
-                };
+    if (socket) {
+      socket.onopen = (event) => {
+        dispatch({ type: onOpen, payload: event });
+      };
 
-                socket.onmessage = event => {
-                    const { data } = event;
-                    (accessToken && owner) && dispatch({type: onMessage, payload: JSON.parse(data), isOwner: owner});
-                    !owner && dispatch({type: onMessage, payload: JSON.parse(data), isOwner: owner})
-                };
+      socket.onerror = (event) => {
+        dispatch({ type: onError, payload: event });
+      };
 
-                socket.onclose = event => {
-                    dispatch({ type: onClose, payload: event });
-                };
-          
-                if (type === wsSendMessage) {
-                    const message = action.payload;
+      socket.onmessage = (event) => {
+        const { data } = event;
+        (accessToken && owner) && dispatch({ type: onMessage, payload: JSON.parse(data), isOwner: owner });
+        !owner && dispatch({ type: onMessage, payload: JSON.parse(data), isOwner: owner });
+      };
 
-                    socket.send(JSON.stringify(message));
-                };
-            }
+      socket.onclose = (event) => {
+        dispatch({ type: onClose, payload: event });
+      };
 
-        next(action);
-        }
-    }) as Middleware
-}
+      if (type === wsSendMessage) {
+        const message = action.payload;
+
+        socket.send(JSON.stringify(message));
+      }
+    }
+
+    next(action);
+  };
+}) as Middleware;
+
+export default socketMiddleware;

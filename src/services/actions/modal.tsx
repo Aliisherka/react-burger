@@ -17,7 +17,7 @@ export interface ICLOSE_ERROR_ORDER {
     readonly type: typeof CLOSE_ERROR_ORDER;
 }
 
-export type TModalActions = 
+export type TModalActions =
     | IOPEN_ORDER
     | ICLOSE_ORDER
     | IOPER_ERROR_ORDER

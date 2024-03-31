@@ -1,6 +1,6 @@
-import { IUseFormProps } from '../../hooks/useForm';
-import { request } from '../../utils/request';
-import { AppThunkAction } from '../types';
+import { IUseFormProps } from 'hooks/useForm';
+import { request } from 'utils/request';
+import { AppThunkAction } from 'services/types';
 
 export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
 export const FORGOT_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS';
@@ -42,7 +42,7 @@ export interface IRETURN_BACK {
     readonly type: typeof RETURN_BACK;
 }
 
-export type TPasswordActions = 
+export type TPasswordActions =
     | IFORGOT_PASSWORD
     | IFORGOT_PASSWORD_SUCCESS
     | IFORGOT_PASSWORD_ERROR
@@ -51,57 +51,56 @@ export type TPasswordActions =
     | IRESET_PASSWORD_ERROR
     | IRETURN_BACK;
 
-
 export function forgotPassword(email: string): AppThunkAction {
-    return function(dispatch) {
+  return function (dispatch) {
+    dispatch({
+      type: FORGOT_PASSWORD,
+    });
+    request('password-reset', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    })
+      .then((data) => {
         dispatch({
-            type: FORGOT_PASSWORD
-        })
-        request('password-reset', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: email
-            })
-        })
-        .then(data => {
-            dispatch({
-                type: FORGOT_PASSWORD_SUCCESS,
-                success: data.success
-            })
-        })
-        .catch(err => {
-            dispatch({
-                type: FORGOT_PASSWORD_ERROR
-            })
-        })
-    }
+          type: FORGOT_PASSWORD_SUCCESS,
+          success: data.success,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: FORGOT_PASSWORD_ERROR,
+        });
+      });
+  };
 }
 
 export function resetPassword(form: IUseFormProps): AppThunkAction {
-    return function(dispatch) {
+  return function (dispatch) {
+    dispatch({
+      type: RESET_PASSWORD,
+    });
+    request('password-reset/reset', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(form),
+    })
+      .then((data) => {
         dispatch({
-            type: RESET_PASSWORD
-        })
-        request('password-reset/reset', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(form)
-        })
-        .then(data => {
-            dispatch({
-                type: RESET_PASSWORD_SUCCESS,
-                resetSuccess: data.success
-            })
-        })
-        .catch(err => {
-            dispatch({
-                type: RESET_PASSWORD_ERROR
-            })
-        })
-    }
+          type: RESET_PASSWORD_SUCCESS,
+          resetSuccess: data.success,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: RESET_PASSWORD_ERROR,
+        });
+      });
+  };
 }

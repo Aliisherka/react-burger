@@ -1,11 +1,11 @@
+import React, { useEffect, FunctionComponent, ReactNode } from 'react';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import ModalOverlay from '../ModalOverlay/ModalOverlay';
-import styles from './Modal.module.css';
 import { createPortal } from 'react-dom';
-import {useEffect} from 'react';
-import { FunctionComponent, ReactNode } from 'react';
+import ModalOverlay from 'components/modal-overlay/ModalOverlay';
 
-const modalRoot = document.getElementById("react-modals")!;
+import styles from './Modal.module.css';
+
+const modalRoot = document.getElementById('react-modals')!;
 
 interface IModal {
     title?: string;
@@ -16,36 +16,43 @@ interface IModal {
     isIngredient?: boolean;
 }
 
-const Modal: FunctionComponent<IModal> = ({title, handleCloseModal, children, isIngredient}) => {  
-    useEffect(() => {
-        const closeByEsc = (e: KeyboardEvent): void => {
-            if(e.key === 'Escape') {
-                handleCloseModal()
-            }
-        }
-        
-        document.addEventListener('keydown', closeByEsc)
-        return () => document.removeEventListener('keydown', closeByEsc)
-    })
+const Modal: FunctionComponent<IModal> = ({
+  title, handleCloseModal, children, isIngredient,
+}) => {
+  useEffect(() => {
+    const closeByEsc = (e: KeyboardEvent): void => {
+      if (e.key === 'Escape') {
+        handleCloseModal();
+      }
+    };
 
-    const Title = isIngredient 
-        ? <div className={styles.card + ' pl-10 pr-10 pt-10'}>
-            <h2 className={'text text_type_main-large'}>{title}</h2>
-            <button data-cy='closeBtn' type='button' className={styles.close}><CloseIcon type="primary" onClick={handleCloseModal}/></button>
-        </div> 
-        : <button type='button' className={styles.closeButton}><CloseIcon type="primary" onClick={handleCloseModal}/></button>
+    document.addEventListener('keydown', closeByEsc);
+    return () => document.removeEventListener('keydown', closeByEsc);
+  });
 
-    return createPortal(
-            (
-                <div className={styles.modal}>
-                    <div className={styles.container}>
-                        {Title}
-                        {children}
-                    </div>
-                    <ModalOverlay handleCloseModal={handleCloseModal}/>
-                </div>
-            ), modalRoot
-        )
-}
+  const Title = isIngredient ? (
+    <div className={`${styles.card} pl-10 pr-10 pt-10`}>
+      <h2 className={'text text_type_main-large'}>{title}</h2>
+      <button data-cy='closeBtn' type='button' className={styles.close}>
+        <CloseIcon type='primary' onClick={handleCloseModal} />
+      </button>
+    </div>
+  ) : (
+    <button type='button' className={styles.closeButton}>
+      <CloseIcon type='primary' onClick={handleCloseModal} />
+    </button>
+  );
+
+  return createPortal(
+    <div className={styles.modal}>
+      <div className={styles.container}>
+        {Title}
+        {children}
+      </div>
+      <ModalOverlay handleCloseModal={handleCloseModal} />
+    </div>,
+    modalRoot,
+  );
+};
 
 export default Modal;

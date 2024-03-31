@@ -1,259 +1,269 @@
-import { GET_USER, GET_USER_SUCCESS, LOADING_USER, LOGIN, LOGIN_SUCCESS, LOGOUT, LOGOUT_SUCCESS, REGIST, REGIST_SUCCESS, UPDATE_USER, UPDATE_USER_SUCCESS } from "../actions/registration"
-import { initialState, registReducer } from "./registration"
-
+import {
+  GET_USER,
+  GET_USER_SUCCESS,
+  LOADING_USER, LOGIN,
+  LOGIN_SUCCESS,
+  LOGOUT,
+  LOGOUT_SUCCESS,
+  REGIST,
+  REGIST_SUCCESS,
+  UPDATE_USER,
+  UPDATE_USER_SUCCESS,
+} from 'services/actions/registration';
+import { initialState, registReducer } from 'services/reducers/registration';
 
 describe('registration reducer', () => {
-    const user = {
-        name: 'abc',
-        email: 'abc@mail.ru'
-    }
+  const user = {
+    name: 'abc',
+    email: 'abc@mail.ru',
+  };
 
-    it('should return the initial state', () => {
-        expect(registReducer(undefined, {})).toEqual(initialState)
-    })
+  it('should return the initial state', () => {
+    expect(registReducer(undefined, {})).toEqual(initialState);
+  });
 
-    it('registration request after situation without Error', () => {
-        const action = {
-            type: REGIST
-        }
+  it('registration request after situation without Error', () => {
+    const action = {
+      type: REGIST,
+    };
 
-        expect(registReducer(initialState, action)).toEqual({
-            ...initialState,
-            registRequest: true
-        })
-    })
+    expect(registReducer(initialState, action)).toEqual({
+      ...initialState,
+      registRequest: true,
+    });
+  });
 
-    it('registration request after Error', () => {
-        const initialStateWithError = {
-            ...initialState,
-            registError: true,
-        }
+  it('registration request after Error', () => {
+    const initialStateWithError = {
+      ...initialState,
+      registError: true,
+    };
 
-        const action = {
-            type: REGIST
-        }
+    const action = {
+      type: REGIST,
+    };
 
-        expect(registReducer(initialStateWithError, action)).toEqual({
-            ...initialStateWithError,
-            registRequest: true,
-            registError: false
-        })
-    })
+    expect(registReducer(initialStateWithError, action)).toEqual({
+      ...initialStateWithError,
+      registRequest: true,
+      registError: false,
+    });
+  });
 
-    it('registration request success', () => {
-        const initialStateSuccess = {
-            ...initialState,
-            registRequest: true
-        }
+  it('registration request success', () => {
+    const initialStateSuccess = {
+      ...initialState,
+      registRequest: true,
+    };
 
-        const action = {
-            type: REGIST_SUCCESS,
-            user: user
-        }
+    const action = {
+      type: REGIST_SUCCESS,
+      user,
+    };
 
-        expect(registReducer(initialStateSuccess, action)).toEqual({
-            ...initialStateSuccess,
-            registRequest: false,
-            user: user
-        })
-    })
+    expect(registReducer(initialStateSuccess, action)).toEqual({
+      ...initialStateSuccess,
+      registRequest: false,
+      user,
+    });
+  });
 
-    it('login request after situation without Error', () => {
-        const action = {
-            type: LOGIN
-        }
+  it('login request after situation without Error', () => {
+    const action = {
+      type: LOGIN,
+    };
 
-        expect(registReducer(initialState, action)).toEqual({
-            ...initialState,
-            loginRequest: true
-        })
-    })
+    expect(registReducer(initialState, action)).toEqual({
+      ...initialState,
+      loginRequest: true,
+    });
+  });
 
-    it('login request after Error', () => {
-        const initialStateWithError = {
-            ...initialState,
-            loginError: true
-        }
+  it('login request after Error', () => {
+    const initialStateWithError = {
+      ...initialState,
+      loginError: true,
+    };
 
-        const action = {
-            type: LOGIN
-        }
+    const action = {
+      type: LOGIN,
+    };
 
-        expect(registReducer(initialStateWithError, action)).toEqual({
-            ...initialStateWithError,
-            loginRequest: true,
-            loginError: false
-        })
-    })
+    expect(registReducer(initialStateWithError, action)).toEqual({
+      ...initialStateWithError,
+      loginRequest: true,
+      loginError: false,
+    });
+  });
 
-    it('login request success', () => {
-        const initialStateSuccess = {
-            ...initialState,
-            loginRequest: true
-        }
+  it('login request success', () => {
+    const initialStateSuccess = {
+      ...initialState,
+      loginRequest: true,
+    };
 
-        const action = {
-            type: LOGIN_SUCCESS,
-            user: user
-        }
+    const action = {
+      type: LOGIN_SUCCESS,
+      user,
+    };
 
-        expect(registReducer(initialStateSuccess, action)).toEqual({
-            ...initialStateSuccess,
-            loginRequest: false,
-            loggedIn: true,
-            user: user
-        })
-    })
+    expect(registReducer(initialStateSuccess, action)).toEqual({
+      ...initialStateSuccess,
+      loginRequest: false,
+      loggedIn: true,
+      user,
+    });
+  });
 
-    it('logout request after situation without Error', () => {
-        const action = {
-            type: LOGOUT
-        }
+  it('logout request after situation without Error', () => {
+    const action = {
+      type: LOGOUT,
+    };
 
-        expect(registReducer(initialState, action)).toEqual({
-            ...initialState,
-            logoutRequest: true
-        })
-    })
+    expect(registReducer(initialState, action)).toEqual({
+      ...initialState,
+      logoutRequest: true,
+    });
+  });
 
-    it('logout request after Error', () => {
-        const initialStateWithError = {
-            ...initialState,
-            logoutError: true,
-        }
+  it('logout request after Error', () => {
+    const initialStateWithError = {
+      ...initialState,
+      logoutError: true,
+    };
 
-        const action = {
-            type: LOGOUT
-        }
+    const action = {
+      type: LOGOUT,
+    };
 
-        expect(registReducer(initialStateWithError, action)).toEqual({
-            ...initialStateWithError,
-            logoutRequest: true,
-            logoutError: false
-        })
-    })
+    expect(registReducer(initialStateWithError, action)).toEqual({
+      ...initialStateWithError,
+      logoutRequest: true,
+      logoutError: false,
+    });
+  });
 
-    it('logout request success', () => {
-        const initialStateSuccess = {
-            ...initialState,      
-            logoutRequest: true,  
-            loggedIn: true,
-            user: user
-        }
+  it('logout request success', () => {
+    const initialStateSuccess = {
+      ...initialState,
+      logoutRequest: true,
+      loggedIn: true,
+      user,
+    };
 
-        const action = {
-            type: LOGOUT_SUCCESS
-        }
+    const action = {
+      type: LOGOUT_SUCCESS,
+    };
 
-        expect(registReducer(initialStateSuccess, action)).toEqual({
-            ...initialStateSuccess,
-            loggedIn: false,
-            user: undefined,
-        })
-    })
+    expect(registReducer(initialStateSuccess, action)).toEqual({
+      ...initialStateSuccess,
+      loggedIn: false,
+      user: undefined,
+    });
+  });
 
-    it('get user request after situation without Error', () => {
-        const action = {
-            type: GET_USER
-        }
+  it('get user request after situation without Error', () => {
+    const action = {
+      type: GET_USER,
+    };
 
-        expect(registReducer(initialState, action)).toEqual({
-            ...initialState,
-            getUserRequest: true
-        })
-    })
+    expect(registReducer(initialState, action)).toEqual({
+      ...initialState,
+      getUserRequest: true,
+    });
+  });
 
-    it('get user request after Error', () => {
-        const initialStateWithError = {
-            ...initialState,
-            getUserError: true
-        }
+  it('get user request after Error', () => {
+    const initialStateWithError = {
+      ...initialState,
+      getUserError: true,
+    };
 
-        const action = {
-            type: GET_USER
-        }
+    const action = {
+      type: GET_USER,
+    };
 
-        expect(registReducer(initialStateWithError, action)).toEqual({
-            ...initialStateWithError,
-            getUserRequest: true,
-            getUserError: false
-        })
-    })
+    expect(registReducer(initialStateWithError, action)).toEqual({
+      ...initialStateWithError,
+      getUserRequest: true,
+      getUserError: false,
+    });
+  });
 
-    it('get user request success', () => {
-        const initialStateSuccess = {
-            ...initialState,      
-            logoutRequest: true,        
-            loggedIn: true
-        }
+  it('get user request success', () => {
+    const initialStateSuccess = {
+      ...initialState,
+      logoutRequest: true,
+      loggedIn: true,
+    };
 
-        const action = {
-            type: GET_USER_SUCCESS, 
-            user: user
-        }
+    const action = {
+      type: GET_USER_SUCCESS,
+      user,
+    };
 
-        expect(registReducer(initialStateSuccess, action)).toEqual({
-            ...initialStateSuccess,
-            getUserRequest: false,
-            user: user
-        })
-    })
+    expect(registReducer(initialStateSuccess, action)).toEqual({
+      ...initialStateSuccess,
+      getUserRequest: false,
+      user,
+    });
+  });
 
-    it('update user request after situation without Error', () => {
-        const action = {
-            type: UPDATE_USER
-        }
+  it('update user request after situation without Error', () => {
+    const action = {
+      type: UPDATE_USER,
+    };
 
-        expect(registReducer(initialState, action)).toEqual({
-            ...initialState,
-            getUserRequest: true
-        })
-    })
+    expect(registReducer(initialState, action)).toEqual({
+      ...initialState,
+      getUserRequest: true,
+    });
+  });
 
-    it('update user request after Error', () => {
-        const initialStateWithError = {
-            ...initialState,
-            getUserError: true
-        }
+  it('update user request after Error', () => {
+    const initialStateWithError = {
+      ...initialState,
+      getUserError: true,
+    };
 
-        const action = {
-            type: UPDATE_USER
-        }
+    const action = {
+      type: UPDATE_USER,
+    };
 
-        expect(registReducer(initialStateWithError, action)).toEqual({
-            ...initialStateWithError,
-            getUserRequest: true,
-            getUserError: false
-        })
-    })
+    expect(registReducer(initialStateWithError, action)).toEqual({
+      ...initialStateWithError,
+      getUserRequest: true,
+      getUserError: false,
+    });
+  });
 
-    it('update user request success', () => {
-        const initialStateSuccess = {
-            ...initialState,
-            logoutRequest: true,        
-            loggedIn: true
-        }
+  it('update user request success', () => {
+    const initialStateSuccess = {
+      ...initialState,
+      logoutRequest: true,
+      loggedIn: true,
+    };
 
-        const action = {
-            type: UPDATE_USER_SUCCESS, 
-            user: user
-        }
+    const action = {
+      type: UPDATE_USER_SUCCESS,
+      user,
+    };
 
-        expect(registReducer(initialStateSuccess, action)).toEqual({
-            ...initialStateSuccess,
-            getUserRequest: false,
-            user: user
-        })
-    })
+    expect(registReducer(initialStateSuccess, action)).toEqual({
+      ...initialStateSuccess,
+      getUserRequest: false,
+      user,
+    });
+  });
 
-    it('loading user', () => {
-        const action = {
-            type: LOADING_USER
-        }
+  it('loading user', () => {
+    const action = {
+      type: LOADING_USER,
+    };
 
-        expect(registReducer(initialState, action)).toEqual({
-            ...initialState,
-            isUserLoaded: true
-        })
-    })
-})
+    expect(registReducer(initialState, action)).toEqual({
+      ...initialState,
+      isUserLoaded: true,
+    });
+  });
+});
