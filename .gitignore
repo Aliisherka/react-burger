@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+build
 /.pnp
 .pnp.js
 
@@ -11,6 +12,7 @@
 # production
 
 # misc
+.vscode/*
 .DS_Store
 .env.local
 .env.development.local
