@@ -23,7 +23,6 @@ function LoginPage() {
 
   const onIconClick = (): void => {
     setTimeout(() => inputRef.current && inputRef.current.focus(), 0);
-    alert('Icon Click Callback');
   };
 
   const loginUser = (e: React.FormEvent<HTMLFormElement>): void => {

@@ -26,6 +26,7 @@ module.exports = {
     'no-underscore-dangle': ['error', { allow: ['_id', '__v'] }],
     'max-len': ['error', { code: 130 }],
     'no-unused-expressions': 'off',
+    'func-names': 'off',
   },
   globals: {
     describe: 'readonly',

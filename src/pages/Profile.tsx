@@ -29,7 +29,6 @@ function ProfilePage() {
 
   const onIconClick = (): void => {
     setTimeout(() => inputRef.current && inputRef.current.focus(), 0);
-    alert('Icon Click Callback');
   };
 
   const logoutUser = (): void => {

@@ -306,8 +306,7 @@ export function updateUser(form: IUseFormProps): AppThunkAction {
           user: data.user,
         });
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         dispatch({
           type: UPDATE_USER_ERROR,
         });

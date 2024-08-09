@@ -114,7 +114,6 @@ export function getOrder(ingredients: ReadonlyArray<IIngredient>, bun: IIngredie
       }),
     })
       .then((data) => {
-        console.log(data);
         dispatch({
           type: GET_ORDER_NUMBER_SUCCESS,
           orderNumber: data.order.number,

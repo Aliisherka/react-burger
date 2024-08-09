@@ -19,7 +19,6 @@ function ResetPassword() {
 
   const onIconClick = (): void => {
     setTimeout(() => inputRef.current && inputRef.current.focus(), 0);
-    alert('Icon Click Callback');
   };
 
   const sendNewPassword = (e: React.FormEvent<HTMLFormElement>): void => {
